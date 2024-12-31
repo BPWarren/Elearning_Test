@@ -24,7 +24,7 @@ using (var scope = app.Services.CreateScope())
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-    string[] roles = { "Professeur", "Etudiant" };
+    string[] roles = { "Admin", "Professeur", "Etudiant" };
 
     foreach (var role in roles)
     {
@@ -34,19 +34,26 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    var admin = new IdentityUser { UserName = "professeur@example.com", Email = "professeur@example.com", EmailConfirmed = true };
+    var prof = new IdentityUser { UserName = "professeur@example.com", Email = "professeur@example.com", EmailConfirmed = true };
     var student = new IdentityUser { UserName = "etudiant@example.com", Email = "etudiant@example.com", EmailConfirmed = true };
+    var admin = new IdentityUser { UserName = "admin@example.com", Email = "admin@example.com", EmailConfirmed = true };
 
-    if (await userManager.FindByEmailAsync(admin.Email) == null)
+    if (await userManager.FindByEmailAsync(prof.Email) == null)
     {
-        await userManager.CreateAsync(admin, "Password123!");
-        await userManager.AddToRoleAsync(admin, "Professeur");
+        await userManager.CreateAsync(prof, "Password123!");
+        await userManager.AddToRoleAsync(prof, "Professeur");
     }
 
     if (await userManager.FindByEmailAsync(student.Email) == null)
     {
         await userManager.CreateAsync(student, "Password123!");
         await userManager.AddToRoleAsync(student, "Etudiant");
+    }
+
+    if (await userManager.FindByEmailAsync(admin.Email) == null)
+    {
+        await userManager.CreateAsync(admin, "Password123!");
+        await userManager.AddToRoleAsync(admin, "Admin");
     }
 }
 

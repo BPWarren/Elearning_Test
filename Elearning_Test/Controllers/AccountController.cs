@@ -20,8 +20,31 @@ namespace CompleteRoles.Controllers
             _dbContext = dbContext;
         }
 
+        //Admin login
 
+        [HttpGet]
+        public IActionResult AdminLogin()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> AdminLogin(string email, string password)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null && await _userManager.IsInRoleAsync(user, "admin"))
+            {
+                var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent: false, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("homePage", "MyHome");
+                }
+            }
+
+            ModelState.AddModelError("", "Identifiants incorrects ou rôle non autorisé.");
+            return View();
+        }
+        //Login begins Here
         [HttpGet]
         public IActionResult Login(string role)
         {
@@ -38,7 +61,7 @@ namespace CompleteRoles.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent: false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("homePage", "MyHome");
                 }
             }
            
