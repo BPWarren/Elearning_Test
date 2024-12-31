@@ -1,46 +1,62 @@
+
 using Elearning_Test.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
-//Wep, je suis Martinien
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+// Ajouter les services Identity et la base de données
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>() // Ajouter la gestion des rôles
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Créer les rôles au démarrage
+using (var scope = app.Services.CreateScope())
 {
-    app.UseMigrationsEndPoint();
-}
-else
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+    string[] roles = { "Professeur", "Etudiant" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+    var admin = new IdentityUser { UserName = "professeur@example.com", Email = "professeur@example.com", EmailConfirmed = true };
+    var student = new IdentityUser { UserName = "etudiant@example.com", Email = "etudiant@example.com", EmailConfirmed = true };
+
+    if (await userManager.FindByEmailAsync(admin.Email) == null)
+    {
+        await userManager.CreateAsync(admin, "Password123!");
+        await userManager.AddToRoleAsync(admin, "Professeur");
+    }
+
+    if (await userManager.FindByEmailAsync(student.Email) == null)
+    {
+        await userManager.CreateAsync(student, "Password123!");
+        await userManager.AddToRoleAsync(student, "Etudiant");
+    }
 }
 
-app.UseHttpsRedirection();
-app.UseRouting();
 
+app.UseStaticFiles();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
-app.MapRazorPages()
-   .WithStaticAssets();
+app.MapDefaultControllerRoute();
+app.MapRazorPages();
 
 app.Run();

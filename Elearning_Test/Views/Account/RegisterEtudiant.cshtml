@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+@model EtudiantRegistrationViewModel
+
+<div class="container mt-5">
+    <h2 class="text-center">Inscription - Étudiant</h2>
+    <form asp-action="RegisterEtudiant" method="post">
+        <div class="mb-3">
+            <label for="Nom" class="form-label">Nom</label>
+            <input asp-for="Nom" class="form-control" />
+            <span asp-validation-for="Nom" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label for="MotDePasse" class="form-label">Mot de Passe</label>
+            <input asp-for="MotDePasse" class="form-control" type="password" />
+            <span asp-validation-for="MotDePasse" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label for="ConfirmationMotDePasse" class="form-label">Confirmer le Mot de Passe</label>
+            <input asp-for="ConfirmationMotDePasse" class="form-control" type="password" />
+            <span asp-validation-for="ConfirmationMotDePasse" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">S'inscrire</button>
+    </form>
+</div>

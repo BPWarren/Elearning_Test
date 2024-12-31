@@ -1,11 +1,16 @@
-﻿@{
-    ViewData["Title"] = "Accueil";
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@{
+    ViewData["Title"] = "Type de Connection";
 }
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6 text-center">
-            <h1 class="mb-4">Bienvenue sur notre site</h1>
             <p>Choisissez votre rôle pour vous connecter :</p>
             <div class="d-grid gap-3">
                 <a asp-controller="Account" asp-action="Login" asp-route-role="Professeur" class="btn btn-primary btn-lg">

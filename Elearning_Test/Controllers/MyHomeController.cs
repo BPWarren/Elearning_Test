@@ -12,5 +12,10 @@ namespace Elearning_Test.Controllers
         {
             return View();
         }
+        //Vue pour pemettre à l'utilisateur de se connecter en tant que professeur ou en tant qu'étudiant
+        public IActionResult ChoseConnection()
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewData["Title"] = "Choix de Connection";
+}
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Section de connexion -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-body p-5">
+                    <h2 class="card-title text-center mb-4">Connexion</h2>
+                    <p class="text-center text-muted mb-4">Choisissez votre rôle pour vous connecter :</p>
+                    <div class="d-grid gap-3">
+                        <a asp-controller="Account" asp-action="Login" asp-route-role="Professeur" class="btn btn-primary btn-lg py-3">
+                            <i class="fas fa-chalkboard-teacher me-2"></i> Je suis un Professeur
+                        </a>
+                        <a asp-controller="Account" asp-action="Login" asp-route-role="Etudiant" class="btn btn-secondary btn-lg py-3">
+                            <i class="fas fa-user-graduate me-2"></i> Je suis un Étudiant
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section d'inscription -->
+            <div class="card shadow-sm">
+                <div class="card-body p-5">
+                    <h2 class="card-title text-center mb-4">Pas encore inscrit ?</h2>
+                    <p class="text-center text-muted mb-4">Qui êtes-vous ?</p>
+                    <div class="d-grid gap-3">
+                        <a asp-controller="Account" asp-action="RegisterProfesseur" class="btn btn-outline-primary btn-lg py-3">
+                            <i class="fas fa-chalkboard-teacher me-2"></i> Professeur
+                        </a>
+                        <a asp-controller="Account" asp-action="RegisterEtudiant" class="btn btn-outline-secondary btn-lg py-3">
+                            <i class="fas fa-user-graduate me-2"></i> Étudiant
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ajouter Font Awesome pour les icônes -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

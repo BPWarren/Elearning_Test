@@ -18,6 +18,19 @@ namespace Elearning_Test.Controllers
             return View();
         }
 
+        //Choix de login
+        public IActionResult ChoixConnection()
+        {
+            return View();
+        }
+
+
+        //Choix de Registration
+        public IActionResult ChoixRegistration()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
