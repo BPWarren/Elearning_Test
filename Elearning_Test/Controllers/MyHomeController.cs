@@ -8,5 +8,9 @@ namespace Elearning_Test.Controllers
         {
             return View();
         }
+        public IActionResult contactUs()
+        {
+            return View();
+        }
     }
 }
