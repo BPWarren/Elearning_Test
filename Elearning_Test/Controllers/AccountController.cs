@@ -125,6 +125,7 @@ namespace CompleteRoles.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> RegisterEtudiant(EtudiantRegistrationViewModel model)
         {

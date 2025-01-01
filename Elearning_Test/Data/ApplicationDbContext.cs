@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Elearning_Test.Models;
 
 namespace Elearning_Test.Data
 {
@@ -16,6 +17,7 @@ namespace Elearning_Test.Data
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Etudiant> Etudiants { get; set; }
         public DbSet<Professeur> Professeurs { get; set; }
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Certification> Certifications { get; set; }
         public DbSet<Categorie> Categories { get; set; } // Ajouter
