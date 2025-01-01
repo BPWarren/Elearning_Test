@@ -49,28 +49,76 @@ namespace Elearning_Test.Controllers
         // GET: Cours/Create
         public IActionResult Create()
         {
-            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Id");
-            ViewData["ProfesseurId"] = new SelectList(_context.Professeurs, "Id", "Id");
+            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Intitule");
+            ViewData["ProfesseurId"] = new SelectList(_context.Professeurs, "Id", "Nom");
             return View();
         }
-
         // POST: Cours/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titre,Description,ProfesseurId,Price,CategorieId,ImageFile,CreatedAt,UpdatedAt")] Cours cours)
+        public async Task<IActionResult> Create([Bind("Id,Titre,Description,ProfesseurId,Price,CategorieId")] Cours cours, IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {
+                // Gérer le téléchargement de l'image
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    // Chemin du dossier imagesImportées
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+
+                    // Créer le dossier s'il n'existe pas
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    // Générer un nom de fichier unique pour éviter les conflits
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    try
+                    {
+                        // Enregistrer le fichier
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(stream);
+                        }
+
+                        // Enregistrer le chemin de l'image dans la base de données
+                        cours.ImageFile = "/images/" + uniqueFileName;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Gérer les exceptions liées au fichier
+                        ModelState.AddModelError("", $"Erreur lors de l'importation de l'image : {ex.Message}");
+                        ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Intitule", cours.CategorieId);
+                        ViewData["ProfesseurId"] = new SelectList(_context.Professeurs, "Id", "Nom", cours.ProfesseurId);
+                        return View(cours);
+                    }
+                }
+
+                // Initialiser les propriétés CreatedAt et UpdatedAt
+                cours.CreatedAt = DateTime.UtcNow;
+                cours.UpdatedAt = DateTime.UtcNow;
+
+                // Ajouter et enregistrer dans la base de données
                 _context.Add(cours);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Id", cours.CategorieId);
-            ViewData["ProfesseurId"] = new SelectList(_context.Professeurs, "Id", "Id", cours.ProfesseurId);
+
+            // En cas de modèle invalide, retourner les listes déroulantes et la vue
+            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Intitule", cours.CategorieId);
+            ViewData["ProfesseurId"] = new SelectList(_context.Professeurs, "Id", "Nom", cours.ProfesseurId);
             return View(cours);
         }
+
+
 
         // GET: Cours/Edit/5
         public async Task<IActionResult> Edit(int? id)
