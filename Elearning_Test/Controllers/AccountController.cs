@@ -126,6 +126,7 @@ namespace CompleteRoles.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterEtudiant(EtudiantRegistrationViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
