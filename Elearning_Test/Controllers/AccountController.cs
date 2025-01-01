@@ -82,9 +82,12 @@ namespace CompleteRoles.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var user = new IdentityUser
+            var user = new Professeur
             {
-                UserName = model.Nom,
+                UserName = model.UserName,
+                Nom = model.Nom,
+                Prenom = model.Prenom,
+                Specialite = model.Specialite,
                 Email = model.Email,
                 EmailConfirmed = true
             };
@@ -94,16 +97,7 @@ namespace CompleteRoles.Controllers
             {
                 // Assigner le rôle
                 await _userManager.AddToRoleAsync(user, "Professeur");
-                
-                // Créer l'entité Professeur
-
-                var professeur = new Professeur
-                {
-                    UserId = user.Id,
-                    Nom = model.Nom
-                };
-
-                _dbContext.Professeurs.Add(professeur);
+               
                 await _dbContext.SaveChangesAsync();
 
                 return RedirectToAction("homePage", "MyHome");
@@ -131,9 +125,12 @@ namespace CompleteRoles.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var user = new IdentityUser
+            var user = new Etudiant
             {
-                UserName = model.Email,
+                UserName = model.UserName,
+                Nom = model.Nom,
+                Prenom = model.Prenom,
+                Cne = model.Cne,
                 Email = model.Email,
                 EmailConfirmed = true
             };
@@ -144,14 +141,6 @@ namespace CompleteRoles.Controllers
                 // Assigner le rôle
                 await _userManager.AddToRoleAsync(user, "Etudiant");
 
-                // Créer l'entité Étudiant
-                var etudiant = new Etudiant
-                {
-                    UserId = user.Id,
-                    Nom = model.Nom
-                };
-                _dbContext.Etudiants.Add(etudiant);
-                await _dbContext.SaveChangesAsync();
 
                 return RedirectToAction("homePage", "MyHome");
             }

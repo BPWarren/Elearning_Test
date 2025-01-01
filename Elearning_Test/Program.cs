@@ -34,9 +34,9 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    var prof = new IdentityUser { UserName = "professeur@example.com", Email = "professeur@example.com", EmailConfirmed = true };
-    var student = new IdentityUser { UserName = "etudiant@example.com", Email = "etudiant@example.com", EmailConfirmed = true };
-    var admin = new IdentityUser { UserName = "admin@example.com", Email = "admin@example.com", EmailConfirmed = true };
+    var prof = new Professeur { UserName = "professeur@example.com", Nom = "NOMProf1", Prenom="PRENOMProf1", Specialite="Spec1", Email = "professeur@example.com", EmailConfirmed = true };
+    var student = new Etudiant { UserName = "etudiant@example.com", Email = "etudiant@example.com",Nom="Etudiant1", Prenom="Etudiant1", Cne="EB58", EmailConfirmed = true };
+    var admin = new Admin { UserName = "admin@example.com", Email = "admin@example.com", Nom="Admin1", EmailConfirmed = true };
 
     if (await userManager.FindByEmailAsync(prof.Email) == null)
     {
