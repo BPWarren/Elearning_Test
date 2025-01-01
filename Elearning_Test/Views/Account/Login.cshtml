@@ -8,6 +8,9 @@
     ViewData["Title"] = "Connexion";
     var role = ViewData["Role"];
 }
+@{
+    Layout = "~/Views/Shared/_ELayout.cshtml";
+}
 
 
 
@@ -22,6 +25,17 @@
 
                 <!-- Corps de la carte -->
                 <div class="card-body p-5">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
                     <form method="post">
                         <!-- Champ Email -->
                         <div class="mb-4">

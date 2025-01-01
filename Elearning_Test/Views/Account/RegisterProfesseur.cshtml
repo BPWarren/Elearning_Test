@@ -2,13 +2,9 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-}
-
-@{
     ViewData["Title"] = "Inscription-Professeur";
+    Layout = "~/Views/Shared/_ELayout.cshtml";
 }
-
-
 
 @model ProfesseurRegistrationViewModel
 
@@ -24,6 +20,18 @@
                 <!-- Corps de la carte -->
                 <div class="card-body p-5">
                     <form asp-action="RegisterProfesseur" method="post">
+                        <!-- Champ UserName -->
+                        <div class="mb-4">
+                            <label for="UserName" class="form-label fw-bold">Nom d'utilisateur</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-user text-muted"></i>
+                                </span>
+                                <input asp-for="UserName" class="form-control border-start-0" />
+                            </div>
+                            <span asp-validation-for="UserName" class="text-danger small"></span>
+                        </div>
+
                         <!-- Champ Nom -->
                         <div class="mb-4">
                             <label for="Nom" class="form-label fw-bold">Nom</label>
@@ -34,6 +42,30 @@
                                 <input asp-for="Nom" class="form-control border-start-0" />
                             </div>
                             <span asp-validation-for="Nom" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Champ Prénom -->
+                        <div class="mb-4">
+                            <label for="Prenom" class="form-label fw-bold">Prénom</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-user text-muted"></i>
+                                </span>
+                                <input asp-for="Prenom" class="form-control border-start-0" />
+                            </div>
+                            <span asp-validation-for="Prenom" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Champ Spécialité -->
+                        <div class="mb-4">
+                            <label for="Specialite" class="form-label fw-bold">Spécialité</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-graduation-cap text-muted"></i>
+                                </span>
+                                <input asp-for="Specialite" class="form-control border-start-0" />
+                            </div>
+                            <span asp-validation-for="Specialite" class="text-danger small"></span>
                         </div>
 
                         <!-- Champ Email -->
