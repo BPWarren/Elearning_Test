@@ -1,4 +1,5 @@
-﻿using Elearning_Test.Models;
+﻿
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -145,63 +146,6 @@ namespace Elearning_Test.Data
    
 }
 
-public class Lecon : IHasTimestamps
-{
-    public int Id { get; set; }
-    public required string Titre { get; set; }
-    public required string Contenu { get; set; }
-    public int NumeroPage { get; set; }
-    public int CoursId { get; set; }
-    public required Cours Cours { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-}
-
-public class Cours : IHasTimestamps
-{
-    public int Id { get; set; }
-    public required string Titre { get; set; }
-    public required string Description { get; set; }
-    public required string ProfesseurId { get; set; }
-    public required Professeur Professeur { get; set; }
-    public ICollection<Lecon>? Lecons { get; set; }
-    public ICollection<Enrollment>? Enrollments { get; set; }
-    public ICollection<Evaluation>? Evaluations { get; set; }
-    public required float Price { get; set; }
-    public int CategorieId { get; set; }
-    public required Categorie Categorie { get; set; }
-    public required string ImageFile { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-}
-
-public class Enrollment : IHasTimestamps
-{
-    public int Id { get; set; }
-    public required string EtudiantId { get; set; }
-    public required Etudiant Etudiant { get; set; }
-    public int CoursId { get; set; }
-    public required Cours Cours { get; set; }
-    public int Progression { get; set; }
-    public bool IsConnected { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-}
-
-public class Etudiant : IdentityUser, IHasTimestamps
-{
-    public required string Cne { get; set; }
-    public required string Nom { get; set; }
-    public required string Prenom { get; set; }
-    public ICollection<Enrollment>? Enrollments { get; set; }
-    public ICollection<Payment>? Payments { get; set; }
-    public ICollection<Certification>? Certifications { get; set; }
-    public ICollection<Evaluation>? Evaluations { get; set; }
-    public bool IsConnected { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-}
-
 public class Professeur : IdentityUser, IHasTimestamps
 {
     public required string Nom { get; set; }
@@ -269,3 +213,14 @@ public class Evaluation : IHasTimestamps
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }
 
+public class Admin : IdentityUser, IHasTimestamps
+{
+    public required string Nom { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+}public class Admin : IdentityUser, IHasTimestamps
+{
+    public required string Nom { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+}

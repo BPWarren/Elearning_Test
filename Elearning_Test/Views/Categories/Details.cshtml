@@ -1,0 +1,34 @@
+﻿@model Categorie
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_ELayout.cshtml";
+}
+
+<div class="container">
+    <h1 class="display-4">Details de la Catégorie</h1>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <img src="@Model.ImageFile" class="card-img-top" alt="Image de @Model.Intitule" style="height: 300px; object-fit: cover;">
+                <div class="card-body">
+                    <h2 class="card-title">@Html.DisplayFor(model => model.Intitule)</h2>
+                    <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>Créé le :</strong> @Html.DisplayFor(model => model.CreatedAt)
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Mis à jour le :</strong> @Html.DisplayFor(model => model.UpdatedAt)
+                    </li>
+                </ul>
+                <div class="card-footer bg-transparent">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
