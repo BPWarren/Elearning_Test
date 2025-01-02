@@ -23,7 +23,6 @@ namespace Elearning_Test.Data
         public DbSet<Certification> Certifications { get; set; }
         public DbSet<Categorie> Categories { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
-        public DbSet<Admin> Admins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
