@@ -1,5 +1,6 @@
 
 using Elearning_Test.Data;
+using Elearning_Test.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
