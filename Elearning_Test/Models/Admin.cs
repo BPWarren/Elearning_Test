@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 namespace Elearning_Test.Models
 {
     public class Admin : IdentityUser, IHasTimestamps
