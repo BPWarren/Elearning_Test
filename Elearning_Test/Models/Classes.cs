@@ -25,7 +25,7 @@ namespace Elearning_Test.Models
         public ICollection<Lecon>? Lecons { get; set; }
         public ICollection<Enrollment>? Enrollments { get; set; }
         public ICollection<Evaluation>? Evaluations { get; set; }
-        public required float Price { get; set; }
+        public required decimal Price { get; set; }
         public int CategorieId { get; set; }
         public Categorie? Categorie { get; set; }
         public required string ImageFile { get; set; }

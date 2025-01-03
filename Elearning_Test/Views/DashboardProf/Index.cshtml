@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "~/Views/Shared/_ELayout.cshtml";
+}
+
+@model IEnumerable<Elearning_Test.Models.Cours>
+
+<h1>Mes Cours</h1>
+<a asp-action="AjouterCours" class="btn btn-primary">Ajouter un nouveau cours</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Prix</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cours in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@cours.ImageFile" alt="Image du cours" style="max-width: 100px;" />
+                </td>
+                <td>@cours.Titre</td>
+                <td>@cours.Description</td>
+                <td>@cours.Price €</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@cours.Id" class="btn btn-info">Voir</a>
+                    <a asp-action="EditCours" asp-route-id="@cours.Id" class="btn btn-warning">Modifier</a>
+                    <form asp-action="DeleteCours" asp-route-id="@cours.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

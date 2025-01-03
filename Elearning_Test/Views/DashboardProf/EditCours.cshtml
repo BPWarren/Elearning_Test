@@ -1,0 +1,44 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    Layout = "~/Views/Shared/_ELayout.cshtml";
+}
+
+@model Elearning_Test.Models.Cours
+
+<h1>Modifier le cours</h1>
+
+<form asp-action="EditCours" enctype="multipart/form-data" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label for="Titre">Titre</label>
+        <input asp-for="Titre" class="form-control" />
+        <span asp-validation-for="Titre" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Description">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Price">Prix</label>
+        <input asp-for="Price" type="number" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="ImageFile">Image Actuelle</label>
+        <div>
+            <img src="@Model.ImageFile" alt="Image du cours" class="img-thumbnail" style="max-width: 200px;" />
+        </div>
+        <input type="file" name="imageFile" class="form-control-file mt-2" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+</form>
