@@ -58,7 +58,6 @@ namespace Elearning_Test.Controllers
             {
                 UserName = model.Email,
                 Nom = model.Nom,
-                Prenom = model.Prenom,
                 Email = model.Email,
                 EmailConfirmed = true,
                 IsConnected = false,  // L'utilisateur n'est pas connecté au début
@@ -101,7 +100,6 @@ namespace Elearning_Test.Controllers
             var model = new RegisterAdminViewModel
             {
                 Nom = admin.Nom,
-                Prenom = admin.Prenom,
                 Email = admin.Email,
                 MotDePasse = "..",
                 ConfirmationMotDePasse = "",

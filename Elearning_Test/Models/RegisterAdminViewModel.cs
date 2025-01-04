@@ -10,12 +10,6 @@ namespace Elearning_Test.Models
             get; set;
         }
 
-        [Required(ErrorMessage = "Le champ Prénom est obligatoire.")]
-        public required string Prenom
-        {
-            get; set;
-        }
-
         [Required(ErrorMessage = "Le champ Email est obligatoire.")]
         [EmailAddress(ErrorMessage = "L'adresse email n'est pas valide.")]
         public required string Email

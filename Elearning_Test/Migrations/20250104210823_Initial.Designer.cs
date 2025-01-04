@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Elearning_Test.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250102102938_NomDeLaMigration")]
-    partial class NomDeLaMigration
+    [Migration("20250104210823_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,8 +107,8 @@ namespace Elearning_Test.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProfesseurId")
                         .IsRequired()
