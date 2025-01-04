@@ -21,6 +21,7 @@ namespace Elearning_Test.Models
 
     public class LeconViewModel
     {
+        public int Id { get; set; }
         public int CoursId { get; set; }
         [Required]
         public string Titre { get; set; }

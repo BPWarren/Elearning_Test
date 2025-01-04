@@ -215,23 +215,23 @@ namespace Elearning_Test.Controllers
 
         //Voir les leçons d'un cours
         [HttpGet]
-        public async Task<IActionResult> VoirLecons(int IdCours)
+        public async Task<IActionResult> VoirLecons(int id)
         {
-            var leconsA = await _leconService.GetLeconsByCoursIdAsync(IdCours);
+            var leconsA = await _leconService.GetLeconsByCoursIdAsync(id);
             VoirLeconsViewModel vlvm = new()
             {
                 Lecons = leconsA,
-                CoursId = IdCours
+                CoursId = id
             };
             return View(vlvm);
         }
         //Ajout d'une nouvelle lecon à un cours
         [HttpGet]
-        public IActionResult AjouterLecon(int IdCours)
+        public IActionResult AjouterLecon(int id)
         {
             LeconViewModel lvm = new ()
             {
-                CoursId = IdCours,
+                CoursId = id,
             };
             return View(lvm);
         }
@@ -241,28 +241,118 @@ namespace Elearning_Test.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AjouterLecon(LeconViewModel lvm)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
+                Lecon newLecon = new ()
                 {
-                    Lecon newLecon = new ()
-                    {
-                        CoursId = lvm.CoursId,
-                        Titre = lvm.Titre,
-                        Contenu = lvm.Contenu,
-                        NumeroPage = lvm.NumeroPage,
-                    };
-                    await _leconService.CreateLeconAsync(newLecon);
-                    return RedirectToAction("VoirLecons", new { IdCours = lvm.CoursId });
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("", "Une erreur s'est produite lors de la création de la leçon.");
-                }
+                    CoursId = lvm.CoursId,
+                    Titre = lvm.Titre,
+                    Contenu = lvm.Contenu,
+                    NumeroPage = lvm.NumeroPage,
+                };
+                await _leconService.CreateLeconAsync(newLecon);
+                return RedirectToAction("VoirLecons", new { id = lvm.CoursId });
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Une erreur s'est produite lors de la création de la leçon.");
             }
             return View(lvm);
         }
 
+        //Modification de lecon
+        [HttpGet]
+        public async Task<IActionResult> ModifierLecon(int id)
+        {
+            var lecon = await _leconService.GetLeconByIdAsync(id);
+            try
+            {
+                // Récupérer la leçon existante par son ID
+                if (lecon == null)
+                {
+                    return NotFound(); // Retourne une erreur 404 si la leçon n'existe pas
+                }
+
+                // Créer un ViewModel pour la modification
+                var lvm = new LeconViewModel
+                {
+                    Id = lecon.Id,
+                    CoursId = lecon.CoursId,
+                    Titre = lecon.Titre,
+                    Contenu = lecon.Contenu,
+                    NumeroPage = lecon.NumeroPage,
+                };
+
+                return View(lvm);
+            }
+            catch (Exception)
+            {
+                // Gérer les erreurs et rediriger vers une page d'erreur
+                ModelState.AddModelError("", "Une erreur s'est produite lors de la récupération de la leçon.");
+                return RedirectToAction("VoirLecons", new { id = lecon.CoursId });
+            }
+        }
+        //Sppression de lecon
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SupprimerLecon(int id)
+        {
+            var lecon = await _leconService.GetLeconByIdAsync(id);
+            try
+            {
+                // Récupérer la leçon à supprimer
+                if (lecon == null)
+                {
+                    return NotFound(); // Retourne une erreur 404 si la leçon n'existe pas
+                }
+
+                // Supprimer la leçon
+                await _leconService.DeleteLeconAsync(id);
+
+                // Rediriger vers la liste des leçons du cours
+                return RedirectToAction("VoirLecons", new { id = lecon.CoursId });
+            }
+            catch (Exception)
+            {
+                // Gérer les erreurs et afficher un message d'erreur
+                ModelState.AddModelError("", "Une erreur s'est produite lors de la suppression de la leçon.");
+                return RedirectToAction("VoirLecons", new { id = lecon.CoursId });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ModifierLecon(LeconViewModel lvm)
+        {
+            try
+            {
+                // Récupérer la leçon existante par son ID
+                var lecon = await _leconService.GetLeconByIdAsync(lvm.Id);
+                if (lecon == null)
+                {
+                    return NotFound(); // Retourne une erreur 404 si la leçon n'existe pas
+                }
+
+                // Mettre à jour les propriétés de la leçon
+                lecon.Titre = lvm.Titre;
+                lecon.Contenu = lvm.Contenu;
+                lecon.NumeroPage = lvm.NumeroPage;
+
+                // Enregistrer les modifications dans la base de données
+                await _leconService.UpdateLeconAsync(lecon);
+
+                // Rediriger vers la liste des leçons du cours
+                return RedirectToAction("VoirLecons", new { id = lecon.CoursId });
+            }
+            catch (Exception)
+            {
+                // Gérer les erreurs et afficher un message d'erreur
+                ModelState.AddModelError("", "Une erreur s'est produite lors de la mise à jour de la leçon.");
+            }
+
+            // Si le modèle n'est pas valide ou s'il y a une erreur, réafficher le formulaire de modification
+            return View(lvm);
+        }
 
         [HttpPost]
         public async Task<JsonResult> UploadImage(IFormFile file)

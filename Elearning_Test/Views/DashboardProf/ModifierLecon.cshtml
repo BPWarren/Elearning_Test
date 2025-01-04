@@ -1,4 +1,10 @@
-﻿@model LeconViewModel
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model LeconViewModel
 
 @{
     Layout = "~/Views/Shared/_ProfDashboardLayout.cshtml";
@@ -6,15 +12,16 @@
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-8">
             <div class="card shadow-lg">
                 <div class="card-header bg-primary text-white">
-                    <h2 class="card-title text-center mb-0">Ajouter une Leçon</h2>
+                    <h2 class="card-title text-center mb-0">Modifier la Leçon</h2>
                 </div>
                 <div class="card-body">
-                    @using (Html.BeginForm("AjouterLecon", "DashboardProf", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                    @using (Html.BeginForm("ModifierLecon", "DashboardProf", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
                     {
                         @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Id)
                         @Html.HiddenFor(model => model.CoursId)
 
                         <!-- Champ Titre -->
@@ -28,7 +35,7 @@
                         <!-- Champ Contenu -->
                         <div class="mb-3">
                             @Html.LabelFor(model => model.Contenu, htmlAttributes: new { @class = "form-label fw-bold" })
-                            @Html.TextAreaFor(model => model.Contenu, new { @class = "form-control", @id = "editor", required = "required" })
+                            @Html.TextAreaFor(model => model.Contenu, new { @class = "form-control", @id = "editor", rows = "10", required = "required" })
                             @Html.ValidationMessageFor(model => model.Contenu, "", new { @class = "text-danger" })
                             <div class="invalid-feedback">Veuillez saisir le contenu de la leçon.</div>
                         </div>
@@ -44,7 +51,7 @@
                         <!-- Boutons d'action -->
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>Ajouter
+                                <i class="fas fa-save me-2"></i>Enregistrer
                             </button>
                             @Html.ActionLink("Annuler", "VoirLecons", new { id = Model.CoursId }, new { @class = "btn btn-secondary" })
                         </div>
@@ -55,7 +62,7 @@
     </div>
 </div>
 
-<!-- Script pour la validation côté client -->
+
 @section Scripts {
     <script>
         (function () {
@@ -107,9 +114,3 @@
         });
     </script>
 }
-
-
-
-
-
-

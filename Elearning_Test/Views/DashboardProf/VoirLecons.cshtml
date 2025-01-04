@@ -2,45 +2,62 @@
 
 @{
     ViewData["Title"] = "View Lecons";
-}
-@{
-    Layout = "~/Views/Shared/_ELayout.cshtml";
+    Layout = "~/Views/Shared/_ProfDashboardLayout.cshtml";
 }
 
-<h2>Lecons for Cours ID @Model.CoursId</h2>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Leçons pour le Cours ID @Model.CoursId</h2>
+        <a asp-action="AjouterLecon" asp-route-id="@Model.CoursId" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Ajouter une nouvelle leçon
+        </a>
+    </div>
 
-@if (Model.Lecons!=null)
-{
-    <table class="table table-striped table-responsive">
-        <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Numero De Page</th>
-                <th>Date de création</th>
-                <th>Date de la dernière modification</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var lecon in Model.Lecons)
-            {
-                <tr>
-                    <td>@lecon.Titre</td>
-                    <td>@lecon.NumeroPage</td>
-                    <td>@lecon.CreatedAt.ToString("yyyy-MM-dd")</td>
-                    <td>@lecon.UpdatedAt.ToString("yyyy-MM-dd")</td>
-                    <td>
-                        <a asp-action="ModifierLecon" asp-route-id="@lecon.Id">Modifier</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No lecons available for this cours.</p>
-}
-<div>
-    <a asp-action="AjouterLecon" asp-route-id="@Model.CoursId">Ajouter Une nouvelle Leçon</a>
+    @if (Model.Lecons != null && Model.Lecons.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Titre</th>
+                        <th>Numéro de Page</th>
+                        <th>Date de création</th>
+                        <th>Date de la dernière modification</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var lecon in Model.Lecons)
+                    {
+                        <tr>
+                            <td>@lecon.Titre</td>
+                            <td>@lecon.NumeroPage</td>
+                            <td>@lecon.CreatedAt.ToString("dd-MM-yyyy HH-mm")</td>
+                            <td>@lecon.UpdatedAt.ToString("dd-MM-yyyy HH-mm")</td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <!-- Bouton Modifier -->
+                                    <a asp-action="ModifierLecon" asp-route-id="@lecon.Id" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit me-1"></i>Modifier
+                                    </a>
+                                    <!-- Bouton Supprimer -->
+                                    <form asp-action="SupprimerLecon" asp-route-id="@lecon.Id" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette leçon ?');">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash me-1"></i>Supprimer
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            Aucune leçon disponible pour ce cours.
+        </div>
+    }
 </div>
