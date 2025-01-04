@@ -1,0 +1,163 @@
+﻿@model Elearning_Test.Models.RegisterAdminViewModel
+
+@{
+    ViewData["Title"] = "Ajouter un Administrateur";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    @* <div class="row mb-3"> *@
+    @*     <div class="col-md-12"> *@
+    @*         <h1 class="text-primary"> *@
+    @*             <i class="fa fa-user-plus"></i> Ajouter un Administrateur *@
+    @*         </h1> *@
+    @*     </div> *@
+    @* </div> *@
+
+    <div class="card w-75 mx-auto">
+        <div class="card-header">
+            <span class="fw-extrabold custom-title">Nouveau Administrateur</span>
+        </div>
+        <div class="card-body">
+            <!-- Formulaire -->
+            <form asp-action="Create" method="post" class="needs-validation " id="createAdminForm">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <!-- Nom -->
+                <div class="mb-3">
+                    <label asp-for="Nom" class="form-label">Nom</label>
+                    <input asp-for="Nom" class="form-control" placeholder="Entrez le nom" />
+                    <span asp-validation-for="Nom" class="text-danger"></span>
+                </div>
+
+                <!-- Prénom -->
+                <div class="mb-3">
+                    <label asp-for="Prenom" class="form-label">Prénom</label>
+                    <input asp-for="Prenom" class="form-control" placeholder="Entrez le prénom" />
+                    <span asp-validation-for="Prenom" class="text-danger"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" type="email" placeholder="Entrez l'email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="mb-3">
+                    <label asp-for="MotDePasse" class="form-label">Mot de Passe</label>
+                    <div class="input-group">
+                        <input asp-for="MotDePasse" class="form-control" type="password" id="MotDePasse" placeholder="Entrez un mot de passe sécurisé" />
+                        <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn1">
+                            <i class="fa fa-eye"></i> <!-- Icone de l'œil -->
+                        </button>
+                    </div>
+                    <span asp-validation-for="MotDePasse" class="text-danger"></span>
+                    <span id="passwordError" class="text-danger"></span>
+                </div>
+
+                <!-- Confirmer mot de passe -->
+                <div class="mb-3">
+                    <label asp-for="ConfirmationMotDePasse" class="form-label">Confirmer mot de passe</label>
+                    <div class="input-group">
+                        <input asp-for="ConfirmationMotDePasse" class="form-control" type="password" id="ConfirmationMotDePasse" placeholder="Confirmer le mot de passe" />
+                        <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn2">
+                            <i class="fa fa-eye"></i> <!-- Icone de l'œil -->
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="d-flex justify-content-end">
+                    <a href="@Url.Action("AllAdmin", "Admin")" class="btn btn-black btn-border rounded-5 me-2">
+                        <i class="fa fa-arrow-left"></i> Retour
+                    </a>
+                    <button type="submit" class="btn btn-label-primary rounded-5" id="submitButton">
+                        <i class="fa fa-save"></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        // Fonction pour basculer l'affichage du mot de passe
+        function togglePassword(inputId, iconId) {
+            var passwordField = document.getElementById(inputId);
+            var icon = document.getElementById(iconId).querySelector("i");
+
+            // Toggle the type of the password field between 'password' and 'text'
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+
+        // Fonction pour valider le mot de passe
+        function validatePassword(password, confirmPassword, passwordError) {
+            // Expression régulière pour vérifier si le mot de passe contient des majuscules, des minuscules, des chiffres et un caractère spécial
+            var passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z\d]).{6,}$/;
+
+            // Effacer les messages d'erreur précédents
+            passwordError.textContent = '';
+
+            // Validation du mot de passe
+            if (!passwordRegex.test(password.value)) {
+                passwordError.textContent = "Le mot de passe doit contenir au moins 6 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
+                return false;
+            }
+
+            // Validation de la confirmation du mot de passe
+            if (password.value !== confirmPassword.value) {
+                passwordError.textContent = "Les mots de passe ne correspondent pas.";
+                return false;
+            }
+
+            return true;
+        }
+
+        // Fonction principale de gestion du formulaire
+        function handleFormSubmit(event) {
+            var password = document.getElementById("MotDePasse");
+            var confirmPassword = document.getElementById("ConfirmationMotDePasse");
+            var passwordError = document.getElementById("passwordError");
+
+            // Valider le mot de passe et la confirmation du mot de passe
+            if (!validatePassword(password, confirmPassword, passwordError)) {
+                event.preventDefault(); // Empêche la soumission du formulaire en cas d'erreur
+            }
+        }
+
+        // Ajouter des écouteurs d'événements pour les boutons de basculement du mot de passe
+        document.getElementById("togglePasswordBtn1").addEventListener("click", function () {
+            togglePassword("MotDePasse", "togglePasswordBtn1");
+        });
+
+        document.getElementById("togglePasswordBtn2").addEventListener("click", function () {
+            togglePassword("ConfirmationMotDePasse", "togglePasswordBtn2");
+        });
+
+        // Ajouter un écouteur d'événement pour la soumission du formulaire
+        document.getElementById("createAdminForm").addEventListener("submit", handleFormSubmit);
+    </script>
+
+}
+

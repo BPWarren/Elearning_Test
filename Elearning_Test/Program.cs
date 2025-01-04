@@ -1,10 +1,6 @@
 
-<<<<<<< HEAD
 using Elearning_Test.Data;
 using Elearning_Test.Models;
-=======
-
->>>>>>> 6b4f6610bad1874900dc353a0748ef7a0c444de2
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

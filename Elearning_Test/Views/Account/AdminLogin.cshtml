@@ -1,73 +1,116 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-@{
+﻿@{
     ViewData["Title"] = "Connexion Administrateur";
 }
-@{
-    Layout = "~/Views/Shared/_ELayout.cshtml";
-}
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow-lg border-0">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+          name="viewport" />
+    <link rel="icon"
+          href="~/AdminAssets/img/kaiadmin/favicon.ico"
+          type="image/x-icon" />
+
+    <!-- Fonts and icons -->
+    <script src="~/AdminAssets/js/plugin/webfont/webfont.min.js"></script>
+     <script> 
+         WebFont.load({ 
+           google: { families: ["Public Sans:300,400,500,600,700"] }, 
+           custom: { 
+             families: [ 
+               "Font Awesome 5 Solid", 
+               "Font Awesome 5 Regular", 
+               "Font Awesome 5 Brands", 
+               "simple-line-icons", 
+             ], 
+             urls: ["@Url.Content("~/AdminAssets/css/fonts.min.css")"], 
+           }, 
+           active: function () { 
+             sessionStorage.fonts = true; 
+           }, 
+         }); 
+    </script> 
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="~/AdminAssets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/AdminAssets/css/plugins.min.css" />
+    <link rel="stylesheet" href="~/AdminAssets/css/kaiadmin.min.css" />
+
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" href="~/AdminAssets/css/demo.css" />
+</head>
+<body>
+    <div class="main-panellog">
+        <div class="container mt-5 d-flex justify-content-center">
+            <div class="card shadow-sm" style="max-width: 700px; width: 100%;">
                 <!-- En-tête de la carte -->
-                <div class="card-header bg-primary text-white text-center py-4">
-                    <h3 class="mb-0"><i class="fas fa-lock me-2"></i>Connexion Administrateur</h3>
+                <div class="card-header" style="background-color: #1A2035; color: white; border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="fa fa-user-shield me-2"></i> Connexion Administrateur
+                    </h3>
                 </div>
 
                 <!-- Corps de la carte -->
-                <div class="card-body p-5">
-                    <form method="post" asp-action="AdminLogin">
+                <div class="card-body p-4">
+                    <form method="post" asp-action="AdminLogin" class="needs-validation" novalidate>
                         <!-- Champ Email -->
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label for="email" class="form-label fw-bold">Adresse Email</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <i class="fas fa-envelope text-muted"></i>
-                                </span>
-                                <input type="email" name="email" id="email" class="form-control border-start-0" placeholder="exemple@domaine.com" required />
-                            </div>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="exemple@domaine.com" required />
+                            <div class="invalid-feedback">Veuillez entrer une adresse email valide.</div>
                         </div>
 
                         <!-- Champ Mot de passe -->
-                        <div class="mb-4">
-                            <label for="password" class="form-label fw-bold">Mot de passe</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <i class="fas fa-lock text-muted"></i>
-                                </span>
-                                <input type="password" name="password" id="password" class="form-control border-start-0" placeholder="••••••••" required />
-                            </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-bold">Mot de Passe</label>
+                            <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required />
+                            <div class="invalid-feedback">Veuillez entrer un mot de passe.</div>
                         </div>
 
-                        <!-- Bouton de connexion -->
-                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold mt-4">
-                            <i class="fas fa-sign-in-alt me-2"></i>Se connecter
-                        </button>
-
-                        <!-- Affichage des erreurs -->
-                        @if (ViewData.ModelState.ContainsKey(""))
+                        <!-- Erreurs de validation -->
+                        @if (!ViewData.ModelState.IsValid)
                         {
-                            <div class="alert alert-danger mt-4">
+                            <div class="alert alert-danger">
                                 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                             </div>
                         }
+
+                        <!-- Boutons -->
+                        <div class="d-flex justify-content-end">
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-light btn-border btn-round me-2">
+                                <i class="fa fa-arrow-left"></i> Retour
+                            </a>
+                            <button type="submit" class="btn" style="background-color: #1A2035; color: white; border-radius: 20px;">
+                                <i class="fa fa-sign-in-alt"></i> Se connecter
+                            </button>
+                        </div>
                     </form>
                 </div>
 
                 <!-- Pied de la carte -->
-                <div class="card-footer text-center py-3 bg-light">
-                    <small class="text-muted">Accès réservé aux administrateurs.</small>
+                <div class="card-footer text-center bg-light">
+                    <small class="text-muted">Accès réservé aux administrateurs uniquement.</small>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Ajouter Font Awesome pour les icônes -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <script>
+        (function () {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+</body>
+</html>

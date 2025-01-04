@@ -52,7 +52,7 @@ namespace Elearning_Test.Models
         public required string Nom { get; set; }
         public required string Prenom { get; set; }
         public ICollection<Enrollment>? Enrollments { get; set; }
-        public ICollection<Payment>? Payments { get; set; }
+        public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
         public ICollection<Certification>? Certifications { get; set; }
         public ICollection<Evaluation>? Evaluations { get; set; }
         public bool IsConnected { get; set; }
@@ -127,10 +127,10 @@ namespace Elearning_Test.Models
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 
-    public class Admin : IdentityUser, IHasTimestamps
-    {
-        public required string Nom { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    }
+    //public class Admin : IdentityUser, IHasTimestamps
+    //{
+    //    public required string Nom { get; set; }
+    //    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    //    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    //}
 }

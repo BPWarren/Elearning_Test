@@ -1,0 +1,149 @@
+﻿@model IEnumerable<Elearning_Test.Models.Admin>
+@{
+    ViewData["Title"] = "Liste des Administrateurs";
+    Layout = "_AdminLayout"; // Utilisation de votre layout personnalisé
+}
+
+<div class="container mt-4">
+    <!-- En-tête de la page -->
+    <div class="row mb-3">
+        <div class="col-md-12 text-end">
+            <a href="@Url.Action("Create", "Admin")" class="btn btn-black btn-rounded">
+                <i class="fa fa-plus-circle"></i> Ajouter un Administrateur
+            </a>
+        </div>
+    </div>
+
+    <!-- Tableau des administrateurs -->
+    <div class="card">
+        <div class="card-header">
+            <span class ="fw-extrabold custom-title">Administrateurs</span>
+        </div>
+        <div class="card-body p-0">
+            <!-- Affichage en cartes pour les petits écrans -->
+            <div class="d-block d-md-none">
+                @foreach (var admin in Model)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">@admin.Nom @admin.Prenom</h5>
+                            <p class="card-text">Email: @admin.Email</p>
+                            <p class="card-text">
+                                Statut:
+                                <span class="badge @(admin.IsConnected ? "bg-success" : "bg-secondary")">
+                                    <i class="fa @(admin.IsConnected ? "fa-circle" : "fa-circle-o") rounded-3"></i>
+                                    @(admin.IsConnected ? "En ligne" : "Hors ligne")
+                                </span>
+                            </p>
+                            <p class="card-text">Créé le: @admin.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                            <p class="card-text">Modifié le: @admin.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                            <div class="d-flex justify-content-end">
+                                <a href="@Url.Action("Edit", "Admin", new { id = admin.Id })"
+                                   class="btn btn-label-info btn-round me-2">
+                                    <i class="fa fa-pencil-alt"></i>
+                                </a>
+                                <button type="button"
+                                        class="btn btn-label-danger btn-round me-2"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal"
+                                        data-id="@admin.Id">
+                                    <i class="fa fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Affichage en tableau pour les écrans moyens et grands -->
+            <div class="d-none d-md-block">
+                <div class="table-responsive">
+                    <table class="table table-hover table-borderless align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prénom</th>
+                                <th scope="col">Email</th>
+                                <th scope="col" class="d-none d-lg-table-cell">Statut</th> <!-- Masqué sur les petits écrans -->
+                                <th scope="col" class="d-none d-lg-table-cell">Créé le</th> <!-- Masqué sur les petits écrans -->
+                                <th scope="col" class="d-none d-lg-table-cell">Modifié le</th> <!-- Masqué sur les petits écrans -->
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var admin in Model)
+                            {
+                                <tr>
+                                    <td>@admin.Nom</td>
+                                    <td>@admin.Prenom</td>
+                                    <td>@admin.Email</td>
+                                    <td class="d-none d-lg-table-cell">
+                                        <!-- Masqué sur les petits écrans -->
+                                        <span class="badge @(admin.IsConnected ? "bg-success" : "bg-secondary")">
+                                            <i class="fa @(admin.IsConnected ? "fa-circle" : "fa-circle-o") rounded-3"></i>
+                                            @(admin.IsConnected ? "En ligne" : "Hors ligne")
+                                        </span>
+                                    </td>
+                                    <td class="d-none d-lg-table-cell">@admin.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
+                                    <td class="d-none d-lg-table-cell">@admin.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center">
+                                            <a href="@Url.Action("Edit", "Admin", new { id = admin.Id })"
+                                               class="btn btn-label-info btn-round me-2">
+                                                <i class="fa fa-pencil-alt"></i>
+                                            </a>
+                                            <button type="button"
+                                                    class="btn btn-label-danger btn-round me-2"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal"
+                                                    data-id="@admin.Id">
+                                                <i class="fa fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-4 ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer cet administrateur ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary rounded-4" data-bs-dismiss="modal">Annuler</button>
+                <form id="deleteForm" method="post" action="@Url.Action("Delete", "Admin")" class="d-inline">
+                    <input type="hidden" name="id" id="adminIdToDelete" />
+                    @Html.AntiForgeryToken() <!-- Ajouter un jeton anti-contrefaçon -->
+                    <button type="submit" class="btn btn-danger  rounded-4">
+                        <i class="fa fa-trash-alt"></i> Supprimer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        // Récupérer l'ID de l'administrateur à partir du bouton cliqué
+        var button = event.relatedTarget; // Le bouton qui a ouvert le modal
+        var adminId = button.getAttribute('data-id'); // L'ID de l'administrateur
+
+        // Mettre à jour la valeur du champ caché dans le formulaire
+        var adminIdInput = document.getElementById('adminIdToDelete');
+        adminIdInput.value = adminId;
+    });
+</script>

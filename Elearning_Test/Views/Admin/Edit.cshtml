@@ -1,0 +1,79 @@
+﻿@model Elearning_Test.Models.Admin
+
+@{
+    ViewData["Title"] = "Modifier un Administrateur";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <span class="fw-extrabold custom-title">Modifier l'Administrateur</span>
+        </div>
+        <div class="card-body">
+            <!-- Formulaire -->
+            <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                <!-- ID (champ caché) -->
+                <input asp-for="Id" type="hidden" />
+
+                <!-- Nom -->
+                <div class="mb-3">
+                    <label asp-for="Nom" class="form-label"></label>
+                    <input asp-for="Nom" class="form-control" placeholder="Entrez le nom" />
+                    <span asp-validation-for="Nom" class="text-danger"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" type="email" placeholder="Entrez l'email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <!-- Nouveau mot de passe -->
+                <div class="mb-3">
+                    <label asp-for="PasswordHash" class="form-label">Nouveau Mot de Passe</label>
+                    <input asp-for="PasswordHash" class="form-control" type="password" placeholder="Entrez un nouveau mot de passe" />
+                    <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                </div>
+
+                <!-- Confirmer le nouveau mot de passe -->
+                <div class="mb-3">
+                    <label for="ConfirmPassword" class="form-label">Confirmer le Nouveau Mot de Passe</label>
+                    <input id="ConfirmPassword" name="ConfirmPassword" class="form-control" type="password" placeholder="Confirmez le nouveau mot de passe" />
+                    <span class="text-danger" id="passwordMismatchMessage" style="display: none;">Les mots de passe ne correspondent pas.</span>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <a href="@Url.Action("AllAdmin", "Admin")" class="btn btn-secondary rounded-5 me-2">
+                        <i class="fa fa-arrow-left"></i> Annuler
+                    </a>
+                    <button type="submit" class="btn btn-primary rounded-5" id="submitButton">
+                        <i class="fa fa-save"></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const passwordField = document.querySelector('[asp-for="PasswordHash"]');
+            const confirmPasswordField = document.getElementById('ConfirmPassword');
+            const passwordMismatchMessage = document.getElementById('passwordMismatchMessage');
+            const submitButton = document.getElementById('submitButton');
+
+            confirmPasswordField.addEventListener('input', function () {
+                if (passwordField.value !== confirmPasswordField.value) {
+                    passwordMismatchMessage.style.display = 'block';
+                    submitButton.disabled = true;
+                } else {
+                    passwordMismatchMessage.style.display = 'none';
+                    submitButton.disabled = false;
+                }
+            });
+        });
+    </script>
+}

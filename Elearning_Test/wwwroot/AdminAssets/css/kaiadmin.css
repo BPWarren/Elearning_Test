@@ -143,6 +143,11 @@ small, .small {
 b, .b, strong, .strong {
   font-weight: 600; }
 
+.custom-title {
+    font-size: 15px;
+    color: #000;
+}
+
 .page-pretitle {
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -351,13 +356,23 @@ body {
   min-height: 100%;
   float: right;
   transition: all .3s; }
-  .main-panel > .container {
+
+.main-panellog {
+    position: relative;
+    width: 50%;
+    height: 100vh;
+    min-height: 100%;
+    transition: all .3s;
+}
+
+.main-panel > .container, .main-panellog > .container {
     min-height: calc(100% - 123px);
     margin-top: 69px;
     overflow: hidden;
     width: 100%;
     max-width: unset;
-    padding: 0 !important; }
+    padding: 0 !important;
+}
   .main-panel > .container-full {
     padding: 0px !important;
     min-height: calc(100% - 123px);
@@ -3974,19 +3989,36 @@ label.error {
     background: rgba(21, 114, 232, 0.05);
     opacity: 1; }
 
+.btn-label-black {
+    background: rgba(21, 114, 232, 0.1);
+    color: #000 !important;
+    border-color: transparent;
+    transition: background 0.3s, color 0.3s, opacity 0.3s;
+}
+.btn-label-black:hover, .btn-label-black:focus, .btn-label-black:disabled {
+        background: #000;
+        color: #fff !important;
+        opacity: 1;
+}
+
 .btn-label-primary {
-  background: rgba(21, 114, 232, 0.1);
-  color: #1572E8 !important;
-  border-color: transparent; }
+    background: rgba(21, 114, 232, 0.1);
+    color: #1572E8 !important;
+    border-color: transparent;
+    transition: background 0.3s, color 0.3s, opacity 0.3s;
+}
+
   .btn-label-primary:hover, .btn-label-primary:focus, .btn-label-primary:disabled {
     background: #1572E8;
     color: #fff !important;
     opacity: 1; }
 
 .btn-label-secondary {
-  background: rgba(104, 97, 206, 0.1);
-  color: #6861CE !important;
-  border-color: transparent; }
+    background: rgba(104, 97, 206, 0.1);
+    color: #6861CE !important;
+    border-color: transparent;
+    transition: background 0.3s, color 0.3s, opacity 0.3s;
+}
   .btn-label-secondary:hover, .btn-label-secondary:focus, .btn-label-secondary:disabled {
     background: #6861CE;
     color: #fff !important;
@@ -4000,6 +4032,20 @@ label.error {
     background: #48ABF7;
     color: #fff !important;
     opacity: 1; }
+
+.btn-label-danger {
+    background: rgba(220, 53, 69, 0.1); /* Rouge avec 10% d'opacité */
+    color: #DC3545 !important; /* Rouge principal */
+    border-color: transparent;
+}
+
+    .btn-label-danger:hover,
+    .btn-label-danger:focus,
+    .btn-label-danger:disabled {
+        background: #DC3545; /* Rouge opaque */
+        color: #fff !important; /* Texte blanc */
+        opacity: 1; /* Supprime l'effet d'opacité au survol */
+    }
 
 .btn-label-success {
   background: rgba(49, 206, 54, 0.1);
@@ -4068,10 +4114,9 @@ label.error {
   .btn-border.btn-light {
     border: 1px solid #efefef;
     background: #fff !important; }
-
 /*      Button Rounded      */
 .btn-round {
-  border-radius: 100px !important; }
+  border-radius: 10px !important; }
 
 /*      Button Link      */
 .btn-link {
