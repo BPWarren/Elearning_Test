@@ -242,7 +242,7 @@ namespace Elearning_Test.Migrations
                     Titre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfesseurId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Price = table.Column<float>(type: "real", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CategorieId = table.Column<int>(type: "int", nullable: false),
                     ImageFile = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Elearning_Test.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250101135833_InitialCreate")]
+    [Migration("20250104144836_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace Elearning_Test.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Categorie", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Categorie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,7 @@ namespace Elearning_Test.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Certification", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Certification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,7 +85,7 @@ namespace Elearning_Test.Migrations
                     b.ToTable("Certifications");
                 });
 
-            modelBuilder.Entity("Cours", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Cours", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -107,8 +107,8 @@ namespace Elearning_Test.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProfesseurId")
                         .IsRequired()
@@ -130,7 +130,7 @@ namespace Elearning_Test.Migrations
                     b.ToTable("Cours");
                 });
 
-            modelBuilder.Entity("Enrollment", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Enrollment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -166,7 +166,7 @@ namespace Elearning_Test.Migrations
                     b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("Evaluation", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Evaluation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -200,7 +200,7 @@ namespace Elearning_Test.Migrations
                     b.ToTable("Evaluations");
                 });
 
-            modelBuilder.Entity("Lecon", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Lecon", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -233,6 +233,54 @@ namespace Elearning_Test.Migrations
                     b.HasIndex("CoursId");
 
                     b.ToTable("Lecons");
+                });
+
+            modelBuilder.Entity("Elearning_Test.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("CVC")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CoursId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EtudiantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("NumeroCarte")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PaymentId");
+
+                    b.HasIndex("CoursId");
+
+                    b.HasIndex("EtudiantId");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -439,55 +487,7 @@ namespace Elearning_Test.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Payment", b =>
-                {
-                    b.Property<int>("PaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
-
-                    b.Property<decimal>("Amount")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("CVC")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CoursId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EtudiantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("NumeroCarte")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("PaymentId");
-
-                    b.HasIndex("CoursId");
-
-                    b.HasIndex("EtudiantId");
-
-                    b.ToTable("Payments");
-                });
-
-            modelBuilder.Entity("Admin", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Admin", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -504,7 +504,7 @@ namespace Elearning_Test.Migrations
                     b.ToTable("Admins");
                 });
 
-            modelBuilder.Entity("Etudiant", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Etudiant", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -532,7 +532,7 @@ namespace Elearning_Test.Migrations
                     b.ToTable("Etudiants", (string)null);
                 });
 
-            modelBuilder.Entity("Professeur", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Professeur", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -560,15 +560,15 @@ namespace Elearning_Test.Migrations
                     b.ToTable("Professeurs", (string)null);
                 });
 
-            modelBuilder.Entity("Certification", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Certification", b =>
                 {
-                    b.HasOne("Cours", "Cours")
+                    b.HasOne("Elearning_Test.Models.Cours", "Cours")
                         .WithMany()
                         .HasForeignKey("CoursId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Etudiant", "Etudiant")
+                    b.HasOne("Elearning_Test.Models.Etudiant", "Etudiant")
                         .WithMany("Certifications")
                         .HasForeignKey("EtudiantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -579,15 +579,15 @@ namespace Elearning_Test.Migrations
                     b.Navigation("Etudiant");
                 });
 
-            modelBuilder.Entity("Cours", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Cours", b =>
                 {
-                    b.HasOne("Categorie", "Categorie")
+                    b.HasOne("Elearning_Test.Models.Categorie", "Categorie")
                         .WithMany("Cours")
                         .HasForeignKey("CategorieId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Professeur", "Professeur")
+                    b.HasOne("Elearning_Test.Models.Professeur", "Professeur")
                         .WithMany("Cours")
                         .HasForeignKey("ProfesseurId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -598,15 +598,15 @@ namespace Elearning_Test.Migrations
                     b.Navigation("Professeur");
                 });
 
-            modelBuilder.Entity("Enrollment", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Enrollment", b =>
                 {
-                    b.HasOne("Cours", "Cours")
+                    b.HasOne("Elearning_Test.Models.Cours", "Cours")
                         .WithMany("Enrollments")
                         .HasForeignKey("CoursId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Etudiant", "Etudiant")
+                    b.HasOne("Elearning_Test.Models.Etudiant", "Etudiant")
                         .WithMany("Enrollments")
                         .HasForeignKey("EtudiantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -617,15 +617,15 @@ namespace Elearning_Test.Migrations
                     b.Navigation("Etudiant");
                 });
 
-            modelBuilder.Entity("Evaluation", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Evaluation", b =>
                 {
-                    b.HasOne("Cours", "Cours")
+                    b.HasOne("Elearning_Test.Models.Cours", "Cours")
                         .WithMany("Evaluations")
                         .HasForeignKey("CoursId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Etudiant", "Etudiant")
+                    b.HasOne("Elearning_Test.Models.Etudiant", "Etudiant")
                         .WithMany("Evaluations")
                         .HasForeignKey("EtudiantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -636,15 +636,34 @@ namespace Elearning_Test.Migrations
                     b.Navigation("Etudiant");
                 });
 
-            modelBuilder.Entity("Lecon", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Lecon", b =>
                 {
-                    b.HasOne("Cours", "Cours")
+                    b.HasOne("Elearning_Test.Models.Cours", "Cours")
                         .WithMany("Lecons")
                         .HasForeignKey("CoursId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cours");
+                });
+
+            modelBuilder.Entity("Elearning_Test.Models.Payment", b =>
+                {
+                    b.HasOne("Elearning_Test.Models.Cours", "Cours")
+                        .WithMany()
+                        .HasForeignKey("CoursId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Elearning_Test.Models.Etudiant", "Etudiant")
+                        .WithMany("Payments")
+                        .HasForeignKey("EtudiantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cours");
+
+                    b.Navigation("Etudiant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -698,49 +717,30 @@ namespace Elearning_Test.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Payment", b =>
-                {
-                    b.HasOne("Cours", "Cours")
-                        .WithMany()
-                        .HasForeignKey("CoursId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Etudiant", "Etudiant")
-                        .WithMany("Payments")
-                        .HasForeignKey("EtudiantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cours");
-
-                    b.Navigation("Etudiant");
-                });
-
-            modelBuilder.Entity("Etudiant", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Etudiant", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithOne()
-                        .HasForeignKey("Etudiant", "Id")
+                        .HasForeignKey("Elearning_Test.Models.Etudiant", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Professeur", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Professeur", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithOne()
-                        .HasForeignKey("Professeur", "Id")
+                        .HasForeignKey("Elearning_Test.Models.Professeur", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Categorie", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Categorie", b =>
                 {
                     b.Navigation("Cours");
                 });
 
-            modelBuilder.Entity("Cours", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Cours", b =>
                 {
                     b.Navigation("Enrollments");
 
@@ -749,7 +749,7 @@ namespace Elearning_Test.Migrations
                     b.Navigation("Lecons");
                 });
 
-            modelBuilder.Entity("Etudiant", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Etudiant", b =>
                 {
                     b.Navigation("Certifications");
 
@@ -760,7 +760,7 @@ namespace Elearning_Test.Migrations
                     b.Navigation("Payments");
                 });
 
-            modelBuilder.Entity("Professeur", b =>
+            modelBuilder.Entity("Elearning_Test.Models.Professeur", b =>
                 {
                     b.Navigation("Cours");
                 });

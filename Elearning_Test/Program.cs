@@ -3,6 +3,10 @@ using Elearning_Test.Data;
 using Elearning_Test.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Elearning_Test.Data;
+using Elearning_Test.Models;
+using Elearning_Test.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,16 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ICoursService, CoursService>();
+builder.Services.AddScoped<ILeconService, LeconService>();
+builder.Services.AddHttpClient();
+
+// Service de gestion de boucle pour json
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 
 var app = builder.Build();
 

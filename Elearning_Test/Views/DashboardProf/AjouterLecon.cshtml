@@ -1,0 +1,115 @@
+﻿@model LeconViewModel
+
+@{
+    Layout = "~/Views/Shared/_ProfDashboardLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title text-center mb-0">Ajouter une Leçon</h2>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("AjouterLecon", "DashboardProf", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.CoursId)
+
+                        <!-- Champ Titre -->
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Titre, htmlAttributes: new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(model => model.Titre, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.Titre, "", new { @class = "text-danger" })
+                            <div class="invalid-feedback">Veuillez saisir un titre.</div>
+                        </div>
+
+                        <!-- Champ Contenu -->
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Contenu, htmlAttributes: new { @class = "form-label fw-bold" })
+                            @Html.TextAreaFor(model => model.Contenu, new { @class = "form-control", @id = "editor", required = "required" })
+                            @Html.ValidationMessageFor(model => model.Contenu, "", new { @class = "text-danger" })
+                            <div class="invalid-feedback">Veuillez saisir le contenu de la leçon.</div>
+                        </div>
+
+                        <!-- Champ Numéro de Page -->
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.NumeroPage, htmlAttributes: new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(model => model.NumeroPage, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.NumeroPage, "", new { @class = "text-danger" })
+                            <div class="invalid-feedback">Veuillez saisir un numéro de page.</div>
+                        </div>
+
+                        <!-- Boutons d'action -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Ajouter
+                            </button>
+                            @Html.ActionLink("Annuler", "VoirLecons", new { id = Model.CoursId }, new { @class = "btn btn-secondary" })
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script pour la validation côté client -->
+@section Scripts {
+    <script>
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+
+    <!-- Inclure le fichier CSS de TinyMCE -->
+    <link href="https://cdn.tiny.cloud/1/q2mec1aw06y9mxk6ouakcjc6720b75t7czfh5v7cf9u4rzoy/tinymce/6/tinymce.min.css" rel="stylesheet">
+    <!-- Inclure le script TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/q2mec1aw06y9mxk6ouakcjc6720b75t7czfh5v7cf9u4rzoy/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#editor', // Sélecteur pour cibler le textarea
+            plugins: 'print preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap emoticons quickbars',
+            toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist checklist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen preview save print | insertfile image media template link anchor codesample | ltr rtl',
+            menubar: 'file edit view insert format tools table help',
+            height: 500,
+            image_caption: true,
+            quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+            noneditable_noneditable_class: 'mceNonEditable',
+            toolbar_mode: 'sliding',
+            contextmenu: 'link image imagetools table',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+            // Configuration pour les téléversements d'images
+            images_upload_url: '/DashboardProf/UploadImage',
+            automatic_uploads: true,
+            images_reuse_filename: true,
+            // Configuration pour les fichiers
+            file_picker_callback: function (callback, value, meta) {
+                if (meta.filetype === 'file') {
+                    callback('https://www.example.com/myfile.pdf', { text: 'Mon fichier PDF' });
+                }
+            },
+            // Configuration pour les vidéos
+            video_template_callback: function (data) {
+                return '<video controls><source src="' + data.source + '" type="video/mp4"></video>';
+            }
+        });
+    </script>
+}
+
+
+
+
+
+
