@@ -70,11 +70,6 @@ namespace Elearning_Test.Services
                 await _context.SaveChangesAsync();
             }
         }
-        private bool IsImageFile(string fileName)
-        {
-            var extensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-            return extensions.Any(ext => fileName.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
-        }
     }
     public interface ICoursService
     {

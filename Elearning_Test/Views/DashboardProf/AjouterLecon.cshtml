@@ -1,0 +1,82 @@
+﻿@model LeconViewModel
+
+@{
+    Layout = "~/Views/Shared/_ELayout.cshtml";
+}
+
+<h2>Ajouter une Leçon</h2>
+<hr />
+
+@using (Html.BeginForm("AjouterLecon", "DashboardProf", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.CoursId)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Titre, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Titre, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Titre, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Contenu, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Contenu, new { @class = "form-control", @id = "editor" })
+            @Html.ValidationMessageFor(model => model.Contenu, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NumeroPage, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.NumeroPage, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.NumeroPage, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+            @Html.ActionLink("Annuler", "VoirLecons", new { IdCours = Model.CoursId }, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+}
+
+<!-- Inclure le fichier CSS de TinyMCE -->
+<link href="https://cdn.tiny.cloud/1/q2mec1aw06y9mxk6ouakcjc6720b75t7czfh5v7cf9u4rzoy/tinymce/6/tinymce.min.css" rel="stylesheet">
+<!-- Inclure le script TinyMCE -->
+<script src="https://cdn.tiny.cloud/1/q2mec1aw06y9mxk6ouakcjc6720b75t7czfh5v7cf9u4rzoy/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: '#editor', // Sélecteur pour cibler le textarea
+        plugins: 'print preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap emoticons quickbars',
+        toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist checklist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen preview save print | insertfile image media template link anchor codesample | ltr rtl',
+        menubar: 'file edit view insert format tools table help',
+        height: 500,
+        image_caption: true,
+        quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+        noneditable_noneditable_class: 'mceNonEditable',
+        toolbar_mode: 'sliding',
+        contextmenu: 'link image imagetools table',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+        // Configuration pour les téléversements d'images
+        images_upload_url: '/DashboardProf/UploadImage',
+        automatic_uploads: true,
+        images_reuse_filename: true,
+        // Configuration pour les fichiers
+        file_picker_callback: function (callback, value, meta) {
+            if (meta.filetype === 'file') {
+                callback('https://www.example.com/myfile.pdf', { text: 'Mon fichier PDF' });
+            }
+        },
+        // Configuration pour les vidéos
+        video_template_callback: function (data) {
+            return '<video controls><source src="' + data.source + '" type="video/mp4"></video>';
+        }
+    });
+</script>
+}
+
+

@@ -1,44 +1,74 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@{
+﻿@{
     Layout = "~/Views/Shared/_ELayout.cshtml";
 }
 
-@model Elearning_Test.Models.Cours
+@model Elearning_Test.Models.CoursViewModel
 
-<h1>Modifier le cours</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Carte pour contenir le formulaire -->
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title text-center mb-0">Modifier le cours</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Formulaire de modification du cours -->
+                    <form asp-action="EditCours" enctype="multipart/form-data" method="post" class="needs-validation" novalidate>
+                        <!-- Champ caché pour l'ID du cours -->
+                        <input type="hidden" asp-for="Id" />
 
-<form asp-action="EditCours" enctype="multipart/form-data" method="post">
-    <input type="hidden" asp-for="Id" />
+                        <!-- Champ pour le titre du cours -->
+                        <div class="mb-3">
+                            <label for="Titre" class="form-label fw-bold">Titre</label>
+                            <input asp-for="Titre" class="form-control form-control-lg" required />
+                            <span asp-validation-for="Titre" class="text-danger small"></span>
+                        </div>
 
-    <div class="form-group">
-        <label for="Titre">Titre</label>
-        <input asp-for="Titre" class="form-control" />
-        <span asp-validation-for="Titre" class="text-danger"></span>
-    </div>
+                        <!-- Champ pour la description du cours -->
+                        <div class="mb-3">
+                            <label for="Description" class="form-label fw-bold">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="5" required></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
 
-    <div class="form-group">
-        <label for="Description">Description</label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
+                        <!-- Champ pour le prix du cours -->
+                        <div class="mb-3">
+                            <label for="Price" class="form-label fw-bold">Prix</label>
+                            <input asp-for="Price" type="number" step="0.01" class="form-control" required />
+                            <span asp-validation-for="Price" class="text-danger small"></span>
+                        </div>
 
-    <div class="form-group">
-        <label for="Price">Prix</label>
-        <input asp-for="Price" type="number" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
+                        <!-- Champ pour la catégorie du cours -->
+                        <div class="mb-3">
+                            <label for="CategorieId" class="form-label fw-bold">Catégorie</label>
+                            <select asp-for="CategorieId" class="form-select" asp-items="@(new SelectList(Model.Categories, "Id", "Intitule"))" required>
+                                <option value="">-- Sélectionnez une catégorie --</option>
+                            </select>
+                            <span asp-validation-for="CategorieId" class="text-danger small"></span>
+                        </div>
 
-    <div class="form-group">
-        <label for="ImageFile">Image Actuelle</label>
-        <div>
-            <img src="@Model.ImageFile" alt="Image du cours" class="img-thumbnail" style="max-width: 200px;" />
+                        <!-- Champ pour l'image du cours -->
+                        <div class="mb-4">
+                            <label for="ImageFile" class="form-label fw-bold">Image Actuelle</label>
+                            <div class="mb-2">
+                                <img src="@Model.ImageStr" alt="Image du cours" class="img-thumbnail rounded" style="max-width: 200px;" />
+                            </div>
+                            <input type="file" name="imageFile" class="form-control" />
+                        </div>
+
+                        <!-- Boutons d'action -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg me-md-2">
+                                <i class="fas fa-save me-2"></i>Enregistrer
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <input type="file" name="imageFile" class="form-control-file mt-2" />
     </div>
-
-    <button type="submit" class="btn btn-primary">Enregistrer</button>
-</form>
+</div>
