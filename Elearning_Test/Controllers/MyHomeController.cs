@@ -43,5 +43,12 @@ namespace Elearning_Test.Controllers
             };
             return View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> VisisteCours(int id)
+        {
+            var cours = await _coursService.GetCoursByIdAsync(id);
+            return View(cours);
+        }
     }
 }
