@@ -89,6 +89,7 @@ using (var scope = app.Services.CreateScope())
             UserName = "admin@example.com",
             Email = "admin@example.com",
             Nom = "Admin",
+            EmailConfirmed = true,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
@@ -106,6 +107,7 @@ using (var scope = app.Services.CreateScope())
             Nom = "Professeur",
             Prenom = "Test",
             Specialite = "Informatique",
+            EmailConfirmed = true,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
@@ -123,6 +125,7 @@ using (var scope = app.Services.CreateScope())
             Cne = "E123456789",
             Nom = "Etudiant",
             Prenom = "Test",
+            EmailConfirmed = true,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
