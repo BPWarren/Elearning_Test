@@ -39,8 +39,14 @@ namespace Elearning_Test.Controllers
         public async Task<IActionResult> Create(ProfesseurRegistrationViewModel model)
         {
             if (!ModelState.IsValid)
+                return View(model);
+
+            // Vérification de l'unicité de l'email
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
             {
-                return View(model); // Retourner la vue si les données ne sont pas valides
+                ModelState.AddModelError("Email", "Cette adresse e-mail est déjà utilisée par un autre utilisateur.");
+                return View(model);
             }
 
             var professeur = new Professeur
@@ -48,11 +54,12 @@ namespace Elearning_Test.Controllers
                 UserName = model.UserName,
                 Nom = model.Nom,
                 Prenom = model.Prenom,
-                Email = model.UserName,
+                Email = model.Email,
                 Specialite = model.Specialite,
                 IsConnected = false,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = DateTime.UtcNow,
+                EmailConfirmed = true
             };
 
             var result = await _userManager.CreateAsync(professeur, model.MotDePasse);

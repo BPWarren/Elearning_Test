@@ -80,7 +80,16 @@ namespace CompleteRoles.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterProfesseur(ProfesseurRegistrationViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+                return View(model);
+
+            // Vérification de l'unicité de l'email
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("Email", "Cette adresse e-mail est déjà utilisée par un autre utilisateur.");
+                return View(model);
+            }
 
             var user = new Professeur
             {
@@ -97,12 +106,13 @@ namespace CompleteRoles.Controllers
             {
                 // Assigner le rôle
                 await _userManager.AddToRoleAsync(user, "Professeur");
-               
+
                 await _dbContext.SaveChangesAsync();
 
                 return RedirectToAction("homePage", "MyHome");
             }
 
+            // Gestion des erreurs lors de la création de l'utilisateur
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error.Description);
