@@ -3,8 +3,6 @@ using Elearning_Test.Data;
 using Elearning_Test.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Elearning_Test.Data;
-using Elearning_Test.Models;
 using Elearning_Test.Services;
 using System.Text.Json.Serialization;
 
