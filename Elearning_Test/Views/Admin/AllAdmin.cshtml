@@ -17,7 +17,7 @@
     <!-- Tableau des administrateurs -->
     <div class="card">
         <div class="card-header">
-            <span class ="fw-extrabold custom-title">Administrateurs</span>
+            <span class="fw-extrabold fs-5 custom-title">Administrateurs</span> <!-- Taille augmentée mais pas trop grande -->
         </div>
         <div class="card-body p-0">
             <!-- Affichage en cartes pour les petits écrans -->
@@ -26,16 +26,17 @@
                 {
                     <div class="card mb-3">
                         <div class="card-body">
-                            <p class="card-text">Email: @admin.Email</p>
+                            <p class="card-text"><strong>Nom :</strong> @admin.Nom</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>Email :</strong> @admin.Email</p> <!-- Titre en gras -->
                             <p class="card-text">
-                                Statut:
+                                <strong>Statut :</strong>
                                 <span class="badge @(admin.IsConnected ? "bg-success" : "bg-secondary")">
                                     <i class="fa @(admin.IsConnected ? "fa-circle" : "fa-circle-o") rounded-3"></i>
                                     @(admin.IsConnected ? "En ligne" : "Hors ligne")
                                 </span>
                             </p>
-                            <p class="card-text">Créé le: @admin.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
-                            <p class="card-text">Modifié le: @admin.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                            <p class="card-text"><strong>Créé le :</strong> @admin.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>Modifié le :</strong> @admin.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</p> <!-- Titre en gras -->
                             <div class="d-flex justify-content-end">
                                 <a href="@Url.Action("Edit", "Admin", new { id = admin.Id })"
                                    class="btn btn-label-info btn-round me-2">
@@ -60,30 +61,29 @@
                     <table class="table table-hover table-borderless align-middle mb-0">
                         <thead class="bg-light">
                             <tr>
-                                <th scope="col">Nom</th>
-                                <th scope="col">Prénom</th>
-                                <th scope="col">Email</th>
-                                <th scope="col" class="d-none d-lg-table-cell">Statut</th> <!-- Masqué sur les petits écrans -->
-                                <th scope="col" class="d-none d-lg-table-cell">Créé le</th> <!-- Masqué sur les petits écrans -->
-                                <th scope="col" class="d-none d-lg-table-cell">Modifié le</th> <!-- Masqué sur les petits écrans -->
-                                <th scope="col" class="text-center">Actions</th>
+                                <th scope="col" class="fw-bold fs-7" style="width: 20%;">Nom</th> <!-- Taille réduite -->
+                                <th scope="col" class="fw-bold fs-7" style="width: 25%;">Email</th> <!-- Taille réduite -->
+                                <th scope="col" class="fw-bold fs-7 d-none d-lg-table-cell" style="width: 15%;">Statut</th> <!-- Masqué sur les petits écrans -->
+                                <th scope="col" class="fw-bold fs-7 d-none d-lg-table-cell" style="width: 20%;">Créé le</th> <!-- Masqué sur les petits écrans -->
+                                <th scope="col" class="fw-bold fs-7 d-none d-lg-table-cell" style="width: 20%;">Modifié le</th> <!-- Masqué sur les petits écrans -->
+                                <th scope="col" class="text-center fw-bold fs-7" style="width: 10%;">Actions</th> <!-- Taille réduite -->
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var admin in Model)
                             {
                                 <tr>
-                                    <td>@admin.Nom</td>
-                                    <td>@admin.Email</td>
-                                    <td class="d-none d-lg-table-cell">
+                                    <td class="fs-7">@admin.Nom</td> <!-- Taille réduite -->
+                                    <td class="fs-7">@admin.Email</td> <!-- Taille réduite -->
+                                    <td class="d-none d-lg-table-cell fs-7">
                                         <!-- Masqué sur les petits écrans -->
                                         <span class="badge @(admin.IsConnected ? "bg-success" : "bg-secondary")">
                                             <i class="fa @(admin.IsConnected ? "fa-circle" : "fa-circle-o") rounded-3"></i>
                                             @(admin.IsConnected ? "En ligne" : "Hors ligne")
                                         </span>
                                     </td>
-                                    <td class="d-none d-lg-table-cell">@admin.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
-                                    <td class="d-none d-lg-table-cell">@admin.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
+                                    <td class="d-none d-lg-table-cell fs-7">@admin.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
+                                    <td class="d-none d-lg-table-cell fs-7">@admin.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                             <a href="@Url.Action("Edit", "Admin", new { id = admin.Id })"
@@ -109,9 +109,10 @@
     </div>
 </div>
 
+<!-- Modal de suppression -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content rounded-4 ">
+        <div class="modal-content rounded-4">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -124,7 +125,7 @@
                 <form id="deleteForm" method="post" action="@Url.Action("Delete", "Admin")" class="d-inline">
                     <input type="hidden" name="id" id="adminIdToDelete" />
                     @Html.AntiForgeryToken() <!-- Ajouter un jeton anti-contrefaçon -->
-                    <button type="submit" class="btn btn-danger  rounded-4">
+                    <button type="submit" class="btn btn-danger rounded-4">
                         <i class="fa fa-trash-alt"></i> Supprimer
                     </button>
                 </form>

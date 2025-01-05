@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Elearning_Test.Controllers
 {
-    [Authorize(Roles = "Admin")] // Accessible uniquement aux administrateurs
+    [Authorize(Roles = "Admin")]
     public class ProfesseurController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -45,10 +45,10 @@ namespace Elearning_Test.Controllers
 
             var professeur = new Professeur
             {
-                UserName = model.Email,
+                UserName = model.UserName,
                 Nom = model.Nom,
                 Prenom = model.Prenom,
-                Email = model.Email,
+                Email = model.UserName,
                 Specialite = model.Specialite,
                 IsConnected = false,
                 CreatedAt = DateTime.UtcNow,
@@ -134,33 +134,46 @@ namespace Elearning_Test.Controllers
             }
         }
 
-        // Afficher la page de confirmation de suppression
         public async Task<IActionResult> Delete(string id)
         {
+            // Chercher le professeur par son ID
             var professeur = await _context.Professeurs.FirstOrDefaultAsync(m => m.Id == id);
             if (professeur == null)
             {
-                return NotFound();
+                return NotFound(); // Si le professeur n'est pas trouvé
             }
 
-            return View(professeur);
+            return View(professeur); // Passer le professeur à la vue pour confirmation
         }
 
-        // Supprimer un professeur
+        // Supprimer un professeur en mettant à jour les cours associés
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            // Chercher le professeur par son ID
             var professeur = await _context.Professeurs.FindAsync(id);
             if (professeur == null)
             {
-                return NotFound();
+                return NotFound(); // Si le professeur n'est pas trouvé
             }
 
+            // Mettre à jour les cours associés pour enlever le professeur (ou remplacer par un autre)
+            var cours = await _context.Cours.Where(c => c.ProfesseurId == professeur.Id).ToListAsync();
+            foreach (var item in cours)
+            {
+                item.ProfesseurId = null; // Ou un autre professeur (ex: item.ProfesseurId = "nouveau_professeur_id")
+            }
+            await _context.SaveChangesAsync(); // Sauvegarder les changements dans la base de données
+
+            // Supprimer le professeur
             _context.Professeurs.Remove(professeur);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); // Sauvegarder les modifications dans la base de données
+
+            // Rediriger vers la liste des professeurs
             return RedirectToAction(nameof(AllProfesseurs));
         }
+
 
         // Vérifier si un professeur existe
         private bool ProfesseurExists(string id)

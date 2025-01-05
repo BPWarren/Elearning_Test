@@ -20,7 +20,7 @@ namespace Elearning_Test.Models
         public int Id { get; set; }
         public required string Titre { get; set; }
         public required string Description { get; set; }
-        public required string ProfesseurId { get; set; }
+        public string? ProfesseurId { get; set; }
         public Professeur? Professeur { get; set; }
         public ICollection<Lecon>? Lecons { get; set; }
         public ICollection<Enrollment>? Enrollments { get; set; }

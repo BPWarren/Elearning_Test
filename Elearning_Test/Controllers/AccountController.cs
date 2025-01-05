@@ -37,7 +37,7 @@ namespace CompleteRoles.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent: false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("homePage", "MyHome");
+                    return RedirectToAction("AllAdmin", "Admin");
                 }
             }
 

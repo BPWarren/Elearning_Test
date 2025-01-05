@@ -25,60 +25,75 @@
                     </div>
                 }
 
-                <!-- Nom -->
-                <div class="mb-3">
-                    <label asp-for="Nom" class="form-label">Nom</label>
-                    <input asp-for="Nom" class="form-control" placeholder="Entrez le nom" />
-                    <span asp-validation-for="Nom" class="text-danger"></span>
-                </div>
+                <div class="row">
+                    <!-- Début de la ligne -->
+                    <!-- Colonne de gauche -->
+                    <div class="col-md-6">
+                        <!-- UserName -->
+                        <div class="mb-3">
+                            <label asp-for="UserName" class="form-label">UserName (email)</label>
+                            <input asp-for="UserName" class="form-control" placeholder="Entrez le nom" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
 
-                <!-- Prénom -->
-                <div class="mb-3">
-                    <label asp-for="Prenom" class="form-label">Prénom</label>
-                    <input asp-for="Prenom" class="form-control" placeholder="Entrez le prénom" />
-                    <span asp-validation-for="Prenom" class="text-danger"></span>
-                </div>
+                        <!-- Nom -->
+                        <div class="mb-3">
+                            <label asp-for="Nom" class="form-label">Nom</label>
+                            <input asp-for="Nom" class="form-control" placeholder="Entrez le nom" />
+                            <span asp-validation-for="Nom" class="text-danger"></span>
+                        </div>
 
-                <!-- Email -->
-                <div class="mb-3">
-                    <label asp-for="Email" class="form-label">Email</label>
-                    <input asp-for="Email" class="form-control" type="email" placeholder="Entrez l'email" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-
-                <!-- Spécialité -->
-                <div class="mb-3">
-                    <label asp-for="Specialite" class="form-label">Spécialité</label>
-                    <input asp-for="Specialite" class="form-control" placeholder="Entrez la spécialité" />
-                    <span asp-validation-for="Specialite" class="text-danger"></span>
-                </div>
-
-                <!-- Mot de passe -->
-                <div class="mb-3">
-                    <label asp-for="MotDePasse" class="form-label">Mot de Passe</label>
-                    <div class="input-group">
-                        <input asp-for="MotDePasse" class="form-control" type="password" id="MotDePasse" placeholder="Entrez un mot de passe sécurisé" />
-                        <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn1">
-                            <i class="fa fa-eye"></i>
-                        </button>
+                        <!-- Prénom -->
+                        <div class="mb-3">
+                            <label asp-for="Prenom" class="form-label">Prénom</label>
+                            <input asp-for="Prenom" class="form-control" placeholder="Entrez le prénom" />
+                            <span asp-validation-for="Prenom" class="text-danger"></span>
+                        </div>
                     </div>
-                    <span asp-validation-for="MotDePasse" class="text-danger"></span>
-                    <span id="passwordError" class="text-danger"></span>
-                </div>
 
-                <!-- Confirmer mot de passe -->
-                <div class="mb-3">
-                    <label asp-for="ConfirmationMotDePasse" class="form-label">Confirmer mot de passe</label>
-                    <div class="input-group">
-                        <input asp-for="ConfirmationMotDePasse" class="form-control" type="password" id="ConfirmationMotDePasse" placeholder="Confirmer le mot de passe" />
-                        <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn2">
-                            <i class="fa fa-eye"></i>
-                        </button>
+                    <!-- Colonne de droite -->
+                    <div class="col-md-6">
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" class="form-control" type="email" placeholder="Entrez l'email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Spécialité -->
+                        <div class="mb-3">
+                            <label asp-for="Specialite" class="form-label">Spécialité</label>
+                            <input asp-for="Specialite" class="form-control" placeholder="Entrez la spécialité" />
+                            <span asp-validation-for="Specialite" class="text-danger"></span>
+                        </div>
+
+                        <!-- Mot de passe -->
+                        <div class="mb-3">
+                            <label asp-for="MotDePasse" class="form-label">Mot de Passe</label>
+                            <div class="input-group">
+                                <input asp-for="MotDePasse" class="form-control" type="password" id="MotDePasse" placeholder="Entrez un mot de passe sécurisé" />
+                                <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn1">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="MotDePasse" class="text-danger"></span>
+                            <span id="passwordError" class="text-danger"></span>
+                        </div>
+
+                        <!-- Confirmer mot de passe -->
+                        <div class="mb-3">
+                            <label asp-for="ConfirmationMotDePasse" class="form-label">Confirmer mot de passe</label>
+                            <div class="input-group">
+                                <input asp-for="ConfirmationMotDePasse" class="form-control" type="password" id="ConfirmationMotDePasse" placeholder="Confirmer le mot de passe" />
+                                <button type="button" class="btn btn-outline-secondary" id="togglePasswordBtn2">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
+                </div> <!-- Fin de la ligne -->
                 <!-- Boutons d'action -->
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-end mt-4">
                     <a href="@Url.Action("AllProfesseurs", "Professeur")" class="btn btn-black btn-border rounded-5 me-2">
                         <i class="fa fa-arrow-left"></i> Retour
                     </a>
