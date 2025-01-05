@@ -94,6 +94,14 @@ body, html {
   font-size: 14px;
   color: #2A2F5B; }
 
+.fs-9 {
+    font-size: 0.7rem; /* Taille de police encore plus petite */
+}
+
+.fs-8 {
+    font-size: 0.8rem; /* Taille de police réduite */
+}
+
 a {
   color: #1572E8;
   text-decoration: none !important; }
