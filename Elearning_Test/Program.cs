@@ -1,6 +1,5 @@
 
-using Elearning_Test.Data;
-using Elearning_Test.Models;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Elearning_Test.Data;
@@ -22,6 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICoursService, CoursService>();
 builder.Services.AddScoped<ILeconService, LeconService>();
+builder.Services.AddScoped<IProfesseurService, ProfesseurService>();
 builder.Services.AddHttpClient();
 
 // Service de gestion de boucle pour json
@@ -154,7 +154,7 @@ using (var scope = app.Services.CreateScope())
             Price = 100,
             CategorieId = categorie.Id,
             Categorie = categorie, // Initialisation obligatoire
-            ImageFile = "programmation.jpg",
+            ImageFile = "~/images/5688fe65-e3e0-4e4c-bfac-7b42a9008a92_biologie_moleculaire.jpg",
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
