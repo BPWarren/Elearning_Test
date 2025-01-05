@@ -22,6 +22,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICoursService, CoursService>();
 builder.Services.AddScoped<ILeconService, LeconService>();
 builder.Services.AddScoped<IProfesseurService, ProfesseurService>();
+builder.Services.AddScoped<ICategorieService, CategorieService>();
 builder.Services.AddHttpClient();
 
 // Service de gestion de boucle pour json
