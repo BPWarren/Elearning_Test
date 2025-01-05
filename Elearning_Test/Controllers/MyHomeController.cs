@@ -1,12 +1,15 @@
-﻿using Elearning_Test.Models;
+﻿using Elearning_Test.Data;
+using Elearning_Test.Models;
 using Elearning_Test.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Elearning_Test.Controllers
 {
     public class MyHomeController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly ICoursService _coursService;
         private readonly ICategorieService _categorieService;
         private readonly UserManager<IdentityUser> _userManager;
@@ -16,13 +19,15 @@ namespace Elearning_Test.Controllers
             ICoursService coursService,
             ICategorieService categorieService,
             UserManager<IdentityUser> userManager,
-            IEtudiantService etudiantService
+            IEtudiantService etudiantService,
+            ApplicationDbContext context
         )
         {
             _coursService = coursService;
             _categorieService = categorieService;
             _userManager = userManager;
             _etudiantService = etudiantService;
+            _context = context;
         }
         [HttpGet]
         public async Task<IActionResult> homePage()
@@ -81,7 +86,45 @@ namespace Elearning_Test.Controllers
         [HttpPost]
         public async Task<IActionResult> InscriptionCours(InscriptionPageViewModel IVM)
         {
-            return View(IVM);
+
+           /* if (!ModelState.IsValid)
+            {
+                // Si le formulaire n'est pas valide, retournez à la vue avec les erreurs
+                return View(IVM);
+            }*/
+
+            // Créer une instance de Enrollment
+            var enrollment = new Enrollment
+            {
+                EtudiantId = IVM.Etudiant.Id,
+                CoursId = IVM.Cours.Id,
+                Progression = 0, // Progression initiale
+                IsConnected = false, // Par défaut, l'étudiant n'est pas connecté
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            // Créer une instance de Payment
+            var payment = new Payment
+            {
+                OwnerName = IVM.OwnerName,
+                EtudiantId = IVM.Etudiant.Id,
+                CoursId = IVM.Cours.Id,
+                Amount = IVM.Cours.Price,
+                PaymentDate = DateTime.UtcNow,
+                CVC = IVM.Cvc,
+                NumeroCarte = IVM.NumeroCarte,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            // Enregistrer les instances dans la base de données
+            _context.Enrollments.Add(enrollment);
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+
+            // Rediriger vers une autre page (par exemple, une page de confirmation)
+            return RedirectToAction("homePage", "MyHome");
         }
 
     }

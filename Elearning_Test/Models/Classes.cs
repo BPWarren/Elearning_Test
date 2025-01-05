@@ -37,7 +37,7 @@ namespace Elearning_Test.Models
     {
         public int Id { get; set; }
         public required string EtudiantId { get; set; }
-        public required Etudiant Etudiant { get; set; }
+        public Etudiant? Etudiant { get; set; }
         public int CoursId { get; set; }
         public Cours? Cours { get; set; }
         public int Progression { get; set; }
@@ -84,7 +84,7 @@ namespace Elearning_Test.Models
         public required string EtudiantId { get; set; }
         public Etudiant? Etudiant { get; set; }
         public int CoursId { get; set; }
-        public required Cours Cours { get; set; }
+        public Cours? Cours { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
         public required int CVC { get; set; }
