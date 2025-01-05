@@ -70,6 +70,19 @@ namespace Elearning_Test.Services
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<Cours>> GetAllCoursAsync(int? limit = null)
+        {
+            var query = _context.Cours.AsQueryable();
+
+            // Appliquer la limite si elle est spécifiée
+            if (limit.HasValue && limit.Value > 0)
+            {
+                query = query.Take(limit.Value);
+            }
+
+            return await query.ToListAsync();
+        }
     }
     public interface ICoursService
     {
@@ -78,7 +91,10 @@ namespace Elearning_Test.Services
         Task CreateCoursAsync(Cours cours);
         Task UpdateCoursAsync(Cours cours);
         Task DeleteCoursAsync(int id);
+        Task<IEnumerable<Cours>> GetAllCoursAsync(int? limit = null);
     }
+
+
 
 
 }

@@ -21,10 +21,12 @@ namespace Elearning_Test.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ICoursService _coursService;
         private readonly ILeconService _leconService;
+        private readonly IProfesseurService _professeurService;
         private readonly IWebHostEnvironment _environment;
         private readonly UserManager<IdentityUser> _userManager;
 
         public DashboardProfController(
+            IProfesseurService professeurService,
             ICoursService coursService,
             ILeconService leconService,
             IWebHostEnvironment environment,
@@ -33,6 +35,7 @@ namespace Elearning_Test.Controllers
         {
             _coursService = coursService;
             _leconService = leconService;
+            _professeurService = professeurService;
             _environment = environment;
             _userManager = userManager;
             _context = context;
@@ -91,7 +94,7 @@ namespace Elearning_Test.Controllers
                 {
                     return Unauthorized();
                 }
-
+                var professeur = await _professeurService.GetProfesseurByIdAsync(user.Id);
                 Cours newCours = new()
                 {
                     Titre = cvm.Titre,
@@ -99,7 +102,8 @@ namespace Elearning_Test.Controllers
                     Price = cvm.Price,
                     ImageFile = photoPath,
                     ProfesseurId = user.Id,
-                    CategorieId = cvm.CategorieId
+                    CategorieId = cvm.CategorieId,
+                    Professeur = professeur,
                 };
 
                 await _coursService.CreateCoursAsync(newCours);

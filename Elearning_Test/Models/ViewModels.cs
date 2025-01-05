@@ -36,4 +36,11 @@ namespace Elearning_Test.Models
         public int CoursId { get; set; }
         public List<Lecon> Lecons { get; set; }
     }
+
+    public class HomePageViewModel
+    {
+        public IEnumerable<Categorie> categories { get; set; }
+        public IEnumerable<Cours> Cours { get; set; }
+    }
+
 }
