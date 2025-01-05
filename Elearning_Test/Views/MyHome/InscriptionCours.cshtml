@@ -1,0 +1,72 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model InscriptionPageViewModel
+
+@{
+    ViewData["Title"] = "Inscription";
+}
+@{
+    Layout = "~/Views/Shared/_ELayout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "Inscription au Cours";
+}
+
+<div class="container">
+    <h1 class="mt-4">Inscription au Cours</h1>
+    <hr />
+
+    <!-- Détails du cours -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>@Model.Cours.Titre</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Description :</strong> @Model.Cours.Description</p>
+            <p><strong>Prix :</strong> @Model.Cours.Price.ToString("C")</p> <!-- Afficher le prix -->
+        </div>
+    </div>
+
+    <!-- Formulaire de paiement -->
+    <form asp-action="InscriptionCours" method="post">
+        <input type="hidden" asp-for="Cours.Id" />
+        <input type="hidden" asp-for="Etudiant.Id" />
+
+        <h3 class="mb-3">Informations de Paiement</h3>
+
+        <div class="form-group">
+            <label asp-for="OwnerName" class="control-label">Nom du Propriétaire de la Carte</label>
+            <input asp-for="OwnerName" class="form-control" required />
+            <span asp-validation-for="OwnerName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NumeroCarte" class="control-label">Numéro de la Carte</label>
+            <input asp-for="NumeroCarte" class="form-control" required />
+            <span asp-validation-for="NumeroCarte" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="Cvc" class="control-label">CVC</label>
+            <input asp-for="Cvc" class="form-control" required />
+            <span asp-validation-for="Cvc" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-4">
+            <button type="submit" class="btn btn-success">Payer et S'inscrire</button>
+            <a asp-action="Index" asp-controller="Cours" class="btn btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -43,4 +43,13 @@ namespace Elearning_Test.Models
         public IEnumerable<Cours> Cours { get; set; }
     }
 
+    public class InscriptionPageViewModel
+    {
+        public string OwnerName {  get; set; }
+        public int Cvc { get; set; }
+        public string NumeroCarte {  get; set; }
+        public Etudiant Etudiant { get; set; }
+        public Cours Cours { get; set; }
+    }
+
 }
