@@ -1,6 +1,6 @@
-﻿@model IEnumerable<Elearning_Test.Models.Professeur>
+﻿@model IEnumerable<Elearning_Test.Models.Etudiant>
 @{
-    ViewData["Title"] = "Liste des Professeurs";
+    ViewData["Title"] = "Liste des Étudiants";
     Layout = "_AdminLayout"; // Utilisation de votre layout personnalisé
 }
 
@@ -8,41 +8,33 @@
     <!-- En-tête de la page -->
     <div class="row mb-3">
         <div class="col-md-12 text-end">
-            <a href="@Url.Action("Create", "Professeur")" class="btn btn-black btn-rounded">
-                <i class="fa fa-plus-circle"></i> Ajouter un Professeur
+            <a href="@Url.Action("Create", "Participant")" class="btn btn-black btn-rounded">
+                <i class="fa fa-plus-circle"></i> Ajouter un Étudiant
             </a>
         </div>
     </div>
 
-    <!-- Tableau des professeurs -->
+    <!-- Tableau des étudiants -->
     <div class="card">
         <div class="card-header">
-            <span class="fw-extrabold fs-5 custom-title">Professeurs</span> <!-- Taille augmentée mais pas trop grande -->
+            <span class="fw-extrabold fs-5 custom-title">Étudiants</span> <!-- Taille augmentée mais pas trop grande -->
         </div>
         <div class="card-body p-0">
             <!-- Affichage en cartes pour les petits écrans -->
             <div class="d-block d-md-none">
-                @foreach (var professeur in Model)
+                @foreach (var etudiant in Model)
                 {
                     <div class="card mb-3">
                         <div class="card-body">
-                            <p class="card-text"><strong>Nom :</strong> @professeur.Nom</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Prénom :</strong> @professeur.Prenom</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Email :</strong> @professeur.Email</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Spécialité :</strong> @professeur.Specialite</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Cree le :</strong> @professeur.CreatedAt</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Modifie le :</strong> @professeur.UpdatedAt</p> <!-- Titre en gras -->
-                            <p class="card-text">
-                                <strong>Statut :</strong>
-                                <span class="badge @(professeur.IsConnected ? "bg-success" : "bg-secondary")">
-                                    <i class="fa @(professeur.IsConnected ? "fa-circle" : "fa-circle-o") rounded-3"></i>
-                                    @(professeur.IsConnected ? "En ligne" : "Hors ligne")
-                                </span>
-                            </p>
-                            <p class="card-text"><strong>Créé le :</strong> @professeur.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Modifié le :</strong> @professeur.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>Nom :</strong> @etudiant.Nom</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>Prénom :</strong> @etudiant.Prenom</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>CNE :</strong> @etudiant.Cne</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>Email :</strong> @etudiant.Email</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>Cree le :</strong> @etudiant.CreatedAt</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>Modifie le :</strong> @etudiant.UpdatedAt</p>
+
                             <div class="d-flex justify-content-end">
-                                <a href="@Url.Action("Edit", "Professeur", new { id = professeur.Id })"
+                                <a href="@Url.Action("Edit", "Etudiant", new { id = etudiant.Cne })"
                                    class="btn btn-label-info btn-round me-2">
                                     <i class="fa fa-pencil-alt"></i>
                                 </a>
@@ -50,7 +42,7 @@
                                         class="btn btn-label-danger btn-round me-2"
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteModal"
-                                        data-id="@professeur.Id">
+                                        data-id="@etudiant.Cne">
                                     <i class="fa fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -68,34 +60,29 @@
                                 <th scope="col" class="fw-bold fs-9" style="width: 15%;">UserName</th> <!-- Taille réduite -->
                                 <th scope="col" class="fw-bold fs-9" style="width: 15%;">Nom</th> <!-- Taille réduite -->
                                 <th scope="col" class="fw-bold fs-9" style="width: 15%;">Prénom</th> <!-- Taille réduite -->
+                                <th scope="col" class="fw-bold fs-9" style="width: 15%;">CNE</th> <!-- Taille réduite -->
                                 <th scope="col" class="fw-bold fs-9" style="width: 20%;">Email</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9" style="width: 15%;">Spécialité</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9 d-none d-lg-table-cell" style="width: 10%;">Statut</th> <!-- Masqué sur les petits écrans -->
                                 <th scope="col" class="fw-bold fs-9 d-none d-lg-table-cell" style="width: 10%;">Créé le</th> <!-- Masqué sur les petits écrans -->
                                 <th scope="col" class="fw-bold fs-9 d-none d-lg-table-cell" style="width: 10%;">Modifié le</th> <!-- Masqué sur les petits écrans -->
-                                <th scope="col" class="text-center fw-bold fs-9" style="width: 10%;"></th> <!-- Taille réduite -->
+                                <th scope="col" class="text-center fw-bold fs-9" style="width: 10%;"></th>
+
+                                <th scope="col" class="text-center fw-bold fs-9" style="width: 10%;"></th> 
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var professeur in Model)
+                            @foreach (var etudiant in Model)
                             {
                                 <tr>
-                                    <td class="fs-8">@professeur.UserName</td> <!-- Taille réduite -->
-                                    <td class="fs-8">@professeur.Nom</td> <!-- Taille réduite -->
-                                    <td class="fs-8">@professeur.Prenom</td> <!-- Taille réduite -->
-                                    <td class="fs-8">@professeur.Email</td> <!-- Taille réduite -->
-                                    <td class="fs-8">@professeur.Specialite</td> <!-- Taille réduite -->
-                                    <td class="d-none d-lg-table-cell fs-8">
-                                        <span class="badge @(professeur.IsConnected ? "bg-success" : "bg-secondary")">
-                                            <i class="fa @(professeur.IsConnected ? "fa-circle" : "fa-circle-o") rounded-3"></i>
-                                            @(professeur.IsConnected ? "En ligne" : "Hors ligne")
-                                        </span>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell fs-8">@professeur.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
-                                    <td class="d-none d-lg-table-cell fs-8">@professeur.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
+                                    <td class="fs-8">@etudiant.UserName</td> 
+                                    <td class="fs-8">@etudiant.Nom</td> 
+                                    <td class="fs-8">@etudiant.Prenom</td> 
+                                    <td class="fs-8">@etudiant.Cne</td> 
+                                    <td class="fs-8">@etudiant.Email</td> 
+                                    <td class="d-none d-lg-table-cell fs-7">@etudiant.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
+                                    <td class="d-none d-lg-table-cell fs-7">@etudiant.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
-                                            <a href="@Url.Action("Edit", "Professeur", new { id = professeur.Id })"
+                                            <a href="@Url.Action("Edit", "Etudiant", new { id = etudiant.Id })"
                                                class="btn btn-label-info btn-round me-2">
                                                 <i class="fa fa-pencil-alt"></i>
                                             </a>
@@ -103,7 +90,7 @@
                                                     class="btn btn-label-danger btn-round me-2"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#deleteModal"
-                                                    data-id="@professeur.Id">
+                                                    data-id="@etudiant.Id">
                                                 <i class="fa fa-trash-alt"></i>
                                             </button>
                                         </div>
@@ -127,12 +114,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Êtes-vous sûr de vouloir supprimer ce professeur ?
+                Êtes-vous sûr de vouloir supprimer cet étudiant ?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary rounded-4" data-bs-dismiss="modal">Annuler</button>
-                <form id="deleteForm" method="post" action="@Url.Action("Delete", "Professeur")" class="d-inline">
-                    <input type="hidden" name="id" id="professeurIdToDelete" />
+                <form id="deleteForm" method="post" action="@Url.Action("Delete", "Participant")" class="d-inline">
+                    <input type="hidden" name="id" id="etudiantIdToDelete" />
                     @Html.AntiForgeryToken() <!-- Ajouter un jeton anti-contrefaçon -->
                     <button type="submit" class="btn btn-danger rounded-4">
                         <i class="fa fa-trash-alt"></i> Supprimer
@@ -147,9 +134,9 @@
     var deleteModal = document.getElementById('deleteModal');
     deleteModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget; // Le bouton qui a ouvert le modal
-        var professeurId = button.getAttribute('data-id'); // L'ID du professeur
+        var etudiantId = button.getAttribute('data-id'); // L'ID de l'étudiant
 
-        var professeurIdInput = document.getElementById('professeurIdToDelete');
-        professeurIdInput.value = professeurId;
+        var etudiantIdInput = document.getElementById('etudiantIdToDelete');
+        etudiantIdInput.value = etudiantId;
     });
 </script>

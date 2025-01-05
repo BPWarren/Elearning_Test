@@ -1,18 +1,18 @@
-﻿@model Elearning_Test.Models.ProfesseurRegistrationViewModel
+﻿@model Elearning_Test.Models.EtudiantRegistrationViewModel
 
 @{
-    ViewData["Title"] = "Ajouter un Professeur";
+    ViewData["Title"] = "Ajouter un Étudiant";
     Layout = "_AdminLayout";
 }
 
 <div class="container mt-4">
     <div class="card w-75 mx-auto">
         <div class="card-header">
-            <span class="fw-extrabold custom-title">Nouveau Professeur</span>
+            <span class="fw-extrabold custom-title">Nouvel Étudiant</span>
         </div>
         <div class="card-body">
             <!-- Formulaire -->
-            <form asp-action="Create" method="post" class="needs-validation" id="createProfesseurForm">
+            <form asp-action="Create" method="post" class="needs-validation" id="createEtudiantForm">
                 @if (!ViewData.ModelState.IsValid)
                 {
                     <div class="alert alert-danger">
@@ -32,7 +32,7 @@
                         <!-- UserName -->
                         <div class="mb-3">
                             <label asp-for="UserName" class="form-label">UserName</label>
-                            <input asp-for="UserName" class="form-control" placeholder="Entrez le nom" />
+                            <input asp-for="UserName" class="form-control" placeholder="Entrez le nom d'utilisateur" />
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
 
@@ -53,18 +53,18 @@
 
                     <!-- Colonne de droite -->
                     <div class="col-md-6">
+                        <!-- CNE -->
+                        <div class="mb-3">
+                            <label asp-for="Cne" class="form-label">CNE</label>
+                            <input asp-for="Cne" class="form-control" placeholder="Entrez le CNE" />
+                            <span asp-validation-for="Cne" class="text-danger"></span>
+                        </div>
+
                         <!-- Email -->
                         <div class="mb-3">
                             <label asp-for="Email" class="form-label">Email</label>
                             <input asp-for="Email" class="form-control" type="email" placeholder="Entrez l'email" />
                             <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-
-                        <!-- Spécialité -->
-                        <div class="mb-3">
-                            <label asp-for="Specialite" class="form-label">Spécialité</label>
-                            <input asp-for="Specialite" class="form-control" placeholder="Entrez la spécialité" />
-                            <span asp-validation-for="Specialite" class="text-danger"></span>
                         </div>
 
                         <!-- Mot de passe -->
@@ -89,13 +89,12 @@
                                     <i class="fa fa-eye"></i>
                                 </button>
                             </div>
-                            <span id="passwordConfirmError" class="text-danger"></span>
                         </div>
                     </div>
                 </div> <!-- Fin de la ligne -->
                 <!-- Boutons d'action -->
                 <div class="d-flex justify-content-end mt-4">
-                    <a href="@Url.Action("AllProfesseurs", "Professeur")" class="btn btn-black btn-border rounded-5 me-2">
+                    <a href="@Url.Action("AllEtudiants", "Etudiant")" class="btn btn-black btn-border rounded-5 me-2">
                         <i class="fa fa-arrow-left"></i> Retour
                     </a>
                     <button type="submit" class="btn btn-label-primary rounded-5" id="submitButton">
@@ -124,7 +123,7 @@
             }
         }
 
-        function validatePassword(password, confirmPassword, passwordError, passwordConfirmError) {
+        function validatePassword(password, confirmPassword, passwordError) {
             var passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z\d]).{6,}$/;
             passwordError.textContent = '';
 
@@ -134,7 +133,7 @@
             }
 
             if (password.value !== confirmPassword.value) {
-                passwordConfirmError.textContent = "Les mots de passe ne correspondent pas.";
+                passwordError.textContent = "Les mots de passe ne correspondent pas.";
                 return false;
             }
 
@@ -145,9 +144,8 @@
             var password = document.getElementById("MotDePasse");
             var confirmPassword = document.getElementById("ConfirmationMotDePasse");
             var passwordError = document.getElementById("passwordError");
-            var passwordConfirmError = document.getElementById("passwordConfirmError");
 
-            if (!validatePassword(password, confirmPassword, passwordError, passwordConfirmError)) {
+            if (!validatePassword(password, confirmPassword, passwordError)) {
                 event.preventDefault();
             }
         }
@@ -160,6 +158,6 @@
             togglePassword("ConfirmationMotDePasse", "togglePasswordBtn2");
         });
 
-        document.getElementById("createProfesseurForm").addEventListener("submit", handleFormSubmit);
+        document.getElementById("createEtudiantForm").addEventListener("submit", handleFormSubmit);
     </script>
 }
