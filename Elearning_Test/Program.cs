@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Elearning_Test.Services;
 using System.Text.Json.Serialization;
+using Elearning_Test.Models;
+using Elearning_Test.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
