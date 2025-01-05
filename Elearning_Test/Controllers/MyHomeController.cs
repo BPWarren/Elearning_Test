@@ -7,19 +7,24 @@ namespace Elearning_Test.Controllers
     public class MyHomeController : Controller
     {
         private readonly ICoursService _coursService;
+        private readonly ICategorieService _categorieService;
         public MyHomeController(
             ICoursService coursService
+            , ICategorieService categorieService
         )
         {
             _coursService = coursService;
+            _categorieService = categorieService;
         }
         [HttpGet]
         public async Task<IActionResult> homePage()
         {
-            var ListCours = await _coursService.GetAllCoursAsync(6);
+            var ListCours = await _coursService.GetAllCoursAsync(3);
+            var ListCategorie = await _categorieService.GetAllCategoriesAsync(4);
             HomePageViewModel viewModel = new()
             {
                 Cours = ListCours,
+                categories = ListCategorie
             };
             return View(viewModel);
         }
