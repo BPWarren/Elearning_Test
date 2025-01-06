@@ -99,6 +99,7 @@ namespace Elearning_Test.Controllers
         }
 
         // GET: Categories/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -107,92 +108,72 @@ namespace Elearning_Test.Controllers
             }
 
             var categorie = await _context.Categories.FindAsync(id);
+            CategorieEditViewModel cevm = new()
+            {
+                Id = categorie!.Id,
+                Intitule = categorie!.Intitule,
+                Description = categorie!.Description,
+                ImageTexte = categorie!.ImageFile
+            };
             if (categorie == null)
             {
                 return NotFound();
             }
-            return View(categorie);
+            return View(cevm);
         }
 
         // POST: Categories/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Intitule,Description,ImageFile,CreatedAt,UpdatedAt")] Categorie categorie, IFormFile newImage)
+        public async Task<IActionResult> Edit(CategorieEditViewModel cevm)
         {
-            if (id != categorie.Id)
+            var categorie = await _context.Categories.FindAsync(cevm.Id);
+            try
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                string imagePath = "none";
+                if (cevm.ImageFile != null)
                 {
-                    // Gestion de l'image si une nouvelle image est téléchargée
-                    if (newImage != null && newImage.Length > 0)
+                    // Définir le chemin du dossier où enregistrer l'image
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                    Directory.CreateDirectory(uploadsFolder);
+
+                    // Générer un nom unique pour le fichier
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(cevm.ImageFile.FileName);
+                    imagePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // Copier le fichier sur le serveur
+                    using (var stream = new FileStream(imagePath, FileMode.Create))
                     {
-                        // Vérifier si le fichier est une image
-                        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                        var fileExtension = Path.GetExtension(newImage.FileName).ToLower();
-
-                        if (!Array.Exists(allowedExtensions, ext => ext == fileExtension))
-                        {
-                            ModelState.AddModelError("newImage", "Le fichier doit être une image (jpg, jpeg, png, gif).");
-                            return View(categorie);
-                        }
-
-                        // Générer un nom de fichier unique
-                        var uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
-                        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-
-                        // Créer le répertoire si nécessaire
-                        Directory.CreateDirectory(uploadPath);
-
-                        var filePath = Path.Combine(uploadPath, uniqueFileName);
-
-                        // Copier le contenu du fichier dans le chemin spécifié
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await newImage.CopyToAsync(stream);
-                        }
-
-                        // Supprimer l'ancienne image si elle existe
-                        if (!string.IsNullOrEmpty(categorie.ImageFile))
-                        {
-                            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", categorie.ImageFile.TrimStart('/'));
-                            if (System.IO.File.Exists(oldFilePath))
-                            {
-                                System.IO.File.Delete(oldFilePath);
-                            }
-                        }
-
-                        // Mettre à jour le chemin du fichier dans le modèle
-                        categorie.ImageFile = "/images/" + uniqueFileName;
+                        await cevm.ImageFile.CopyToAsync(stream);
                     }
 
-                    // Mettre à jour le champ UpdatedAt
-                    categorie.UpdatedAt = DateTime.UtcNow;
-
-                    // Mettre à jour la catégorie dans la base de données
-                    _context.Update(categorie);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategorieExists(categorie.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    // Relatif à la racine du site
+                    imagePath = "/images/" + uniqueFileName;
                 }
 
+                // Mettre à jour le champ UpdatedAt
+                if (imagePath != "none")
+                {
+                    categorie!.ImageFile = imagePath;
+                }
+                else
+                {
+                    categorie!.ImageFile = cevm.ImageTexte!;
+                }
+                categorie.Intitule = cevm.Intitule;
+                categorie.Description = cevm.Intitule;
+                categorie!.UpdatedAt = DateTime.UtcNow;
+
+                // Mettre à jour la catégorie dans la base de données
+                _context.Update(categorie);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
 
-            return View(categorie);
+            }
+            catch (Exception)
+            {
+                return View(cevm);
+            }
         }
 
 

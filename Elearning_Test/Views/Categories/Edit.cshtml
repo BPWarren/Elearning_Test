@@ -1,4 +1,4 @@
-﻿@model Categorie
+﻿@model CategorieEditViewModel
 
 @{
     ViewData["Title"] = "Modifier la catégorie";
@@ -32,14 +32,14 @@
                 <!-- Champ Image -->
                 <div class="form-group mb-3">
                     <label class="control-label font-weight-bold">Image</label>
-                    @if (!string.IsNullOrEmpty(Model.ImageFile))
+                    @if (Model.ImageTexte!=null)
                     {
                         <div class="mb-3">
-                            <img src="@Model.ImageFile" alt="Image actuelle" class="img-thumbnail" style="max-width: 200px;" />
+                            <img src="@Model.ImageTexte" alt="Image actuelle" class="img-thumbnail" style="max-width: 200px;" />
                         </div>
                     }
                     <div class="custom-file">
-                        <input type="file" name="newImage" class="custom-file-input" id="customFile" />
+                        <input type="file" name="ImageFile" class="custom-file-input" id="customFile" />
                         <label class="custom-file-label" for="customFile">Choisir une nouvelle image</label>
                     </div>
                 </div>
