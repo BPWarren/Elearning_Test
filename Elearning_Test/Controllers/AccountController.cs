@@ -61,6 +61,18 @@ namespace CompleteRoles.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent: false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    if (user is Professeur professeur)
+                    {
+                        professeur.IsConnected = true;  // Mise à jour du champ IsConnected
+                        await _dbContext.SaveChangesAsync();  // Sauvegarde de la mise à jour
+                    }
+                    // Si l'utilisateur est un Participant
+                    else if (user is Etudiant participant)
+                    {
+                        participant.IsConnected = true;  // Mise à jour du champ IsConnected
+                        await _dbContext.SaveChangesAsync();  // Sauvegarde de la mise à jour
+                    }
+
                     return RedirectToAction("homePage", "MyHome");
                 }
             }
@@ -136,6 +148,19 @@ namespace CompleteRoles.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("Email", "Cette adresse e-mail est déjà utilisée par un autre utilisateur.");
+                return View(model);
+            }
+
+            var existingUsercne = await _userManager.FindByEmailAsync(model.Cne);
+            if (existingUsercne != null)
+            {
+                ModelState.AddModelError("Cne", "Ce Cne est déjà utilisée par un autre utilisateur.");
+                return View(model);
+            }
             var user = new Etudiant
             {
                 UserName = model.UserName,

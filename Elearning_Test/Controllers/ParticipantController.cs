@@ -50,7 +50,7 @@ namespace Elearning_Test.Controllers
             }
 
             var existingUsercne = await _userManager.FindByEmailAsync(model.Cne);
-            if (existingUser != null)
+            if (existingUsercne != null)
             {
                 ModelState.AddModelError("Cne", "Ce Cne est déjà utilisée par un autre utilisateur.");
                 return View(model);
