@@ -1,8 +1,11 @@
-﻿using Elearning_Test.Data;
+﻿
+
+using Elearning_Test.Data;
 using Elearning_Test.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Elearning_Test.Controllers
 {
@@ -26,18 +29,9 @@ namespace Elearning_Test.Controllers
                 return NotFound("Utilisateur non trouvé.");
             }
 
-            // Récupérer l'inscription (Enrollment) de l'étudiant avec les ID seulement
+            // Récupérer l'inscription (Enrollment) de l'étudiant
             var enrollment = await _context.Enrollments
-                .Where(e => e.EtudiantId == user.Id && e.CoursId == id)
-                .Select(e => new
-                {
-                    e.Id,
-                    e.CoursId,
-                    e.CurrentLeconId,
-                    e.Progression,
-                    e.IsCompleted
-                })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(e => e.EtudiantId == user.Id && e.CoursId == id);
 
             if (enrollment == null)
             {
@@ -59,19 +53,7 @@ namespace Elearning_Test.Controllers
                 return NotFound("Les détails du cours sont introuvables.");
             }
 
-            // Récupérer les détails de la leçon actuelle en utilisant l'ID
-            var currentLecon = await _context.Lecons
-                .Where(l => l.Id == enrollment.CurrentLeconId)
-                .Select(l => new
-                {
-                    l.Id,
-                    l.Titre,
-                    l.Contenu,
-                    l.NumeroPage
-                })
-                .FirstOrDefaultAsync();
-
-            // Récupérer la liste des leçons du cours
+            // Récupérer toutes les leçons du cours
             var lessons = await _context.Lecons
                 .Where(l => l.CoursId == enrollment.CoursId)
                 .OrderBy(l => l.NumeroPage)
@@ -79,9 +61,23 @@ namespace Elearning_Test.Controllers
                 {
                     l.Id,
                     l.Titre,
+                    l.Contenu,
                     l.NumeroPage
                 })
                 .ToListAsync();
+
+            // Si CurrentLeconId est null, attribuer la première leçon
+            if (enrollment.CurrentLeconId == null && lessons.Any())
+            {
+                var firstLesson = lessons.First();
+                enrollment.CurrentLeconId = firstLesson.Id;
+                enrollment.Progression = (int)((firstLesson.NumeroPage / (double)lessons.Count) * 100);
+                _context.Enrollments.Update(enrollment);
+                await _context.SaveChangesAsync();
+            }
+
+            // Récupérer la leçon actuelle
+            var currentLecon = lessons.FirstOrDefault(l => l.Id == enrollment.CurrentLeconId);
 
             // Passer les données à la vue
             ViewBag.CourseTitle = cours.Titre;
@@ -95,20 +91,40 @@ namespace Elearning_Test.Controllers
             return View();
         }
 
+        // Passer à une leçon spécifique
+        public async Task<IActionResult> GoToLesson(int enrollmentId, int lessonId)
+        {
+            var enrollment = await _context.Enrollments
+                .FirstOrDefaultAsync(e => e.Id == enrollmentId);
+
+            if (enrollment == null)
+            {
+                return NotFound("Inscription non trouvée.");
+            }
+
+            // Récupérer la leçon spécifique
+            var lesson = await _context.Lecons
+                .FirstOrDefaultAsync(l => l.Id == lessonId);
+
+            if (lesson == null)
+            {
+                return NotFound("Leçon non trouvée.");
+            }
+
+            // Mettre à jour la leçon actuelle et la progression
+            enrollment.CurrentLeconId = lesson.Id;
+            enrollment.Progression = (int)((lesson.NumeroPage / (double)_context.Lecons.Count(l => l.CoursId == enrollment.CoursId)) * 100);
+            _context.Enrollments.Update(enrollment);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", new { id = enrollment.CoursId });
+        }
+
         // Passer à la leçon suivante
         public async Task<IActionResult> NextLesson(int enrollmentId)
         {
             var enrollment = await _context.Enrollments
-                .Where(e => e.Id == enrollmentId)
-                .Select(e => new
-                {
-                    e.Id,
-                    e.CoursId,
-                    e.CurrentLeconId,
-                    e.Progression,
-                    e.IsCompleted
-                })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(e => e.Id == enrollmentId);
 
             if (enrollment == null)
             {
@@ -117,12 +133,7 @@ namespace Elearning_Test.Controllers
 
             // Récupérer la leçon actuelle
             var currentLecon = await _context.Lecons
-                .Where(l => l.Id == enrollment.CurrentLeconId)
-                .Select(l => new
-                {
-                    l.NumeroPage
-                })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(l => l.Id == enrollment.CurrentLeconId);
 
             if (currentLecon == null)
             {
@@ -133,31 +144,22 @@ namespace Elearning_Test.Controllers
             var nextLesson = await _context.Lecons
                 .Where(l => l.CoursId == enrollment.CoursId && l.NumeroPage > currentLecon.NumeroPage)
                 .OrderBy(l => l.NumeroPage)
-                .Select(l => new
-                {
-                    l.Id,
-                    l.NumeroPage
-                })
                 .FirstOrDefaultAsync();
 
             if (nextLesson != null)
             {
                 // Mettre à jour la leçon actuelle et la progression
-                await _context.Enrollments
-                    .Where(e => e.Id == enrollmentId)
-                    .ExecuteUpdateAsync(e => e
-                        .SetProperty(x => x.CurrentLeconId, nextLesson.Id)
-                        .SetProperty(x => x.Progression, (int)((nextLesson.NumeroPage / (double)_context.Lecons.Count(l => l.CoursId == enrollment.CoursId)) * 100))
-                    );
+                enrollment.CurrentLeconId = nextLesson.Id;
+                enrollment.Progression = (int)((nextLesson.NumeroPage / (double)_context.Lecons.Count(l => l.CoursId == enrollment.CoursId)) * 100);
+                _context.Enrollments.Update(enrollment);
+                await _context.SaveChangesAsync();
             }
             else
             {
                 // Si c'est la dernière leçon, marquer le cours comme terminé
-                await _context.Enrollments
-                    .Where(e => e.Id == enrollmentId)
-                    .ExecuteUpdateAsync(e => e
-                        .SetProperty(x => x.IsCompleted, true)
-                    );
+                enrollment.IsCompleted = true;
+                _context.Enrollments.Update(enrollment);
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToAction("Index", new { id = enrollment.CoursId });
@@ -167,16 +169,7 @@ namespace Elearning_Test.Controllers
         public async Task<IActionResult> PreviousLesson(int enrollmentId)
         {
             var enrollment = await _context.Enrollments
-                .Where(e => e.Id == enrollmentId)
-                .Select(e => new
-                {
-                    e.Id,
-                    e.CoursId,
-                    e.CurrentLeconId,
-                    e.Progression,
-                    e.IsCompleted
-                })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(e => e.Id == enrollmentId);
 
             if (enrollment == null)
             {
@@ -185,12 +178,7 @@ namespace Elearning_Test.Controllers
 
             // Récupérer la leçon actuelle
             var currentLecon = await _context.Lecons
-                .Where(l => l.Id == enrollment.CurrentLeconId)
-                .Select(l => new
-                {
-                    l.NumeroPage
-                })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(l => l.Id == enrollment.CurrentLeconId);
 
             if (currentLecon == null)
             {
@@ -201,22 +189,15 @@ namespace Elearning_Test.Controllers
             var previousLesson = await _context.Lecons
                 .Where(l => l.CoursId == enrollment.CoursId && l.NumeroPage < currentLecon.NumeroPage)
                 .OrderByDescending(l => l.NumeroPage)
-                .Select(l => new
-                {
-                    l.Id,
-                    l.NumeroPage
-                })
                 .FirstOrDefaultAsync();
 
             if (previousLesson != null)
             {
                 // Mettre à jour la leçon actuelle et la progression
-                await _context.Enrollments
-                    .Where(e => e.Id == enrollmentId)
-                    .ExecuteUpdateAsync(e => e
-                        .SetProperty(x => x.CurrentLeconId, previousLesson.Id)
-                        .SetProperty(x => x.Progression, (int)((previousLesson.NumeroPage / (double)_context.Lecons.Count(l => l.CoursId == enrollment.CoursId)) * 100))
-                    );
+                enrollment.CurrentLeconId = previousLesson.Id;
+                enrollment.Progression = (int)((previousLesson.NumeroPage / (double)_context.Lecons.Count(l => l.CoursId == enrollment.CoursId)) * 100);
+                _context.Enrollments.Update(enrollment);
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToAction("Index", new { id = enrollment.CoursId });
@@ -225,13 +206,19 @@ namespace Elearning_Test.Controllers
         // Marquer le cours comme terminé
         public async Task<IActionResult> MarkAsCompleted(int enrollmentId)
         {
-            await _context.Enrollments
-                .Where(e => e.Id == enrollmentId)
-                .ExecuteUpdateAsync(e => e
-                    .SetProperty(x => x.IsCompleted, true)
-                );
+            var enrollment = await _context.Enrollments
+                .FirstOrDefaultAsync(e => e.Id == enrollmentId);
 
-            return RedirectToAction("Index", new { id = _context.Enrollments.FirstOrDefault(e => e.Id == enrollmentId)?.CoursId });
+            if (enrollment == null)
+            {
+                return NotFound("Inscription non trouvée.");
+            }
+
+            enrollment.IsCompleted = true;
+            _context.Enrollments.Update(enrollment);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", new { id = enrollment.CoursId });
         }
     }
 }

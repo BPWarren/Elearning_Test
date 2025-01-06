@@ -1,6 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Suivi du Cours";
 }
+@{
+    Layout = "~/Views/Shared/_EtudDashboardLayout.cshtml";
+}
+
 
 <h1>@ViewBag.CourseTitle</h1>
 <p>@ViewBag.CourseDescription</p>
@@ -16,22 +20,30 @@ else
 }
 
 <div>
-    <a asp-action="PreviousLesson" asp-route-enrollmentId="@ViewBag.EnrollmentId" class="btn btn-primary">Leçon précédente</a>
-    <a asp-action="NextLesson" asp-route-enrollmentId="@ViewBag.EnrollmentId" class="btn btn-primary">Leçon suivante</a>
+    @if (ViewBag.CurrentLesson != null && ViewBag.CurrentLesson.NumeroPage > 1)
+    {
+        <a asp-action="PreviousLesson" asp-route-enrollmentId="@ViewBag.EnrollmentId" class="btn btn-primary">Leçon précédente</a>
+    }
+
+    @if (ViewBag.CurrentLesson != null && ViewBag.CurrentLesson.NumeroPage < ViewBag.Lessons.Count)
+    {
+        <a asp-action="NextLesson" asp-route-enrollmentId="@ViewBag.EnrollmentId" class="btn btn-primary">Leçon suivante</a>
+    }
 </div>
 
-@if (ViewBag.Lessons != null && ViewBag.Lessons.Count > 0)
-{
-    <h3>Liste des leçons :</h3>
-    <ul>
-        @foreach (var lesson in ViewBag.Lessons)
-        {
-            <li>@lesson.Titre</li>
-        }
-    </ul>
-}
+<h3>Liste des leçons :</h3>
+<ul>
+    @foreach (var lesson in ViewBag.Lessons)
+    {
+        <li>
+            <a asp-action="GoToLesson" asp-route-enrollmentId="@ViewBag.EnrollmentId" asp-route-lessonId="@lesson.Id">
+                @lesson.Titre
+            </a>
+        </li>
+    }
+</ul>
 
-@if (ViewBag.CurrentLesson != null && !ViewBag.IsCompleted)
+@if (ViewBag.CurrentLesson != null && ViewBag.CurrentLesson.NumeroPage == ViewBag.Lessons.Count && !ViewBag.IsCompleted)
 {
     <form asp-action="MarkAsCompleted" method="post">
         <input type="hidden" name="enrollmentId" value="@ViewBag.EnrollmentId" />
