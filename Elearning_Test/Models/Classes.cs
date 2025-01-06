@@ -100,6 +100,8 @@ namespace Elearning_Test.Models
         public Etudiant? Etudiant { get; set; }
         public int CoursId { get; set; }
         public required Cours Cours { get; set; }
+
+        public required bool Validate { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }

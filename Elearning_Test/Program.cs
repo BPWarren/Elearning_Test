@@ -219,6 +219,7 @@ using (var scope = app.Services.CreateScope())
             EtudiantId = etudiant.Id,
             Etudiant = etudiant, // Initialisation obligatoire
             CoursId = cours.Id,
+            Validate = true,
             Cours = cours, // Initialisation obligatoire
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
