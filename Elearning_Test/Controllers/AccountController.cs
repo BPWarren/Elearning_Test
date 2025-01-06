@@ -31,19 +31,45 @@ namespace CompleteRoles.Controllers
         [HttpPost]
         public async Task<IActionResult> AdminLogin(string email, string password)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user != null && await _userManager.IsInRoleAsync(user, "admin"))
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent: false, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("AllAdmin", "Admin");
-                }
+                ModelState.AddModelError("", "Veuillez renseigner tous les champs.");
+                return View();
             }
 
-            ModelState.AddModelError("", "Identifiants incorrects ou rôle non autorisé.");
+            // Récupérer l'utilisateur par email
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Utilisateur non trouvé.");
+                return View();
+            }
+            if (!await _userManager.IsInRoleAsync(user, "admin"))
+            {
+                ModelState.AddModelError("", "Rôle non autorisé.");
+                return View();
+            }
+            var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent: false, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                if (user is Admin admin)
+                {
+                    admin.LastLogin = DateTime.UtcNow;
+                    admin.IsConnected = true; // Mettre à jour le statut
+                    _dbContext.Admins.Update(admin); // Mettre à jour l'entité dans le contexte
+                    await _dbContext.SaveChangesAsync(); // Sauvegarder dans la base de données
+                }
+
+                return RedirectToAction("AllAdmin", "Admin");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Identifiants incorrects.");
+            }
+
             return View();
         }
+
         //Login begins Here
         [HttpGet]
         public IActionResult Login(string role)
@@ -63,12 +89,14 @@ namespace CompleteRoles.Controllers
                 {
                     if (user is Professeur professeur)
                     {
+                        professeur.LastLogin = DateTime.UtcNow;
                         professeur.IsConnected = true;  // Mise à jour du champ IsConnected
                         await _dbContext.SaveChangesAsync();  // Sauvegarde de la mise à jour
                     }
                     // Si l'utilisateur est un Participant
                     else if (user is Etudiant participant)
                     {
+                        participant.LastLogin = DateTime.UtcNow;
                         participant.IsConnected = true;  // Mise à jour du champ IsConnected
                         await _dbContext.SaveChangesAsync();  // Sauvegarde de la mise à jour
                     }

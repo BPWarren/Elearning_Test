@@ -27,6 +27,63 @@ namespace Elearning_Test.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+        public IActionResult Index()
+        {
+            var viewModel = new DashboardViewModel
+            {
+                // Récupérer le nombre total d'étudiants
+                TotalEtudiants = _context.Etudiants.Count(),
+
+                // Récupérer le nombre total de professeurs
+                TotalProfesseurs = _context.Professeurs.Count(),
+
+                // Récupérer le nombre total de cours
+                TotalCours = _context.Cours.Count(),
+
+                // Récupérer le nombre total de certificats délivrés
+                TotalCertificats = _context.Certifications.Count(),
+
+                // Récupérer les inscriptions par mois
+                InscriptionsParMois = GetInscriptionsParMois(),
+
+                // Récupérer les cours les plus populaires
+                CoursPopulaires = GetCoursPopulaires()
+            };
+
+            return View(viewModel);
+        }
+
+        // Méthode pour récupérer les inscriptions par mois
+        private Dictionary<string, int> GetInscriptionsParMois()
+        {
+            var inscriptionsParMois = _context.Etudiants
+                .GroupBy(e => new { e.CreatedAt.Year, e.CreatedAt.Month })
+                .Select(g => new
+                {
+                    Mois = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MM/yyyy"),
+                    NombreInscriptions = g.Count()
+                })
+                .ToDictionary(x => x.Mois, x => x.NombreInscriptions);
+
+            return inscriptionsParMois;
+        }
+
+        // Méthode pour récupérer les cours les plus populaires
+        private Dictionary<string, int> GetCoursPopulaires()
+        {
+            var coursPopulaires = _context.Enrollments
+                .GroupBy(i => i.Cours.Titre)
+                .Select(g => new
+                {
+                    NomCours = g.Key,
+                    NombreEtudiants = g.Count()
+                })
+                .OrderByDescending(x => x.NombreEtudiants)
+                .Take(5) // Limiter aux 5 cours les plus populaires
+                .ToDictionary(x => x.NomCours, x => x.NombreEtudiants);
+
+            return coursPopulaires;
+        }
 
         // Afficher la liste des admins
         public async Task<IActionResult> AllAdmin()
