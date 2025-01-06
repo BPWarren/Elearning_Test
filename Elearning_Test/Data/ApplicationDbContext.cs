@@ -4,6 +4,7 @@ using Elearning_Test.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace Elearning_Test.Data
 {
@@ -113,6 +114,11 @@ namespace Elearning_Test.Data
             builder.Entity<Payment>()
                 .Property(p => p.Amount)
                 .HasPrecision(18, 2); // 18 chiffres au total, dont 2 après la virgule
+
+            // Configurer la précision de Price dans Cours
+            builder.Entity<Cours>()
+                .Property(c => c.Price)
+                .HasPrecision(18, 2);
         }
 
         public override int SaveChanges()

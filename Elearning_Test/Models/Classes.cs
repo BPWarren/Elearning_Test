@@ -41,7 +41,9 @@ namespace Elearning_Test.Models
         public int CoursId { get; set; }
         public Cours? Cours { get; set; }
         public int Progression { get; set; }
-        public bool IsConnected { get; set; }
+        public int? CurrentLeconId { get; set; } // ID de la leçon actuelle
+        public Lecon? CurrentLecon { get; set; } // Navigation vers la leçon actuelle
+        public bool IsCompleted { get; set; } // Indique si le cours est terminé
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }

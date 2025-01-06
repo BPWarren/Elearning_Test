@@ -69,42 +69,130 @@ namespace Elearning_Test.Controllers
             return View(cours);
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> InscriptionCours(int id)
+        //{
+        //    var cours = await _coursService.GetCoursByIdAsync(id);
+        //    var user = await _userManager.GetUserAsync(User);
+        //    var etudiant = await _etudiantService.GetEtudiantByIdAsync(user!.Id);
+        //    InscriptionPageViewModel viewModel = new()
+        //    {
+        //        Etudiant = etudiant!,
+        //        Cours = cours!,
+        //    };
+        //    return View(viewModel);
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> InscriptionCours(InscriptionPageViewModel IVM)
+        //{
+        //
+        //   /* if (!ModelState.IsValid)
+        //    {
+        //        // Si le formulaire n'est pas valide, retournez à la vue avec les erreurs
+        //        return View(IVM);
+        //    }*/
+        //
+        //    // Créer une instance de Enrollment
+        //    var enrollment = new Enrollment
+        //    {
+        //        EtudiantId = IVM.Etudiant.Id,
+        //        CoursId = IVM.Cours.Id,
+        //        Progression = 0, // Progression initiale
+        //        IsConnected = false, // Par défaut, l'étudiant n'est pas connecté
+        //        CreatedAt = DateTime.UtcNow,
+        //        UpdatedAt = DateTime.UtcNow
+        //    };
+        //
+        //    // Créer une instance de Payment
+        //    var payment = new Payment
+        //    {
+        //        OwnerName = IVM.OwnerName,
+        //        EtudiantId = IVM.Etudiant.Id,
+        //        CoursId = IVM.Cours.Id,
+        //        Amount = IVM.Cours.Price,
+        //        PaymentDate = DateTime.UtcNow,
+        //        CVC = IVM.Cvc,
+        //        NumeroCarte = IVM.NumeroCarte,
+        //        CreatedAt = DateTime.UtcNow,
+        //        UpdatedAt = DateTime.UtcNow
+        //    };
+        //
+        //    // Enregistrer les instances dans la base de données
+        //    _context.Enrollments.Add(enrollment);
+        //    _context.Payments.Add(payment);
+        //    await _context.SaveChangesAsync();
+        //
+        //    // Rediriger vers une autre page (par exemple, une page de confirmation)
+        //    return RedirectToAction("homePage", "MyHome");
+        //}
+        //
+
         [HttpGet]
         public async Task<IActionResult> InscriptionCours(int id)
         {
+            // Vérifiez si le cours existe
             var cours = await _coursService.GetCoursByIdAsync(id);
-            var user = await _userManager.GetUserAsync(User);
-            var etudiant = await _etudiantService.GetEtudiantByIdAsync(user!.Id);
-            InscriptionPageViewModel viewModel = new()
+            if (cours == null)
             {
-                Etudiant = etudiant!,
-                Cours = cours!,
+                return NotFound("Le cours spécifié est introuvable.");
+            }
+
+            // Récupérez l'utilisateur connecté
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized("Vous devez être connecté pour vous inscrire à un cours.");
+            }
+
+            // Récupérez les informations de l'étudiant
+            var etudiant = await _etudiantService.GetEtudiantByIdAsync(user.Id);
+            if (etudiant == null)
+            {
+                return BadRequest("L'étudiant associé à cet utilisateur est introuvable.");
+            }
+
+            // Préparez le modèle pour la vue
+            var viewModel = new InscriptionPageViewModel
+            {
+                Etudiant = etudiant,
+                Cours = cours,
             };
+
             return View(viewModel);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> InscriptionCours(InscriptionPageViewModel IVM)
         {
+            // Validation du modèle
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(IVM);
+            //}
 
-           /* if (!ModelState.IsValid)
+            // Vérifiez si l'étudiant est déjà inscrit au cours
+            var existingEnrollment = await _context.Enrollments
+                .FirstOrDefaultAsync(e => e.EtudiantId == IVM.Etudiant.Id && e.CoursId == IVM.Cours.Id);
+
+            if (existingEnrollment != null)
             {
-                // Si le formulaire n'est pas valide, retournez à la vue avec les erreurs
-                return View(IVM);
-            }*/
+                ModelState.AddModelError(string.Empty, "Vous êtes déjà inscrit à ce cours.");
+                return RedirectToAction("homePage", "MyHome"); ;
+            }
 
-            // Créer une instance de Enrollment
+            // Créez une nouvelle instance de l'inscription
             var enrollment = new Enrollment
             {
                 EtudiantId = IVM.Etudiant.Id,
                 CoursId = IVM.Cours.Id,
                 Progression = 0, // Progression initiale
-                IsConnected = false, // Par défaut, l'étudiant n'est pas connecté
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
 
-            // Créer une instance de Payment
+            // Créez une nouvelle instance de paiement
             var payment = new Payment
             {
                 OwnerName = IVM.OwnerName,
@@ -118,14 +206,24 @@ namespace Elearning_Test.Controllers
                 UpdatedAt = DateTime.UtcNow
             };
 
-            // Enregistrer les instances dans la base de données
-            _context.Enrollments.Add(enrollment);
-            _context.Payments.Add(payment);
-            await _context.SaveChangesAsync();
+            // Enregistrez les données dans la base de données
+            try
+            {
+                _context.Enrollments.Add(enrollment);
+                _context.Payments.Add(payment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Une erreur est survenue lors de l'inscription : {ex.Message}");
+                return View(IVM);
+            }
 
-            // Rediriger vers une autre page (par exemple, une page de confirmation)
+            // Redirigez vers une page de confirmation ou une autre page
             return RedirectToAction("homePage", "MyHome");
         }
+
+
 
     }
 }

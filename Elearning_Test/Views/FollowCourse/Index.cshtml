@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Suivi du Cours";
+}
+
+<h1>@ViewBag.CourseTitle</h1>
+<p>@ViewBag.CourseDescription</p>
+
+@if (ViewBag.CurrentLesson != null)
+{
+    <h2>Leçon actuelle : @ViewBag.CurrentLesson.Titre</h2>
+    <p>@Html.Raw(ViewBag.CurrentLesson.Contenu)</p>
+}
+else
+{
+    <h2>Aucune leçon en cours.</h2>
+}
+
+<div>
+    <a asp-action="PreviousLesson" asp-route-enrollmentId="@ViewBag.EnrollmentId" class="btn btn-primary">Leçon précédente</a>
+    <a asp-action="NextLesson" asp-route-enrollmentId="@ViewBag.EnrollmentId" class="btn btn-primary">Leçon suivante</a>
+</div>
+
+@if (ViewBag.Lessons != null && ViewBag.Lessons.Count > 0)
+{
+    <h3>Liste des leçons :</h3>
+    <ul>
+        @foreach (var lesson in ViewBag.Lessons)
+        {
+            <li>@lesson.Titre</li>
+        }
+    </ul>
+}
+
+@if (ViewBag.CurrentLesson != null && !ViewBag.IsCompleted)
+{
+    <form asp-action="MarkAsCompleted" method="post">
+        <input type="hidden" name="enrollmentId" value="@ViewBag.EnrollmentId" />
+        <button type="submit" class="btn btn-success">Marquer comme terminé</button>
+    </form>
+}
+
+@if (ViewBag.IsCompleted)
+{
+    <div class="alert alert-success mt-3">
+        Ce cours a été marqué comme terminé.
+    </div>
+}

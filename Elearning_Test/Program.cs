@@ -188,7 +188,6 @@ using (var scope = app.Services.CreateScope())
             CoursId = cours.Id,
             Cours = cours, // Initialisation obligatoire
             Progression = 0,
-            IsConnected = false,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
