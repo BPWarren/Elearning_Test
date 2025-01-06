@@ -1,10 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="utf-8" />
@@ -15,8 +9,8 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <!-- Barre de navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <!-- Barre de navigation fixe -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
         <div class="container-fluid">
             <a class="navbar-brand" asp-controller="DashboardEtudiant" asp-action="Index">
                 <i class="fas fa-user-graduate me-2"></i>Plateforme Étudiant
@@ -34,11 +28,6 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="FollowCourse" asp-action="Index">
                             <i class="fas fa-book me-1"></i>Mes Cours
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Lecon" asp-action="Index">
-                            <i class="fas fa-file-alt me-1"></i>Mes Leçons
                         </a>
                     </li>
                     <li class="nav-item">
@@ -62,12 +51,12 @@
         </div>
     </nav>
 
-    <!-- Contenu principal -->
-    <div class="container-fluid mt-4">
+    <!-- Barre latérale réactive -->
+    <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar (optionnel) -->
-            <div class="col-md-3 col-lg-2 d-none d-md-block bg-light sidebar">
-                <div class="position-sticky pt-3">
+            <!-- Sidebar (masqué sur les petits écrans) -->
+            <div class="col-md-3 col-lg-2 d-none d-md-block bg-light sidebar vh-100 overflow-auto position-fixed">
+                <div class="position-sticky pt-5">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link active" asp-controller="DashboardEtudiant" asp-action="Index">
@@ -77,11 +66,6 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="FollowCourse" asp-action="Index">
                                 <i class="fas fa-book me-2"></i>Mes Cours
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Lecon" asp-action="Index">
-                                <i class="fas fa-file-alt me-2"></i>Mes Leçons
                             </a>
                         </li>
                         <li class="nav-item">
@@ -98,8 +82,8 @@
                 </div>
             </div>
 
-            <!-- Contenu dynamique -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <!-- Contenu principal (ajusté pour les petits écrans) -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="margin-top: 56px; margin-left: 0;">
                 @RenderBody()
             </main>
         </div>
