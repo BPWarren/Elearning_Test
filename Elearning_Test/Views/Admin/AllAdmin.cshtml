@@ -61,11 +61,11 @@
                     <table class="table table-hover table-borderless align-middle mb-0">
                         <thead class="bg-light">
                             <tr>
-                                <th scope="col" class="fw-bold fs-7" style="width: 20%;">Nom</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-7" style="width: 25%;">Email</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-7 d-none d-lg-table-cell" style="width: 15%;">Statut</th> <!-- Masqué sur les petits écrans -->
-                                <th scope="col" class="fw-bold fs-7 d-none d-lg-table-cell" style="width: 20%;">Créé le</th> <!-- Masqué sur les petits écrans -->
-                                <th scope="col" class="fw-bold fs-7 d-none d-lg-table-cell" style="width: 20%;">Modifié le</th> <!-- Masqué sur les petits écrans -->
+                                <th scope="col" class="fw-bold fs-7" style="width: 20%; font-size: 0.875rem; font-weight: bold;">Nom</th> <!-- Taille réduite -->
+                                <th scope="col" class="fw-bold fs-7" style="width: 25%; font-size: 0.875rem; font-weight: bold;">Email</th> <!-- Taille réduite -->
+                                <th scope="col" class="fw-bold fs-7 d-none d-lg-table-cell" style="width: 15%; font-size: 0.875rem; font-weight: bold;">Statut</th> <!-- Masqué sur les petits écrans -->
+                                <th scope="col" class="fw-bold fs-7 d-none d-lg-table-cell" style="width: 20%; font-size: 0.875rem; font-weight: bold;">Créé le</th> <!-- Masqué sur les petits écrans -->
+                                <th scope="col" class="fw-bold fs-7 d-none d-lg-table-cell" style="width: 20%; font-size: 0.875rem; font-weight: bold;">Modifié le</th> <!-- Masqué sur les petits écrans -->
                                 <th scope="col" class="text-center fw-bold fs-7" style="width: 10%;"></th> <!-- Taille réduite -->
                             </tr>
                         </thead>
@@ -73,17 +73,17 @@
                             @foreach (var admin in Model)
                             {
                                 <tr>
-                                    <td class="fs-7">@admin.Nom</td> <!-- Taille réduite -->
-                                    <td class="fs-7">@admin.Email</td> <!-- Taille réduite -->
-                                    <td class="d-none d-lg-table-cell fs-7">
+                                    <td style="font-size: 0.8625rem;">@admin.Nom</td> <!-- Taille réduite -->
+                                    <td style="font-size: 0.8625rem;">@admin.Email</td> <!-- Taille réduite -->
+                                    <td class="d-none d-lg-table-cell " style="font-size: 0.7625rem;">
                                         <!-- Masqué sur les petits écrans -->
                                         <span class="badge @(admin.IsConnected ? "bg-success" : "bg-secondary")">
                                             <i class="fa @(admin.IsConnected ? "fa-circle" : "fa-circle-o") rounded-3"></i>
                                             @(admin.IsConnected ? "En ligne" : "Hors ligne")
                                         </span>
                                     </td>
-                                    <td class="d-none d-lg-table-cell fs-7">@admin.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
-                                    <td class="d-none d-lg-table-cell fs-7">@admin.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
+                                    <td class="d-none d-lg-table-cell " style="font-size: 0.8125rem;">@admin.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
+                                    <td class="d-none d-lg-table-cell " style="font-size: 0.8125rem;">@admin.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                             <a href="@Url.Action("Edit", "Admin", new { id = admin.Id })"

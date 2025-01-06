@@ -15,7 +15,7 @@
     </div>
 
     <!-- Tableau des étudiants -->
-    <div class="card">
+    <div class="card " style="width: 100%">
         <div class="card-header">
             <span class="fw-extrabold fs-5 custom-title">Étudiants</span> <!-- Taille augmentée mais pas trop grande -->
         </div>
@@ -30,8 +30,15 @@
                             <p class="card-text"><strong>Prénom :</strong> @etudiant.Prenom</p> <!-- Titre en gras -->
                             <p class="card-text"><strong>CNE :</strong> @etudiant.Cne</p> <!-- Titre en gras -->
                             <p class="card-text"><strong>Email :</strong> @etudiant.Email</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Cree le :</strong> @etudiant.CreatedAt</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Modifie le :</strong> @etudiant.UpdatedAt</p>
+                            <p class="card-text">
+                                <strong>Statut :</strong>
+                                <span class="badge @(etudiant.IsConnected ? "bg-success" : "bg-secondary")">
+                                    <i class="fa @(etudiant.IsConnected ? "fa-circle" : "fa-circle-o") rounded-3"></i>
+                                    @(etudiant.IsConnected ? "En ligne" : "Hors ligne")
+                                </span>
+                            </p>
+                            <p class="card-text"><strong>Créé le :</strong> @etudiant.CreatedAt</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>Modifié le :</strong> @etudiant.UpdatedAt</p>
 
                             <div class="d-flex justify-content-end">
                                 <a href="@Url.Action("Edit", "Etudiant", new { id = etudiant.Cne })"
@@ -54,32 +61,37 @@
             <!-- Affichage en tableau pour les écrans moyens et grands -->
             <div class="d-none d-md-block">
                 <div class="table-responsive">
-                    <table class="table table-hover table-borderless align-middle mb-0">
+                    <table class="table table-hover table-borderless align-middle mb-0" style="width: 100%;">
                         <thead class="bg-light">
                             <tr>
-                                <th scope="col" class="fw-bold fs-9" style="width: 15%;">UserName</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9" style="width: 15%;">Nom</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9" style="width: 15%;">Prénom</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9" style="width: 15%;">CNE</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9" style="width: 20%;">Email</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9 d-none d-lg-table-cell" style="width: 10%;">Créé le</th> <!-- Masqué sur les petits écrans -->
-                                <th scope="col" class="fw-bold fs-9 d-none d-lg-table-cell" style="width: 10%;">Modifié le</th> <!-- Masqué sur les petits écrans -->
-                                <th scope="col" class="text-center fw-bold fs-9" style="width: 10%;"></th>
-
-                                <th scope="col" class="text-center fw-bold fs-9" style="width: 10%;"></th> 
+                                <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold;">UserName</th>
+                                <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold;">Nom</th>
+                                <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold;">Prénom</th>
+                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;">CNE</th>
+                                <th scope="col" style="width: 18%; font-size: 0.875rem; font-weight: bold;">Email</th>
+                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Statut</th>
+                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Créé le</th>
+                                <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold; white-space: nowrap;" class="d-none d-lg-table-cell">Modifié le</th>
+                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var etudiant in Model)
                             {
                                 <tr>
-                                    <td class="fs-8">@etudiant.UserName</td> 
-                                    <td class="fs-8">@etudiant.Nom</td> 
-                                    <td class="fs-8">@etudiant.Prenom</td> 
-                                    <td class="fs-8">@etudiant.Cne</td> 
-                                    <td class="fs-8">@etudiant.Email</td> 
-                                    <td class="d-none d-lg-table-cell fs-7">@etudiant.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
-                                    <td class="d-none d-lg-table-cell fs-7">@etudiant.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td style="font-size: 0.8625rem;">@etudiant.UserName</td>
+                                    <td style="font-size: 0.8625rem;">@etudiant.Nom</td>
+                                    <td style="font-size: 0.8625rem;">@etudiant.Prenom</td>
+                                    <td style="font-size: 0.8625rem;">@etudiant.Cne</td>
+                                    <td style="font-size: 0.8625rem;">@etudiant.Email</td>
+                                    <td style="font-size: 0.7625rem;" class="d-none d-lg-table-cell">
+                                        <span class="badge @(etudiant.IsConnected ? "bg-success" : "bg-secondary")">
+                                            <i class="fa @(etudiant.IsConnected ? "fa-circle" : "fa-circle-o") rounded-3"></i>
+                                            @(etudiant.IsConnected ? "En ligne" : "Hors ligne")
+                                        </span>
+                                    </td>
+                                    <td style="font-size: 0.8125rem;" class="d-none d-lg-table-cell">@etudiant.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td style="font-size: 0.8125rem;" class="d-none d-lg-table-cell">@etudiant.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                             <a href="@Url.Action("Edit", "Etudiant", new { id = etudiant.Id })"

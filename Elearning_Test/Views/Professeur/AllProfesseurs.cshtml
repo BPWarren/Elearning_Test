@@ -4,7 +4,7 @@
     Layout = "_AdminLayout"; // Utilisation de votre layout personnalisé
 }
 
-<div class="container mt-4">
+<div class="container mt-4" >
     <!-- En-tête de la page -->
     <div class="row mb-3">
         <div class="col-md-12 text-end">
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Tableau des professeurs -->
-    <div class="card">
+    <div class="card m-0">
         <div class="card-header">
             <span class="fw-extrabold fs-5 custom-title">Professeurs</span> <!-- Taille augmentée mais pas trop grande -->
         </div>
@@ -30,8 +30,6 @@
                             <p class="card-text"><strong>Prénom :</strong> @professeur.Prenom</p> <!-- Titre en gras -->
                             <p class="card-text"><strong>Email :</strong> @professeur.Email</p> <!-- Titre en gras -->
                             <p class="card-text"><strong>Spécialité :</strong> @professeur.Specialite</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Cree le :</strong> @professeur.CreatedAt</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Modifie le :</strong> @professeur.UpdatedAt</p> <!-- Titre en gras -->
                             <p class="card-text">
                                 <strong>Statut :</strong>
                                 <span class="badge @(professeur.IsConnected ? "bg-success" : "bg-secondary")">
@@ -62,37 +60,37 @@
             <!-- Affichage en tableau pour les écrans moyens et grands -->
             <div class="d-none d-md-block">
                 <div class="table-responsive">
-                    <table class="table table-hover table-borderless align-middle mb-0">
+                    <table class="table table-hover table-borderless align-middle mb-0" style="width: 100%;">
                         <thead class="bg-light">
                             <tr>
-                                <th scope="col" class="fw-bold fs-9" style="width: 15%;">UserName</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9" style="width: 15%;">Nom</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9" style="width: 15%;">Prénom</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9" style="width: 20%;">Email</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9" style="width: 15%;">Spécialité</th> <!-- Taille réduite -->
-                                <th scope="col" class="fw-bold fs-9 d-none d-lg-table-cell" style="width: 10%;">Statut</th> <!-- Masqué sur les petits écrans -->
-                                <th scope="col" class="fw-bold fs-9 d-none d-lg-table-cell" style="width: 10%;">Créé le</th> <!-- Masqué sur les petits écrans -->
-                                <th scope="col" class="fw-bold fs-9 d-none d-lg-table-cell" style="width: 10%;">Modifié le</th> <!-- Masqué sur les petits écrans -->
-                                <th scope="col" class="text-center fw-bold fs-9" style="width: 10%;"></th> <!-- Taille réduite -->
+                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;">UserName</th>
+                                <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold;">Nom</th>
+                                <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold;">Prénom</th>
+                                <th scope="col" style="width: 18%; font-size: 0.875rem; font-weight: bold;">Email</th>
+                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;">Spécialité</th>
+                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Statut</th>
+                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Créé le</th>
+                                <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold; white-space: nowrap;" class="d-none d-lg-table-cell">Modifié le</th>
+                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var professeur in Model)
                             {
                                 <tr>
-                                    <td class="fs-8">@professeur.UserName</td> <!-- Taille réduite -->
-                                    <td class="fs-8">@professeur.Nom</td> <!-- Taille réduite -->
-                                    <td class="fs-8">@professeur.Prenom</td> <!-- Taille réduite -->
-                                    <td class="fs-8">@professeur.Email</td> <!-- Taille réduite -->
-                                    <td class="fs-8">@professeur.Specialite</td> <!-- Taille réduite -->
-                                    <td class="d-none d-lg-table-cell fs-8">
+                                    <td style="font-size: 0.8625rem;">@professeur.UserName</td>
+                                    <td style="font-size: 0.8625rem;">@professeur.Nom</td>
+                                    <td style="font-size: 0.8625rem;">@professeur.Prenom</td>
+                                    <td style="font-size: 0.8625rem;">@professeur.Email</td>
+                                    <td style="font-size: 0.8625rem;">@professeur.Specialite</td>
+                                    <td style="font-size: 0.7625rem;" class="d-none d-lg-table-cell">
                                         <span class="badge @(professeur.IsConnected ? "bg-success" : "bg-secondary")">
                                             <i class="fa @(professeur.IsConnected ? "fa-circle" : "fa-circle-o") rounded-3"></i>
                                             @(professeur.IsConnected ? "En ligne" : "Hors ligne")
                                         </span>
                                     </td>
-                                    <td class="d-none d-lg-table-cell fs-8">@professeur.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
-                                    <td class="d-none d-lg-table-cell fs-8">@professeur.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td> <!-- Masqué sur les petits écrans -->
+                                    <td style="font-size: 0.8125rem;" class="d-none d-lg-table-cell">@professeur.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td style="font-size: 0.8125rem;" class="d-none d-lg-table-cell">@professeur.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                             <a href="@Url.Action("Edit", "Professeur", new { id = professeur.Id })"
