@@ -15,9 +15,9 @@
     </div>
 
     <!-- Tableau des étudiants -->
-    <div class="card " style="width: 100%">
+    <div class="card" style="width: 100%">
         <div class="card-header">
-            <span class="fw-extrabold fs-5 custom-title">Étudiants</span> <!-- Taille augmentée mais pas trop grande -->
+            <span class="fw-extrabold fs-5 custom-title">Étudiants</span>
         </div>
         <div class="card-body p-0">
             <!-- Affichage en cartes pour les petits écrans -->
@@ -26,10 +26,10 @@
                 {
                     <div class="card mb-3">
                         <div class="card-body">
-                            <p class="card-text"><strong>Nom :</strong> @etudiant.Nom</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Prénom :</strong> @etudiant.Prenom</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>CNE :</strong> @etudiant.Cne</p> <!-- Titre en gras -->
-                            <p class="card-text"><strong>Email :</strong> @etudiant.Email</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>Nom :</strong> @etudiant.Nom</p>
+                            <p class="card-text"><strong>Prénom :</strong> @etudiant.Prenom</p>
+                            <p class="card-text"><strong>CNE :</strong> @etudiant.Cne</p>
+                            <p class="card-text"><strong>Email :</strong> @etudiant.Email</p>
                             <p class="card-text">
                                 <strong>Statut :</strong>
                                 <span class="badge @(etudiant.IsConnected ? "bg-success" : "bg-secondary")">
@@ -37,14 +37,15 @@
                                     @(etudiant.IsConnected ? "En ligne" : "Hors ligne")
                                 </span>
                             </p>
-                            <p class="card-text"><strong>Créé le :</strong> @etudiant.CreatedAt</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>Créé le :</strong> @etudiant.CreatedAt</p>
                             <p class="card-text"><strong>Modifié le :</strong> @etudiant.UpdatedAt</p>
+                            <p class="card-text"><strong>Dernière connexion :</strong> <span class="text-success">@etudiant.LastLogin.ToString("dd/MM/yyyy HH:mm")</span></p>
 
                             <div class="d-flex justify-content-end">
-                                <a href="@Url.Action("Edit", "Etudiant", new { id = etudiant.Cne })"
-                                   class="btn btn-label-info btn-round me-2">
-                                    <i class="fa fa-pencil-alt"></i>
-                                </a>
+                                @* <a href="@Url.Action("Edit", "Etudiant", new { id = etudiant.Cne })" *@
+                                @*    class="btn btn-label-info btn-round me-2"> *@
+                                @*     <i class="fa fa-pencil-alt"></i> *@
+                                @* </a> *@
                                 <button type="button"
                                         class="btn btn-label-danger btn-round me-2"
                                         data-bs-toggle="modal"
@@ -61,7 +62,7 @@
             <!-- Affichage en tableau pour les écrans moyens et grands -->
             <div class="d-none d-md-block">
                 <div class="table-responsive">
-                    <table class="table table-hover table-borderless align-middle mb-0" style="width: 100%;">
+                    <table id="etudiantsTable" class="table table-hover table-borderless align-middle mb-0" style="width: 100%;">
                         <thead class="bg-light">
                             <tr>
                                 <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold;">UserName</th>
@@ -69,9 +70,10 @@
                                 <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold;">Prénom</th>
                                 <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;">CNE</th>
                                 <th scope="col" style="width: 18%; font-size: 0.875rem; font-weight: bold;">Email</th>
-                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Statut</th>
+                                <th scope="col" style="width: 8%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Statut</th>
                                 <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Créé le</th>
-                                <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold; white-space: nowrap;" class="d-none d-lg-table-cell">Modifié le</th>
+                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Modifié le</th>
+                                <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Dernière connexion</th>
                                 <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -92,12 +94,13 @@
                                     </td>
                                     <td style="font-size: 0.8125rem;" class="d-none d-lg-table-cell">@etudiant.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td style="font-size: 0.8125rem;" class="d-none d-lg-table-cell">@etudiant.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td style="font-size: 0.8125rem; color: green;" class="d-none d-lg-table-cell">@etudiant.LastLogin.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
-                                            <a href="@Url.Action("Edit", "Etudiant", new { id = etudiant.Id })"
-                                               class="btn btn-label-info btn-round me-2">
-                                                <i class="fa fa-pencil-alt"></i>
-                                            </a>
+                                            @* <a href="@Url.Action("Edit", "Etudiant", new { id = etudiant.Id })" *@
+                                            @*    class="btn btn-label-info btn-round me-2"> *@
+                                            @*     <i class="fa fa-pencil-alt"></i> *@
+                                            @* </a> *@
                                             <button type="button"
                                                     class="btn btn-label-danger btn-round me-2"
                                                     data-bs-toggle="modal"
@@ -142,13 +145,28 @@
     </div>
 </div>
 
-<script>
-    var deleteModal = document.getElementById('deleteModal');
-    deleteModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget; // Le bouton qui a ouvert le modal
-        var etudiantId = button.getAttribute('data-id'); // L'ID de l'étudiant
+@section Scripts {
+    @* <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> *@
+    @* <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script> *@
+    <script>
+        // Initialiser DataTable
+        // $(document).ready(function () {
+        //     $('#etudiantsTable').DataTable({
+        //         paging: true, Activer la pagination
+        //         searching: true, Activer la recherche
+        //         ordering: true, Activer le tri
+        //         responsive: true Activer le mode responsive
+        //     });
+        // });
 
-        var etudiantIdInput = document.getElementById('etudiantIdToDelete');
-        etudiantIdInput.value = etudiantId;
-    });
-</script>
+        // Gestion du modal de suppression
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget; // Le bouton qui a ouvert le modal
+            var etudiantId = button.getAttribute('data-id'); // L'ID de l'étudiant
+
+            var etudiantIdInput = document.getElementById('etudiantIdToDelete');
+            etudiantIdInput.value = etudiantId;
+        });
+    </script>
+}

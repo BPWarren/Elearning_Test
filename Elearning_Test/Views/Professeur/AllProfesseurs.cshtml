@@ -39,11 +39,12 @@
                             </p>
                             <p class="card-text"><strong>Créé le :</strong> @professeur.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p> <!-- Titre en gras -->
                             <p class="card-text"><strong>Modifié le :</strong> @professeur.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</p> <!-- Titre en gras -->
+                            <p class="card-text"><strong>Dernière connexion :</strong> @professeur.LastLogin.ToString("dd/MM/yyyy HH:mm")</p>
                             <div class="d-flex justify-content-end">
-                                <a href="@Url.Action("Edit", "Professeur", new { id = professeur.Id })"
-                                   class="btn btn-label-info btn-round me-2">
-                                    <i class="fa fa-pencil-alt"></i>
-                                </a>
+                                @* <a href="@Url.Action("Edit", "Professeur", new { id = professeur.Id })" *@
+                                @*    class="btn btn-label-info btn-round me-2"> *@
+                                @*     <i class="fa fa-pencil-alt"></i> *@
+                                @* </a> *@
                                 <button type="button"
                                         class="btn btn-label-danger btn-round me-2"
                                         data-bs-toggle="modal"
@@ -68,9 +69,10 @@
                                 <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold;">Prénom</th>
                                 <th scope="col" style="width: 18%; font-size: 0.875rem; font-weight: bold;">Email</th>
                                 <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;">Spécialité</th>
-                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Statut</th>
+                                <th scope="col" style="width: 8%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Statut</th>
                                 <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Créé le</th>
-                                <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold; white-space: nowrap;" class="d-none d-lg-table-cell">Modifié le</th>
+                                <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Modifié le</th>
+                                <th scope="col" style="width: 12%; font-size: 0.875rem; font-weight: bold;" class="d-none d-lg-table-cell">Dernière connexion</th>
                                 <th scope="col" style="width: 10%; font-size: 0.875rem; font-weight: bold;" class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -91,12 +93,13 @@
                                     </td>
                                     <td style="font-size: 0.8125rem;" class="d-none d-lg-table-cell">@professeur.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td style="font-size: 0.8125rem;" class="d-none d-lg-table-cell">@professeur.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td style="font-size: 0.8125rem; color: green;" class="d-none d-lg-table-cell">@professeur.LastLogin.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
-                                            <a href="@Url.Action("Edit", "Professeur", new { id = professeur.Id })"
-                                               class="btn btn-label-info btn-round me-2">
-                                                <i class="fa fa-pencil-alt"></i>
-                                            </a>
+                                            @* <a href="@Url.Action("Edit", "Professeur", new { id = professeur.Id })" *@
+                                            @*    class="btn btn-label-info btn-round me-2"> *@
+                                            @*     <i class="fa fa-pencil-alt"></i> *@
+                                            @* </a> *@
                                             <button type="button"
                                                     class="btn btn-label-danger btn-round me-2"
                                                     data-bs-toggle="modal"

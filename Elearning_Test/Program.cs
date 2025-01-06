@@ -93,7 +93,8 @@ using (var scope = app.Services.CreateScope())
             Nom = "Admin",
             EmailConfirmed = true,
             CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = DateTime.UtcNow,
+            LastLogin = DateTime.UtcNow,
         };
         var result = await userManager.CreateAsync(adminUser, "Admin@123");
         if (result.Succeeded)
@@ -111,7 +112,8 @@ using (var scope = app.Services.CreateScope())
             Specialite = "Informatique",
             EmailConfirmed = true,
             CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = DateTime.UtcNow,
+            LastLogin = DateTime.UtcNow
         };
         result = await userManager.CreateAsync(professeur, "Professeur@123");
         if (result.Succeeded)
@@ -129,7 +131,8 @@ using (var scope = app.Services.CreateScope())
             Prenom = "Test",
             EmailConfirmed = true,
             CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = DateTime.UtcNow,
+            LastLogin = DateTime.UtcNow
         };
         result = await userManager.CreateAsync(etudiant, "Etudiant@123");
         if (result.Succeeded)
@@ -208,7 +211,8 @@ using (var scope = app.Services.CreateScope())
             CVC = 123,
             NumeroCarte = "1234567890123456",
             CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = DateTime.UtcNow,
+
         };
         context.Payments.Add(payment);
         await context.SaveChangesAsync();

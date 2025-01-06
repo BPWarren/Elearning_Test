@@ -54,6 +54,7 @@ namespace CompleteRoles.Controllers
             {
                 if (user is Admin admin)
                 {
+                    admin.LastLogin = DateTime.UtcNow;
                     admin.IsConnected = true; // Mettre à jour le statut
                     _dbContext.Admins.Update(admin); // Mettre à jour l'entité dans le contexte
                     await _dbContext.SaveChangesAsync(); // Sauvegarder dans la base de données
@@ -88,12 +89,14 @@ namespace CompleteRoles.Controllers
                 {
                     if (user is Professeur professeur)
                     {
+                        professeur.LastLogin = DateTime.UtcNow;
                         professeur.IsConnected = true;  // Mise à jour du champ IsConnected
                         await _dbContext.SaveChangesAsync();  // Sauvegarde de la mise à jour
                     }
                     // Si l'utilisateur est un Participant
                     else if (user is Etudiant participant)
                     {
+                        participant.LastLogin = DateTime.UtcNow;
                         participant.IsConnected = true;  // Mise à jour du champ IsConnected
                         await _dbContext.SaveChangesAsync();  // Sauvegarde de la mise à jour
                     }

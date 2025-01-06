@@ -9,5 +9,6 @@ namespace Elearning_Test.Models
         public bool IsConnected {get; set;}
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime LastLogin { get; set; } = DateTime.UtcNow;
     }
 }
