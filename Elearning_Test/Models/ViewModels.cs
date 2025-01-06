@@ -52,4 +52,16 @@ namespace Elearning_Test.Models
         public Cours Cours { get; set; }
     }
 
+    public class CategorieEditViewModel
+    {
+        public int Id{ get; set; }
+        [Required]
+        public string Intitule { get; set; } = string.Empty;
+        [Required]
+        public string? Description { get; set; }
+        public IFormFile? ImageFile { get; set; }
+        public string? ImageTexte {  get; set; }
+
+    }
+
 }
