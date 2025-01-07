@@ -12,10 +12,10 @@
 
 <h1>Mes cours en cours</h1>
 
-@if (Model.Any())
+@if (Model.Any(c => !c.EstTermine))
 {
     <div class="row">
-        @foreach (var cours in Model)
+        @foreach (var cours in Model.Where(c => !c.EstTermine))
         {
             <div class="col-md-4 mb-4">
                 <div class="card">
@@ -35,4 +35,31 @@
 else
 {
     <div class="alert alert-info">Vous n'êtes inscrit à aucun cours en cours.</div>
+}
+
+<h1>Mes cours terminés</h1>
+
+@if (Model.Any(c => c.EstTermine))
+{
+    <div class="row">
+        @foreach (var cours in Model.Where(c => c.EstTermine))
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@cours.Titre</h5>
+                        <p class="card-text">@cours.Description</p>
+                        <div class="progress mb-3">
+                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                        </div>
+                        <a asp-action="EvaluerCours" asp-route-id="@cours.Id" class="btn btn-success">Évaluer ce cours</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">Vous n'avez terminé aucun cours.</div>
 }

@@ -24,9 +24,9 @@ namespace Elearning_Test.Controllers
             // Récupérer l'ID de l'étudiant connecté
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Récupérer les cours en cours de l'étudiant
+            // Récupérer les cours en cours et terminés de l'étudiant
             var coursEnCours = await _context.Enrollments
-                .Where(e => e.EtudiantId == userId && !e.IsCompleted)
+                .Where(e => e.EtudiantId == userId)
                 .Join(_context.Cours,
                       enrollment => enrollment.CoursId,
                       cours => cours.Id,
@@ -35,7 +35,8 @@ namespace Elearning_Test.Controllers
                           Id = cours.Id,
                           Titre = cours.Titre,
                           Description = cours.Description,
-                          Progression = enrollment.Progression
+                          Progression = enrollment.Progression,
+                          EstTermine = enrollment.IsCompleted
                       })
                 .ToListAsync();
 
@@ -83,6 +84,24 @@ namespace Elearning_Test.Controllers
 
             // Passer les données à la vue
             return View(statistiques);
+        }
+
+        public async Task<IActionResult> EvaluerCours(int id)
+        {
+            // Récupérer l'ID de l'étudiant connecté
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Vérifier si l'étudiant est inscrit à ce cours et si le cours est terminé
+            var enrollment = await _context.Enrollments
+                .FirstOrDefaultAsync(e => e.EtudiantId == userId && e.CoursId == id && e.IsCompleted);
+
+            if (enrollment == null)
+            {
+                return NotFound("Vous n'êtes pas inscrit à ce cours ou le cours n'est pas terminé.");
+            }
+
+            // Rediriger vers la page d'évaluation du cours
+            return RedirectToAction("Index", "EvaluateCourse", new { id = id });
         }
     }
 }

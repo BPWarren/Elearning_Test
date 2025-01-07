@@ -95,6 +95,7 @@ namespace Elearning_Test.Models
         public string Titre { get; set; }
         public string Description { get; set; }
         public int Progression { get; set; }
+        public bool EstTermine { get; set; }
     }
     public class StatistiquesEtudiantViewModel
     {
