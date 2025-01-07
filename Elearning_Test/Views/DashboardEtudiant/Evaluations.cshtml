@@ -1,0 +1,40 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<EvaluationViewModel>
+
+@{
+    ViewData["Title"] = "Mes évaluations";
+    Layout = "~/Views/Shared/_EtudDashboardLayout.cshtml";
+}
+
+<h1>Mes évaluations</h1>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Cours</th>
+                <th>Contenu de l'évaluation</th>
+                <th>Date de l'évaluation</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var evaluation in Model)
+            {
+                <tr>
+                    <td>@evaluation.CoursTitre</td>
+                    <td>@evaluation.Contenu</td>
+                    <td>@evaluation.DateEvaluation.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">Vous n'avez pas encore évalué de cours.</div>
+}

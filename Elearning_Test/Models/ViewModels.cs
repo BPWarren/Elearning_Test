@@ -6,12 +6,12 @@ namespace Elearning_Test.Models
     {
         public int Id { get; set; }
         [Required]
-        public string Titre { get; set; }
+        public string? Titre { get; set; }
         [Required]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         [Required]
-        public IFormFile ImageFile { get; set; }
-        public string ImageStr { get; set; }
+        public IFormFile? ImageFile { get; set; }
+        public string? ImageStr { get; set; }
         [Required]
         public decimal Price { get; set; }
         public DateTime LastUpdate { get; set; }
@@ -24,9 +24,9 @@ namespace Elearning_Test.Models
         public int Id { get; set; }
         public int CoursId { get; set; }
         [Required]
-        public string Titre { get; set; }
+        public string? Titre { get; set; }
         [Required]
-        public string Contenu { get; set; }
+        public string? Contenu { get; set; }
         [Required]
         public int NumeroPage { get; set; }
     }
@@ -34,22 +34,22 @@ namespace Elearning_Test.Models
     public class VoirLeconsViewModel
     {
         public int CoursId { get; set; }
-        public List<Lecon> Lecons { get; set; }
+        public List<Lecon>? Lecons { get; set; }
     }
 
     public class HomePageViewModel
     {
-        public IEnumerable<Categorie> categories { get; set; }
-        public IEnumerable<Cours> Cours { get; set; }
+        public IEnumerable<Categorie>? categories { get; set; }
+        public IEnumerable<Cours>? Cours { get; set; }
     }
 
     public class InscriptionPageViewModel
     {
-        public string OwnerName {  get; set; }
+        public string? OwnerName {  get; set; }
         public int Cvc { get; set; }
-        public string NumeroCarte {  get; set; }
-        public Etudiant Etudiant { get; set; }
-        public Cours Cours { get; set; }
+        public string? NumeroCarte {  get; set; }
+        public Etudiant? Etudiant { get; set; }
+        public Cours? Cours { get; set; }
     }
 
     public class CategorieEditViewModel
@@ -92,8 +92,8 @@ namespace Elearning_Test.Models
     public class CoursViewModel2
     {
         public int Id { get; set; }
-        public string Titre { get; set; }
-        public string Description { get; set; }
+        public string? Titre { get; set; }
+        public string? Description { get; set; }
         public int Progression { get; set; }
         public bool EstTermine { get; set; }
     }
@@ -114,5 +114,36 @@ namespace Elearning_Test.Models
     {
         public Categorie? Categorie { get; set; }
         public List<Cours>? Cours { get; set; }
+    }
+
+    public class CertificatEnAttenteViewModel
+    {
+        public int CertificationId { get; set; } // ID du certificat
+        public string? EtudiantNom { get; set; } // Nom de l'étudiant
+        public string? EtudiantPrenom { get; set; } // Prénom de l'étudiant
+        public string? CoursTitre { get; set; } // Titre du cours
+        public DateTime DateDemande { get; set; } // Date de la demande
+    }
+
+    public class DashboardEtudiantViewModel
+    {
+        public List<CoursViewModel2> CoursEnCours { get; set; }
+        public List<CertificatViewModel> Certificats { get; set; }
+    }
+
+    public class CertificatViewModel
+    {
+        public int CertificationId { get; set; }
+        public int CoursId { get; set; }
+        public string? CoursTitre { get; set; }
+        public DateTime DateValidation { get; set; }
+    }
+  
+    public class EvaluationViewModel
+    {
+        public int Id { get; set; } // ID de l'évaluation
+        public string? CoursTitre { get; set; } // Titre du cours évalué
+        public string? Contenu { get; set; } // Contenu de l'évaluation
+        public DateTime DateEvaluation { get; set; } // Date de l'évaluation
     }
 }
