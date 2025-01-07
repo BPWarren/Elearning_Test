@@ -1,0 +1,107 @@
+﻿@* @model Elearning_Test.Models.DashboardViewModel *@
+
+@* @{ *@
+@*     Layout = "_AdminLayout"; *@
+@* } *@
+
+@* <div class="container"> *@
+@*     <div class="page-inner"> *@
+@*         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"> *@
+@*             <div> *@
+@*                 <h3 class="fw-bold mb-3">Dashboard</h3> *@
+@*                 <h6 class="op-7 mb-2">Statistiques globales de votre plateforme</h6> *@
+@*             </div> *@
+@*             <div class="ms-md-auto py-2 py-md-0"> *@
+@*                 <a href="#" class="btn btn-label-info btn-round me-2">Gérer</a> *@
+@*                 <a href="#" class="btn btn-primary btn-round">Ajouter un utilisateur</a> *@
+@*             </div> *@
+@*         </div> *@
+
+@*         <!-- Cartes de statistiques --> *@
+@*         <div class="row"> *@
+@*             <!-- Étudiants inscrits --> *@
+@*             <div class="col-sm-6 col-md-3"> *@
+@*                 <div class="card card-stats card-round"> *@
+@*                     <div class="card-body"> *@
+@*                         <div class="row align-items-center"> *@
+@*                             <div class="col-icon"> *@
+@*                                 <div class="icon-big text-center icon-primary bubble-shadow-small"> *@
+@*                                     <i class="fas fa-users"></i> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                             <div class="col col-stats ms-3 ms-sm-0"> *@
+@*                                 <div class="numbers"> *@
+@*                                     <p class="card-category">Étudiants inscrits</p> *@
+@*                                     <h4 class="card-title">@Model.TotalEtudiants</h4> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                         </div> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+
+@*             <!-- Professeurs inscrits --> *@
+@*             <div class="col-sm-6 col-md-3"> *@
+@*                 <div class="card card-stats card-round"> *@
+@*                     <div class="card-body"> *@
+@*                         <div class="row align-items-center"> *@
+@*                             <div class="col-icon"> *@
+@*                                 <div class="icon-big text-center icon-info bubble-shadow-small"> *@
+@*                                     <i class="fas fa-chalkboard-teacher"></i> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                             <div class="col col-stats ms-3 ms-sm-0"> *@
+@*                                 <div class="numbers"> *@
+@*                                     <p class="card-category">Professeurs inscrits</p> *@
+@*                                     <h4 class="card-title">@Model.TotalProfesseurs</h4> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                         </div> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+
+@*             <!-- Cours disponibles --> *@
+@*             <div class="col-sm-6 col-md-3"> *@
+@*                 <div class="card card-stats card-round"> *@
+@*                     <div class="card-body"> *@
+@*                         <div class="row align-items-center"> *@
+@*                             <div class="col-icon"> *@
+@*                                 <div class="icon-big text-center icon-success bubble-shadow-small"> *@
+@*                                     <i class="fas fa-book-open"></i> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                             <div class="col col-stats ms-3 ms-sm-0"> *@
+@*                                 <div class="numbers"> *@
+@*                                     <p class="card-category">Cours disponibles</p> *@
+@*                                     <h4 class="card-title">@Model.TotalCours</h4> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                         </div> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+
+@*             <!-- Certificats délivrés --> *@
+@*             <div class="col-sm-6 col-md-3"> *@
+@*                 <div class="card card-stats card-round"> *@
+@*                     <div class="card-body"> *@
+@*                         <div class="row align-items-center"> *@
+@*                             <div class="col-icon"> *@
+@*                                 <div class="icon-big text-center icon-warning bubble-shadow-small"> *@
+@*                                     <i class="fas fa-certificate"></i> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                             <div class="col col-stats ms-3 ms-sm-0"> *@
+@*                                 <div class="numbers"> *@
+@*                                     <p class="card-category">Certificats délivrés</p> *@
+@*                                     <h4 class="card-title">@Model.TotalCertificats</h4> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                         </div> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@

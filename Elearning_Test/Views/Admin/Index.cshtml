@@ -1,105 +1,316 @@
 ﻿@model Elearning_Test.Models.DashboardViewModel
 
 @{
-    Layout = "_AdminLayout";
+    ViewData["Title"] = "Dashboard";
+    Layout = "_AdminLayout"; // Utilisez votre layout personnalisé
 }
 
-<div class="container">
-    <div class="page-inner">
-        <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-            <div>
-                <h3 class="fw-bold mb-3">Dashboard</h3>
-                <h6 class="op-7 mb-2">Statistiques globales de votre plateforme</h6>
-            </div>
-            <div class="ms-md-auto py-2 py-md-0">
-                <a href="#" class="btn btn-label-info btn-round me-2">Gérer</a>
-                <a href="#" class="btn btn-primary btn-round">Ajouter un utilisateur</a>
+<div class="container mt-4">
+    <!-- En-tête avec bouton Actualiser -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Dashboard</h1> <!-- Texte remplacé et taille réduite -->
+        <button class="btn btn-primary btn-sm btn-border btn-round" onclick="location.reload()">
+            <i class="fas fa-sync-alt"></i> Actualiser
+        </button>
+    </div>
+
+    <!-- Première ligne : Données générales -->
+    <div class="row">
+        <!-- Cours disponibles -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-primary card-round">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="fas fa-book"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 col-stats">
+                            <div class="numbers">
+                                <p class="card-category">Cours Disponibles</p>
+                                <h4 class="card-title">@Model.TotalCours</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Cartes de statistiques -->
-        <div class="row">
-            <!-- Étudiants inscrits -->
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-primary bubble-shadow-small">
-                                    <i class="fas fa-users"></i>
-                                </div>
+        <!-- Formateurs totaux -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-success card-round">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="fas fa-chalkboard-teacher"></i>
                             </div>
-                            <div class="col col-stats ms-3 ms-sm-0">
-                                <div class="numbers">
-                                    <p class="card-category">Étudiants inscrits</p>
-                                    <h4 class="card-title">@Model.TotalEtudiants</h4>
-                                </div>
+                        </div>
+                        <div class="col-7 col-stats">
+                            <div class="numbers">
+                                <p class="card-category">Formateurs Totaux</p>
+                                <h4 class="card-title">@Model.TotalProfesseurs</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Professeurs inscrits -->
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-info bubble-shadow-small">
-                                    <i class="fas fa-chalkboard-teacher"></i>
-                                </div>
+        <!-- Participants totaux -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-secondary card-round">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="fas fa-user-friends"></i>
                             </div>
-                            <div class="col col-stats ms-3 ms-sm-0">
-                                <div class="numbers">
-                                    <p class="card-category">Professeurs inscrits</p>
-                                    <h4 class="card-title">@Model.TotalProfesseurs</h4>
-                                </div>
+                        </div>
+                        <div class="col-7 col-stats">
+                            <div class="numbers">
+                                <p class="card-category">Participants Totaux</p>
+                                <h4 class="card-title">@Model.ParticipantsActifs</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Cours disponibles -->
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-success bubble-shadow-small">
-                                    <i class="fas fa-book-open"></i>
-                                </div>
+        <!-- Inscriptions totales -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-info card-round">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="icon-big text-center">
+                                <i class="fas fa-user-plus"></i>
                             </div>
-                            <div class="col col-stats ms-3 ms-sm-0">
-                                <div class="numbers">
-                                    <p class="card-category">Cours disponibles</p>
-                                    <h4 class="card-title">@Model.TotalCours</h4>
-                                </div>
+                        </div>
+                        <div class="col-7 col-stats">
+                            <div class="numbers">
+                                <p class="card-category">Inscriptions Totales</p>
+                                <h4 class="card-title">@Model.TotalInscriptions</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Certificats délivrés -->
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-icon">
-                                <div class="icon-big text-center icon-warning bubble-shadow-small">
-                                    <i class="fas fa-certificate"></i>
-                                </div>
+    <!-- Deuxième ligne : Formateurs et participants connectés -->
+    <div class="row mt-4">
+        <!-- Étudiants en ligne -->
+        <div class="col-md-6">
+            <div class="card card-stats card-round shadow-sm">
+                <div class="card-header bg-light text-end">
+                    <h5 class="card-title fs-6 mb-0">
+                        <!-- Taille de police réduite -->
+                        <i class="fas fa-user-graduate me-2 text-primary"></i> Étudiants En Ligne
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @if (Model.EtudiantsEnLigne.Any())
+                        {
+                            foreach (var etudiant in Model.EtudiantsEnLigne)
+                            {
+                                <li class="list-group-item d-flex align-items-center">
+                                    <span class="badge bg-success me-3" style="width: 10px; height: 10px; border-radius: 50%;"></span>
+                                    <div>
+                                        <strong>@etudiant.Nom</strong><br />
+                                        <small class="text-muted">@etudiant.Email</small>
+                                    </div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item text-muted">
+                                <i class="fas fa-info-circle me-2"></i> Aucun étudiant en ligne pour le moment.
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Professeurs en ligne -->
+        <div class="col-md-6">
+            <div class="card card-stats card-round shadow-sm">
+                <div class="card-header bg-light text-end">
+                    <h5 class="card-title fs-6 mb-0">
+                        <!-- Taille de police réduite -->
+                        <i class="fas fa-chalkboard-teacher me-2 text-warning"></i> Professeurs En Ligne
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @if (Model.ProfesseursEnLigne.Any())
+                        {
+                            foreach (var professeur in Model.ProfesseursEnLigne)
+                            {
+                                <li class="list-group-item d-flex align-items-center">
+                                    <span class="badge bg-success me-3" style="width: 10px; height: 10px; border-radius: 50%;"></span>
+                                    <div>
+                                        <strong>@professeur.Nom</strong><br />
+                                        <small class="text-muted">@professeur.Email</small>
+                                    </div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item text-muted">
+                                <i class="fas fa-info-circle me-2"></i> Aucun professeur en ligne pour le moment.
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Troisième ligne : Formateurs actifs, étudiants actifs, certificats -->
+    <div class="row mt-4">
+        <!-- Formateurs actifs -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                <i class="fas fa-chalkboard-teacher"></i>
                             </div>
-                            <div class="col col-stats ms-3 ms-sm-0">
-                                <div class="numbers">
-                                    <p class="card-category">Certificats délivrés</p>
-                                    <h4 class="card-title">@Model.TotalCertificats</h4>
-                                </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category">Formateurs Actifs</p>
+                                <h4 class="card-title">@Model.FormateursActifs</h4>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Étudiants actifs -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-success bubble-shadow-small">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category">Étudiants Actifs</p>
+                                <h4 class="card-title">@Model.ParticipantsActifs</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificats validés -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category">Certificats Validés</p>
+                                <h4 class="card-title">@Model.TotalCertificatsValides</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificats en attente -->
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-stats card-round">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-icon">
+                            <div class="icon-big text-center icon-warning bubble-shadow-small">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="col col-stats ms-3 ms-sm-0">
+                            <div class="numbers">
+                                <p class="card-category">Certificats en Attente</p>
+                                <h4 class="card-title">@Model.TotalCertificatsEnAttente</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quatrième ligne : Certificats -->
+    <!-- Quatrième ligne : Certificats en Attente -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card card-stats card-round shadow-sm">
+                <div class="card-header bg-light text-end">
+                    <h5 class="card-title fs-6 mb-0">
+                        <i class="fas fa-clock me-2 text-warning"></i> Certificats en Attente
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Participant</th>
+                                <th>Date de la Demande</th>
+                                <th>Cours</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.CertifEnAttente != null && Model.CertifEnAttente.Any())
+                            {
+                                foreach (var certif in Model.CertifEnAttente)
+                                {
+                                    <tr>
+                                        <td>@certif.Etudiant?.Nom</td> <!-- Nom du participant -->
+                                        <td>@certif.CreatedAt.ToShortDateString()</td> <!-- Date de la demande -->
+                                        <td>@certif.Cours?.Titre</td> <!-- Nom du cours -->
+                                        <td>
+                                            <form asp-action="ValiderCertification" asp-controller="Dashboard" method="post">
+                                                <input type="hidden" name="certificationId" value="@certif.Id" />
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-check"></i> Valider
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-muted text-center">
+                                        <i class="fas fa-info-circle me-2"></i> Aucun certificat en attente.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
