@@ -291,9 +291,9 @@
                                         <td>@certif.CreatedAt.ToShortDateString()</td> <!-- Date de la demande -->
                                         <td>@certif.Cours?.Titre</td> <!-- Nom du cours -->
                                         <td>
-                                            <form asp-action="ValiderCertification" asp-controller="Dashboard" method="post">
+                                            <form asp-action="ValiderCertification" asp-controller="Admin" method="post">
                                                 <input type="hidden" name="certificationId" value="@certif.Id" />
-                                                <button type="submit" class="btn btn-success btn-sm">
+                                                <button type="submit" class="btn btn-success btn-sm btn-round">
                                                     <i class="fas fa-check"></i> Valider
                                                 </button>
                                             </form>
@@ -306,6 +306,55 @@
                                 <tr>
                                     <td colspan="4" class="text-muted text-center">
                                         <i class="fas fa-info-circle me-2"></i> Aucun certificat en attente.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cinquieme ligne : Certificats Validés -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card card-stats card-round shadow-sm">
+                <div class="card-header bg-light text-end">
+                    <h5 class="card-title fs-6 mb-0">
+                        <i class="fas fa-check-circle me-2 text-success"></i> Certificats Validés
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th></th> <!-- Colonne pour le logo -->
+                                <th>Participant</th>
+                                <th>Date de Validation</th>
+                                <th>Cours</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.CertifValide != null && Model.CertifValide.Any())
+                            {
+                                foreach (var certif in Model.CertifValide)
+                                {
+                                    <tr>
+                                        <td>
+                                            <i class="fas fa-certificate text-success"></i> <!-- Logo certificat -->
+                                        </td>
+                                        <td>@certif.Etudiant?.Nom</td> <!-- Nom du participant -->
+                                        <td>@certif.UpdatedAt.ToShortDateString()</td> <!-- Date de validation -->
+                                        <td>@certif.Cours?.Titre</td> <!-- Nom du cours -->
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-muted text-center">
+                                        <i class="fas fa-info-circle me-2"></i> Aucun certificat validé.
                                     </td>
                                 </tr>
                             }

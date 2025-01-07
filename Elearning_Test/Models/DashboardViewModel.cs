@@ -36,7 +36,7 @@
         public int FormateursActifs
         {
             get; set;
-        } 
+        }
         //}
         // Graphiques
         public required Dictionary<string, int> InscriptionsParMois

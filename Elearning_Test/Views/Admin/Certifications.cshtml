@@ -1,0 +1,177 @@
+﻿@model Elearning_Test.Models.CertifViewModel
+@{
+    ViewData["Title"] = "Certifications";
+    Layout = "_AdminLayout";
+}
+
+<!-- Statistics Cards -->
+<div class="row justify-content-center mt-4">
+    <!-- Pending Certifications Card -->
+    <div class="col-sm-6 col-md-3">
+        <div class="card card-stats card-round">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-icon">
+                        <div class="icon-big text-center icon-warning bubble-shadow-small">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                    </div>
+                    <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                            <p class="card-category">Certificats en Attente</p>
+                            <h4 class="card-title pending-count">@Model.CertificationsEnAttente.Count</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Validated Certifications Card -->
+    <div class="col-sm-6 col-md-3">
+        <div class="card card-stats card-round">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-icon">
+                        <div class="icon-big text-center icon-success bubble-shadow-small">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                            <p class="card-category">Certificats Validés</p>
+                            <h4 class="card-title validated-count">@Model.Certificationsvalide.Count</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pending Certifications Section -->
+<div class="card m-4">
+    <div class="card-header d-flex">
+        <span class="fw-extrabold fs-5 custom-title text-start">
+            <i class="fas fa-clock me-2 text-warning"></i> Certificats en Attente
+        </span>
+    </div>
+
+    <div class="card-body p-4">
+        @if (Model.CertificationsEnAttente.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-borderless align-middle mb-0" style="width: 100%;">
+                    <thead class="bg-light">
+                        <tr>
+                            <th scope="col" class="text-start" style="width: 12%; font-size: 0.875rem; font-weight: bold;">Étudiant</th>
+                            <th scope="col" class="text-start" style="width: 12%; font-size: 0.875rem; font-weight: bold;">Cours</th>
+                            <th scope="col" class="text-start" style="width: 18%; font-size: 0.875rem; font-weight: bold;">Date Créée</th>
+                            <th scope="col" class="text-start" style="width: 10%; font-size: 0.875rem; font-weight: bold;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="pending-table">
+                        @foreach (var cert in Model.CertificationsEnAttente)
+                        {
+                            <tr data-id="@cert.Id">
+                                <td class="text-start" style="font-size: 0.8625rem;">@(cert.Etudiant?.Nom ?? "N/A")</td>
+                                <td class="text-start" style="font-size: 0.8625rem;">@(cert.Cours?.Titre ?? "N/A")</td>
+                                <td class="text-start" style="font-size: 0.8625rem;">@cert.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td class="text-start">
+                                    <button class="btn btn-success btn-round validate-cert" data-id="@cert.Id">Valider</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p>Aucun certificat en attente.</p>
+        }
+    </div>
+</div>
+
+<!-- Validated Certifications Section -->
+<div class="card m-4">
+    <div class="card-header d-flex ">
+        <span class="fw-extrabold fs-5 custom-title text-start">
+            <i class="fas fa-check me-2 text-success "></i> Certificats Validés
+        </span>
+    </div>
+    <div class="card-body p-0">
+        @if (Model.Certificationsvalide.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-borderless align-middle mb-0" style="width: 100%;">
+                    <thead class="bg-light">
+                        <tr>
+                            <th scope="col" class="text-start" style="width: 12%; font-size: 0.875rem; font-weight: bold;"></th>
+                            <th scope="col" class="text-start" style="width: 12%; font-size: 0.875rem; font-weight: bold;">Étudiant</th>
+                            <th scope="col" class="text-start" style="width: 12%; font-size: 0.875rem; font-weight: bold;">Cours</th>
+                            <th scope="col" class="text-start" style="width: 18%; font-size: 0.875rem; font-weight: bold;">Date Validée</th>
+                        </tr>
+                    </thead>
+                    <tbody class="validated-table">
+                        @foreach (var cert in Model.Certificationsvalide)
+                        {
+                            <tr>
+                                <td><i class="fas fa-certificate text-success"></i></td>
+                                <td class="text-start" style="font-size: 0.8625rem;">
+                                    @(cert.Etudiant?.Nom ?? "N/A")
+                                </td>
+                                <td class="text-start" style="font-size: 0.8625rem;">@(cert.Cours?.Titre ?? "N/A")</td>
+                                <td class="text-start" style="font-size: 0.8625rem;">@cert.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p>Aucun certificat validé.</p>
+        }
+    </div>
+</div>
+
+
+<!-- AJAX Script for Validation -->
+@section Scripts {
+    <script src="~/AdminAssets/js/core/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.validate-cert').click(function () {
+                var id = $(this).data('id');
+                var row = $('tr[data-id="' + id + '"]');
+
+                $.ajax({
+                    url: '/Admin/Validate',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (response) {
+                        if (response.success) {
+                            var studentName = row.find('td:nth-child(1)').text();
+                            var courseName = row.find('td:nth-child(2)').text();
+                            row.remove();
+                            var validatedDate = new Date().toLocaleString();
+                            $('.validated-table').prepend(
+                                '<tr><td>' + studentName + '</td><td>' + courseName + '</td><td>' + validatedDate + '</td></tr>'
+                            );
+                            var pendingCount = parseInt($('.pending-count').text());
+                            var validatedCount = parseInt($('.validated-count').text());
+                            $('.pending-count').text(pendingCount - 1);
+                            $('.validated-count').text(validatedCount + 1);
+                        } else {
+                            alert(response.message || 'Une erreur est survenue.');
+                        }
+                    },
+                    error: function () {
+                        alert('Une erreur est survenue lors de la requête.');
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -104,6 +104,21 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="@Url.Action("Certifications", "Admin")">
+                                <i class="fas fa-certificate"></i>
+                                <span  class="sub-item">Certifications</span>
+                                @* <span id="badge-certificat" class="badge badge-secondary">@ViewBag.pendingCertif</span> *@
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Paiement")">
+                                <i class="fas fa-credit-card"></i> 
+                                <span class="sub-item">Paiements</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="@Url.Action("buttons", "Admin")">
                                 <span class="sub-item">Buttons</span>
                             </a>
@@ -526,6 +541,29 @@
           lineColor: "#ffa534",
           fillColor: "rgba(255, 165, 52, .14)",
         });
+
+        $(document).ready(function () {
+    function updateBadge() {
+    $.ajax({
+    url: '@Url.Action("GetNombreDemandesCertificat", "Admin")',
+    type: 'GET',
+    success: function (data) {
+    $('#badge-certificat').text(data); // Met à jour le texte du badge
+    },
+    error: function () {
+    console.log("Erreur lors de la récupération du nombre de demandes.");
+    }
+    });
+    }
+
+    // Mettre à jour le badge toutes les 30 secondes
+    setInterval(updateBadge, 30000);
+
+    // Mettre à jour immédiatement au chargement de la page
+    updateBadge();
+    });
+
     </script>
+
 </body>
 </html>

@@ -39,13 +39,14 @@ namespace Elearning_Test.Controllers
                 TotalCertificatsEnAttente = _context.Certifications.Count(c => !c.Validate),
                 TotalCours = _context.Cours.Count(),
                 TotalInscriptions = _context.Enrollments.Count(),
-                CertifEnAttente = _context.Certifications.Where( c => !c.Validate).ToList(),
-                CertifValide = _context.Certifications.Where(c => c.Validate).ToList(),
+                CertifEnAttente = _context.Certifications.Where( c => !c.Validate).Take(5).ToList(),
+                CertifValide = _context.Certifications.Where(c => c.Validate).Take(5).ToList(),
                 // Statistiques d'activité
                 ParticipantsActifs = _context.Etudiants.Count(e => e.LastLogin >= DateTime.UtcNow.AddDays(-30)),
                 FormateursActifs = _context.Professeurs.Count(p => p.LastLogin >= DateTime.UtcNow.AddDays(-30)),
                 // Graphiques
                 InscriptionsParMois = GetInscriptionsParMois(),
+
                 //VisiteursParMois = GetVisiteursParMois(),
 
                 // Listes
@@ -86,6 +87,8 @@ namespace Elearning_Test.Controllers
 
             };
 
+            ViewBag.pendingCertif = _context.Certifications.Count(c => !c.Validate);
+
             return View(viewModel);
         }
 
@@ -118,6 +121,14 @@ namespace Elearning_Test.Controllers
                 .ToDictionary(x => x.NomCours, x => x.NombreEtudiants);
 
             return coursPopulaires;
+        }
+
+        [HttpGet]
+        public IActionResult GetNombreDemandesCertificat()
+        {
+            var nombreDemandesEnAttente = _context.Certifications
+                .Count(c => !c.Validate); // Compte les certifications non validées
+            return Json(nombreDemandesEnAttente);
         }
 
         [HttpPost]
@@ -314,5 +325,43 @@ namespace Elearning_Test.Controllers
         {
             return View("Components/Buttons");
         }
+
+        public IActionResult Certifications()
+        {
+            var certifications = _context.Certifications
+           .Include(c => c.Etudiant)
+           .Include(c => c.Cours)
+           .ToList();
+
+            var model = new CertifViewModel
+            {
+                Certificationsvalide = certifications.Where(c => c.Validate).ToList(),
+                CertificationsEnAttente = certifications.Where(c => !c.Validate).ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Validate(int id)
+        {
+            var certification = _context.Certifications.FirstOrDefault(c => c.Id == id);
+            if (certification != null && !certification.Validate)
+            {
+                certification.Validate = true;
+                certification.UpdatedAt = DateTime.UtcNow;
+                _context.SaveChanges();
+                return Json(new
+                {
+                    success = true
+                });
+            }
+            return Json(new
+            {
+                success = false,
+                message = "Certification not found or already validated."
+            });
+        }
+
     }
 }
