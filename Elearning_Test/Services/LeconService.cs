@@ -36,11 +36,11 @@ namespace Elearning_Test.Services
             }
         }
 
-        public async Task<Lecon> GetLeconByIdAsync(int leconId)
+        public async Task<Lecon?> GetLeconByIdAsync(int leconId)
         {
             return await _context.Lecons
-                .Include(l => l.Cours)
-                .FirstOrDefaultAsync(l => l.Id == leconId);
+                .Where(l => l.Id == leconId)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<Lecon>> GetLeconsByCoursIdAsync(int coursId)

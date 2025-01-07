@@ -1,6 +1,7 @@
 ﻿using Elearning_Test.Data;
 using Elearning_Test.Models;
 using Elearning_Test.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +15,14 @@ namespace Elearning_Test.Controllers
         private readonly ICategorieService _categorieService;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEtudiantService _etudiantService;
+        private readonly IEnrollmentService _enrollmentService;
 
         public MyHomeController(
             ICoursService coursService,
             ICategorieService categorieService,
             UserManager<IdentityUser> userManager,
             IEtudiantService etudiantService,
+            IEnrollmentService enrollmentService,
             ApplicationDbContext context
         )
         {
@@ -28,6 +31,7 @@ namespace Elearning_Test.Controllers
             _userManager = userManager;
             _etudiantService = etudiantService;
             _context = context;
+            _enrollmentService = enrollmentService;
         }
         [HttpGet]
         public async Task<IActionResult> homePage()
@@ -129,6 +133,7 @@ namespace Elearning_Test.Controllers
         //
 
         [HttpGet]
+        [Authorize(Roles = "Etudiant")]
         public async Task<IActionResult> InscriptionCours(int id)
         {
             // Vérifiez si le cours existe
@@ -150,6 +155,13 @@ namespace Elearning_Test.Controllers
             if (etudiant == null)
             {
                 return BadRequest("L'étudiant associé à cet utilisateur est introuvable.");
+            }
+            // Vérifiez si l'étudiant est déjà inscrit au cours
+            var estDejaInscrit = await _enrollmentService.EstEtudiantInscritAsync(etudiant.Id, cours.Id);
+            if (estDejaInscrit)
+            {
+                // Rediriger vers la page de suivi du cours
+                return RedirectToAction("Index", "FollowCourse", new { id = cours.Id });
             }
 
             // Préparez le modèle pour la vue
@@ -179,7 +191,7 @@ namespace Elearning_Test.Controllers
             if (existingEnrollment != null)
             {
                 ModelState.AddModelError(string.Empty, "Vous êtes déjà inscrit à ce cours.");
-                return RedirectToAction("homePage", "MyHome"); ;
+                return RedirectToAction("Index", "FollowCourse", new { id = IVM.Cours.Id });
             }
 
             // Créez une nouvelle instance de l'inscription
@@ -220,10 +232,8 @@ namespace Elearning_Test.Controllers
             }
 
             // Redirigez vers une page de confirmation ou une autre page
-            return RedirectToAction("homePage", "MyHome");
+            return RedirectToAction("Index","FollowCourse", new {id = IVM.Cours.Id});
         }
-
-
 
     }
 }
