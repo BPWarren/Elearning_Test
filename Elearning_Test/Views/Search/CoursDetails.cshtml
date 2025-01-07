@@ -1,0 +1,19 @@
+﻿@model Elearning_Test.Models.CoursDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Cours.Titre;
+    Layout = "~/Views/Shared/_ELayout.cshtml";
+}
+
+<h1>@Model.Cours.Titre</h1>
+<p>@Model.Cours.Description</p>
+
+<h2>Leçons</h2>
+<ul>
+    @foreach (var lecon in Model.Lecons)
+    {
+        <li>
+            <a href="#">@lecon.Titre</a> <!-- Lien vers les détails de la leçon si nécessaire -->
+        </li>
+    }
+</ul>

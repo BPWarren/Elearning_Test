@@ -103,4 +103,16 @@ namespace Elearning_Test.Models
         public int NombreCoursTermines { get; set; }
         public int ProgressionMoyenne { get; set; }
     }
+
+    public class CoursDetailsViewModel
+    {
+        public Cours? Cours { get; set; }
+        public List<Lecon>? Lecons { get; set; }
+    }
+
+    public class CategorieDetailsViewModel
+    {
+        public Categorie? Categorie { get; set; }
+        public List<Cours>? Cours { get; set; }
+    }
 }

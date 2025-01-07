@@ -1,0 +1,19 @@
+﻿@model Elearning_Test.Models.CategorieDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Categorie.Intitule;
+    Layout = "~/Views/Shared/_ELayout.cshtml";
+}
+
+<h1>@Model.Categorie.Intitule</h1>
+<p>@Model.Categorie.Description</p>
+
+<h2>Cours dans cette catégorie</h2>
+<ul>
+    @foreach (var cours in Model.Cours)
+    {
+        <li>
+            <a asp-controller="Search" asp-action="CoursDetails" asp-route-id="@cours.Id">@cours.Titre</a>
+        </li>
+    }
+</ul>
