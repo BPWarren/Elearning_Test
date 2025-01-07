@@ -1,0 +1,38 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<CoursViewModel2>
+
+@{
+    ViewData["Title"] = "Tableau de bord de l'étudiant";
+    Layout = "~/Views/Shared/_EtudDashboardLayout.cshtml";
+}
+
+<h1>Mes cours en cours</h1>
+
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var cours in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@cours.Titre</h5>
+                        <p class="card-text">@cours.Description</p>
+                        <div class="progress mb-3">
+                            <div class="progress-bar" role="progressbar" style="width: @cours.Progression%;" aria-valuenow="@cours.Progression" aria-valuemin="0" aria-valuemax="100">@cours.Progression%</div>
+                        </div>
+                        <a asp-action="ContinuerCours" asp-route-id="@cours.Id" class="btn btn-primary">Continuer</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">Vous n'êtes inscrit à aucun cours en cours.</div>
+}

@@ -1,0 +1,93 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@{
+    Layout = "~/Views/Shared/_ProfDashboardLayout.cshtml";
+}
+
+
+@model List<EtudiantsParCoursViewModel>
+
+@{
+    ViewData["Title"] = "Étudiants inscrits par cours";
+}
+
+<h1>Étudiants inscrits par cours</h1>
+
+@foreach (var cours in Model)
+{
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">@cours.CoursTitre</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Progression</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var etudiant in cours.Etudiants)
+                    {
+                        <tr>
+                            <td>@etudiant.Nom</td>
+                            <td>@etudiant.Prenom</td>
+                            <td>
+                                <!-- Graphique circulaire Bootstrap -->
+                                <div class="progress-circle" data-progress="@etudiant.Progression">
+                                    <span class="progress-value">@etudiant.Progression%</span>
+                                </div>
+                            </td>
+                            <td>
+                                @if (etudiant.IsCompleted)
+                                {
+                                    <span class="badge bg-success">Terminé</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">En cours</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<a asp-controller="Cours" asp-action="Index" class="btn btn-primary">Retour à la liste des cours</a>
+
+<style>
+    /* Styles pour le graphique circulaire */
+    .progress-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: conic-gradient(#007bff 0% var(--progress), #e9ecef var(--progress) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .progress-value {
+        font-size: 14px;
+        font-weight: bold;
+        color: #000;
+    }
+</style>
+
+<script>
+    // Script pour appliquer la progression aux graphiques circulaires
+    document.querySelectorAll('.progress-circle').forEach(circle => {
+        const progress = circle.getAttribute('data-progress');
+        circle.style.setProperty('--progress', `${progress}%`);
+    });
+</script>

@@ -64,4 +64,42 @@ namespace Elearning_Test.Models
 
     }
 
+
+    public class EtudiantsParCoursViewModel
+    {
+        public int CoursId { get; set; }
+        public string? CoursTitre { get; set; }
+        public List<EtudiantProgressionViewModel>? Etudiants { get; set; }
+    }
+    public class EtudiantProgressionViewModel
+    {
+        public string? EtudiantId { get; set; }
+        public string? Nom { get; set; }
+        public string? Prenom { get; set; }
+        public int Progression { get; set; }
+        public bool IsCompleted { get; set; }
+    }
+    public class StatistiquesCoursViewModel
+    {
+        public int CoursId { get; set; }
+        public string? CoursTitre { get; set; }
+        public int NombreEtudiants { get; set; }
+        public int ProgressionMoyenne { get; set; }
+        public int NombreTermines { get; set; }
+        public int NombreEnCours { get; set; }
+    }
+
+    public class CoursViewModel2
+    {
+        public int Id { get; set; }
+        public string Titre { get; set; }
+        public string Description { get; set; }
+        public int Progression { get; set; }
+    }
+    public class StatistiquesEtudiantViewModel
+    {
+        public int NombreCoursInscrits { get; set; }
+        public int NombreCoursTermines { get; set; }
+        public int ProgressionMoyenne { get; set; }
+    }
 }

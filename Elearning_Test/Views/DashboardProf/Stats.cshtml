@@ -1,0 +1,114 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+@model List<StatistiquesCoursViewModel>
+
+@{
+    ViewData["Title"] = "Statistiques des cours";
+}
+
+@{
+    Layout = "~/Views/Shared/_ProfDashboardLayout.cshtml";
+}
+
+<h1>Statistiques des cours</h1>
+
+@foreach (var stats in Model)
+{
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">@stats.CoursTitre</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Nombre d'étudiants -->
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">@stats.NombreEtudiants</h5>
+                            <p class="card-text">Étudiants inscrits</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progression moyenne -->
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">@stats.ProgressionMoyenne%</h5>
+                            <p class="card-text">Progression moyenne</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nombre de cours terminés -->
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">@stats.NombreTermines</h5>
+                            <p class="card-text">Cours terminés</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nombre de cours en cours -->
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">@stats.NombreEnCours</h5>
+                            <p class="card-text">Cours en cours</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Graphique de répartition des étudiants -->
+            <div class="mt-4">
+                <canvas id="chart-@stats.CoursId" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Script pour les graphiques -->
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        @foreach (var stats in Model)
+        {
+            <text>
+                    var ctx = document.getElementById('chart-@stats.CoursId').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Terminés', 'En cours'],
+                            datasets: [{
+                                label: 'Répartition des étudiants',
+                                data: [@stats.NombreTermines, @stats.NombreEnCours],
+                                backgroundColor: [
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(255, 206, 86, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+            </text>
+        }
+    </script>
+}
