@@ -21,17 +21,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="DashboardEtudiant" asp-action="Index">
+                        <a class="nav-link" asp-controller="MyHome" asp-action="homePage">
                             <i class="fas fa-home me-1"></i>Accueil
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="FollowCourse" asp-action="Index">
+                        <a class="nav-link" asp-controller="DashboardEtudiant" asp-action="Index">
                             <i class="fas fa-book me-1"></i>Mes Cours
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Evaluation" asp-action="Index">
+                        <a class="nav-link" asp-controller="DashboardEtudiant" asp-action="Evaluation">
                             <i class="fas fa-clipboard-check me-1"></i>Évaluations
                         </a>
                     </li>
@@ -68,7 +68,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="FollowCourse" asp-action="Index">
+                            <a class="nav-link" asp-controller="DashboardEtudiant" asp-action="Index">
                                 <i class="fas fa-book me-2"></i>Mes Cours
                             </a>
                         </li>
@@ -78,8 +78,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-chart-line me-2"></i>Progression
+                            <a class="nav-link" asp-controller="DashboardEtudiant" asp-action="Statistiques">
+                                <i class="fas fa-chart-line me-2"></i>Statistiques
                             </a>
                         </li>
                     </ul>

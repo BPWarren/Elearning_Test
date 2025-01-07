@@ -180,7 +180,53 @@ namespace Elearning_Test.Controllers
             cvm.Categories = _context.Categories.ToList();
             return View(cvm);
         }
+        [HttpGet]
+        public async Task<IActionResult> EtudiantsParCours()
+        {
+            // Récupérer l'ID du professeur connecté
+            var userId = _userManager.GetUserId(User);
 
+            // Récupérer les cours créés par ce professeur
+            var cours = await _context.Cours
+                .Where(c => c.ProfesseurId == userId)
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Titre
+                })
+                .ToListAsync();
+
+            // Récupérer les étudiants inscrits à ces cours avec leur progression
+            var etudiantsParCours = new List<EtudiantsParCoursViewModel>();
+
+            foreach (var coursItem in cours)
+            {
+                var etudiants = await _context.Enrollments
+                    .Where(e => e.CoursId == coursItem.Id)
+                    .Join(_context.Etudiants,
+                          enrollment => enrollment.EtudiantId,
+                          etudiant => etudiant.Id,
+                          (enrollment, etudiant) => new EtudiantProgressionViewModel
+                          {
+                              EtudiantId = etudiant.Id,
+                              Nom = etudiant.Nom,
+                              Prenom = etudiant.Prenom,
+                              Progression = enrollment.Progression,
+                              IsCompleted = enrollment.IsCompleted
+                          })
+                    .ToListAsync();
+
+                etudiantsParCours.Add(new EtudiantsParCoursViewModel
+                {
+                    CoursId = coursItem.Id,
+                    CoursTitre = coursItem.Titre,
+                    Etudiants = etudiants
+                });
+            }
+
+            // Passer les données à la vue
+            return View(etudiantsParCours);
+        }
 
         // Supprimer un cours
         // GET: Confirm deletion of a course
@@ -356,6 +402,51 @@ namespace Elearning_Test.Controllers
 
             // Si le modèle n'est pas valide ou s'il y a une erreur, réafficher le formulaire de modification
             return View(lvm);
+        }
+
+        //Statistiques
+        public async Task<IActionResult> Stats()
+        {
+            // Récupérer l'ID du professeur connecté
+            var userId = _userManager.GetUserId(User);
+
+            // Récupérer les cours créés par ce professeur
+            var cours = await _context.Cours
+                .Where(c => c.ProfesseurId == userId)
+                .Select(c => new
+                {
+                    c.Id,
+                    c.Titre
+                })
+                .ToListAsync();
+
+            // Calculer les statistiques
+            var statistiques = new List<StatistiquesCoursViewModel>();
+
+            foreach (var coursItem in cours)
+            {
+                // Récupérer les inscriptions pour ce cours
+                var enrollments = await _context.Enrollments
+                    .Where(e => e.CoursId == coursItem.Id)
+                    .ToListAsync();
+
+                // Calculer la progression moyenne
+                var progressionMoyenne = enrollments.Any() ? enrollments.Average(e => e.Progression) : 0;
+
+                // Ajouter les statistiques pour ce cours
+                statistiques.Add(new StatistiquesCoursViewModel
+                {
+                    CoursId = coursItem.Id,
+                    CoursTitre = coursItem.Titre,
+                    NombreEtudiants = enrollments.Count,
+                    ProgressionMoyenne = (int)progressionMoyenne,
+                    NombreTermines = enrollments.Count(e => e.IsCompleted),
+                    NombreEnCours = enrollments.Count(e => !e.IsCompleted)
+                });
+            }
+
+            // Passer les données à la vue
+            return View(statistiques);
         }
 
         [HttpPost]
