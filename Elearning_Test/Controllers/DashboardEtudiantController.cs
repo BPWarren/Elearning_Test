@@ -39,15 +39,16 @@ namespace Elearning_Test.Controllers
                     })
                 .ToListAsync();
 
-            // Récupérer les certificats validés de l'étudiant
+            // Récupérer les certificats de l'étudiant
             var certificats = await _context.Certifications
-                .Where(c => c.EtudiantId == userId && c.Validate)
+                .Where(c => c.EtudiantId == userId)
                 .Select(c => new CertificatViewModel
                 {
                     CertificationId = c.Id,
                     CoursId = c.CoursId,
                     CoursTitre = c.Cours.Titre,
-                    DateValidation = c.UpdatedAt
+                    DateValidation = c.UpdatedAt,
+                    EstEnAttente = !c.Validate // Certificat en attente si non validé
                 })
                 .ToListAsync();
 

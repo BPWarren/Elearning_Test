@@ -55,7 +55,14 @@ else
                         }
                         @if (certificat != null)
                         {
-                            <a asp-action="TelechargerCertificat" asp-route-id="@certificat.CertificationId" class="btn btn-warning mt-2">Télécharger Certificat</a>
+                            if (certificat.EstEnAttente)
+                            {
+                                <div class="alert alert-warning mt-2">En attente de validation</div>
+                            }
+                            else
+                            {
+                                <a asp-action="TelechargerCertificat" asp-route-id="@certificat.CertificationId" class="btn btn-warning mt-2">Télécharger Certificat</a>
+                            }
                         }
                         else
                         {

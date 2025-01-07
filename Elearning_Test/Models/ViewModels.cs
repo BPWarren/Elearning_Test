@@ -137,8 +137,9 @@ namespace Elearning_Test.Models
         public int CoursId { get; set; }
         public string? CoursTitre { get; set; }
         public DateTime DateValidation { get; set; }
+        public bool EstEnAttente { get; set; } // Nouvelle propriété
     }
-  
+
     public class EvaluationViewModel
     {
         public int Id { get; set; } // ID de l'évaluation
