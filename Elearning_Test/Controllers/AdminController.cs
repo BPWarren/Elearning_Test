@@ -27,28 +27,67 @@ namespace Elearning_Test.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+
         public IActionResult Index()
         {
             var viewModel = new DashboardViewModel
             {
-                // Récupérer le nombre total d'étudiants
+                // Statistiques principales
                 TotalEtudiants = _context.Etudiants.Count(),
-
-                // Récupérer le nombre total de professeurs
                 TotalProfesseurs = _context.Professeurs.Count(),
-
-                // Récupérer le nombre total de cours
+                TotalCertificatsValides = _context.Certifications.Count(c => c.Validate),
+                TotalCertificatsEnAttente = _context.Certifications.Count(c => !c.Validate),
                 TotalCours = _context.Cours.Count(),
-
-                // Récupérer le nombre total de certificats délivrés
-                TotalCertificats = _context.Certifications.Count(),
-
-                // Récupérer les inscriptions par mois
+                TotalInscriptions = _context.Enrollments.Count(),
+                CertifEnAttente = _context.Certifications.Where( c => !c.Validate).Take(5).ToList(),
+                CertifValide = _context.Certifications.Where(c => c.Validate).Take(5).ToList(),
+                // Statistiques d'activité
+                ParticipantsActifs = _context.Etudiants.Count(e => e.LastLogin >= DateTime.UtcNow.AddDays(-30)),
+                FormateursActifs = _context.Professeurs.Count(p => p.LastLogin >= DateTime.UtcNow.AddDays(-30)),
+                // Graphiques
                 InscriptionsParMois = GetInscriptionsParMois(),
 
-                // Récupérer les cours les plus populaires
-                CoursPopulaires = GetCoursPopulaires()
+                //VisiteursParMois = GetVisiteursParMois(),
+
+                // Listes
+                NouveauxEtudiants = _context.Etudiants
+                    .OrderByDescending(e => e.CreatedAt)
+                    .Take(5)
+                    .ToList(),
+                NouveauxCours = _context.Cours
+                    .OrderByDescending(c => c.CreatedAt)
+                    .Take(5)
+                    .ToList(),
+
+                // Autres éléments essentiels
+                //TotalVisiteurs = _context.Visitors.Count(),
+                TotalPaiements = _context.Payments.Count(),
+                RevenuTotal = _context.Payments.Sum(p => p.Amount),
+                CoursPopulaires = GetCoursPopulaires(),
+
+                // Utilisateurs en ligne
+                EtudiantsEnLigne = _context.Etudiants
+        .Where(e => e.IsConnected)
+        .Select(e => new UserInfo
+        {
+            Nom = e.Nom,
+            Prenom = e.Prenom,
+            Email = e.Email
+        })
+        .ToList(),
+                ProfesseursEnLigne = _context.Professeurs
+        .Where(p => p.IsConnected)
+        .Select(p => new UserInfo
+        {
+            Nom = p.Nom,
+            Prenom = p.Prenom,
+            Email = p.Email
+        })
+        .ToList()
+
             };
+
+            ViewBag.pendingCertif = _context.Certifications.Count(c => !c.Validate);
 
             return View(viewModel);
         }
@@ -68,11 +107,10 @@ namespace Elearning_Test.Controllers
             return inscriptionsParMois;
         }
 
-        // Méthode pour récupérer les cours les plus populaires
         private Dictionary<string, int> GetCoursPopulaires()
         {
             var coursPopulaires = _context.Enrollments
-                .GroupBy(i => i.Cours.Titre)
+                .GroupBy(e => e.Cours.Titre)
                 .Select(g => new
                 {
                     NomCours = g.Key,
@@ -84,6 +122,42 @@ namespace Elearning_Test.Controllers
 
             return coursPopulaires;
         }
+
+        [HttpGet]
+        public IActionResult GetNombreDemandesCertificat()
+        {
+            var nombreDemandesEnAttente = _context.Certifications
+                .Count(c => !c.Validate); // Compte les certifications non validées
+            return Json(nombreDemandesEnAttente);
+        }
+
+        [HttpPost]
+        public IActionResult ValiderCertification(int certificationId)
+        {
+            var certification = _context.Certifications.Find(certificationId);
+            if (certification != null)
+            {
+                certification.Validate = true;
+                certification.UpdatedAt = DateTime.UtcNow;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index"); // Redirige vers le tableau de bord après validation
+        }
+        // Méthode pour récupérer les visiteurs par mois
+        //private Dictionary<string, int> GetVisiteursParMois()
+        //{
+        //    var visiteursParMois = _context.Visitors
+        //        .GroupBy(v => new { v.VisitDate.Year, v.VisitDate.Month })
+        //        .Select(g => new
+        //        {
+        //            Mois = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MM/yyyy"),
+        //            NombreVisiteurs = g.Count()
+        //        })
+        //        .ToDictionary(x => x.Mois, x => x.NombreVisiteurs);
+
+        //    return visiteursParMois;
+        //}
 
         // Afficher la liste des admins
         public async Task<IActionResult> AllAdmin()
@@ -251,5 +325,43 @@ namespace Elearning_Test.Controllers
         {
             return View("Components/Buttons");
         }
+
+        public IActionResult Certifications()
+        {
+            var certifications = _context.Certifications
+           .Include(c => c.Etudiant)
+           .Include(c => c.Cours)
+           .ToList();
+
+            var model = new CertifViewModel
+            {
+                Certificationsvalide = certifications.Where(c => c.Validate).ToList(),
+                CertificationsEnAttente = certifications.Where(c => !c.Validate).ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Validate(int id)
+        {
+            var certification = _context.Certifications.FirstOrDefault(c => c.Id == id);
+            if (certification != null && !certification.Validate)
+            {
+                certification.Validate = true;
+                certification.UpdatedAt = DateTime.UtcNow;
+                _context.SaveChanges();
+                return Json(new
+                {
+                    success = true
+                });
+            }
+            return Json(new
+            {
+                success = false,
+                message = "Certification not found or already validated."
+            });
+        }
+
     }
 }

@@ -60,7 +60,7 @@ namespace CompleteRoles.Controllers
                     await _dbContext.SaveChangesAsync(); // Sauvegarder dans la base de données
                 }
 
-                return RedirectToAction("AllAdmin", "Admin");
+                return RedirectToAction("Index", "Admin");
             }
             else
             {
