@@ -92,6 +92,8 @@ namespace CompleteRoles.Controllers
                         professeur.LastLogin = DateTime.UtcNow;
                         professeur.IsConnected = true;  // Mise à jour du champ IsConnected
                         await _dbContext.SaveChangesAsync();  // Sauvegarde de la mise à jour
+                        return RedirectToAction("Index", "DashboardProf");
+
                     }
                     // Si l'utilisateur est un Participant
                     else if (user is Etudiant participant)
@@ -100,8 +102,8 @@ namespace CompleteRoles.Controllers
                         participant.IsConnected = true;  // Mise à jour du champ IsConnected
                         await _dbContext.SaveChangesAsync();  // Sauvegarde de la mise à jour
                     }
-
                     return RedirectToAction("homePage", "MyHome");
+
                 }
             }
            
