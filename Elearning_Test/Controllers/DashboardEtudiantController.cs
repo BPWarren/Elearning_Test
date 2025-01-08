@@ -4,6 +4,17 @@ using Elearning_Test.Data;
 using Elearning_Test.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Properties;
+using iText.Layout.Element;
+using iText.IO.Font;
+using iText.Kernel.Font;
+using System.Drawing;
+using System.IO;
+using iText.IO.Font.Constants;
+using iText.Kernel.Pdf.Canvas.Draw;
+using iText.Layout.Borders;
 
 namespace Elearning_Test.Controllers
 {
@@ -161,6 +172,7 @@ namespace Elearning_Test.Controllers
             return RedirectToAction("Index"); // Rediriger vers le tableau de bord
         }
 
+
         public async Task<IActionResult> TelechargerCertificat(int id)
         {
             // Récupérer l'ID de l'étudiant connecté
@@ -184,24 +196,158 @@ namespace Elearning_Test.Controllers
                 return NotFound("Cours associé au certificat non trouvé.");
             }
 
+            // Récupérer les informations de l'étudiant
+            var etudiant = await _context.Etudiants
+                .FirstOrDefaultAsync(e => e.Id == certification.EtudiantId);
+
+            if (etudiant == null)
+            {
+                return NotFound("Étudiant associé au certificat non trouvé.");
+            }
+
             // Générer le certificat (par exemple, un PDF)
-            var certificatContent = GenererCertificat(certification, cours);
+            var certificatContent = GenererCertificat(certification, cours, etudiant);
 
             // Retourner le fichier à télécharger
             return File(certificatContent, "application/pdf", $"Certificat_{cours.Titre}.pdf");
         }
 
-        private byte[] GenererCertificat(Certification certification, Cours cours)
-        {
-            // Ici, vous pouvez utiliser une bibliothèque comme iTextSharp ou QuestPDF pour générer un PDF
-            // Ceci est un exemple simplifié
-            var certificatText = $"Certificat de réussite\n\n" +
-                                 $"Étudiant: {certification.EtudiantId}\n" + // Vous pouvez récupérer le nom de l'étudiant si nécessaire
-                                 $"Cours: {cours.Titre}\n" +
-                                 $"Date de validation: {certification.UpdatedAt.ToShortDateString()}\n";
 
-            return System.Text.Encoding.UTF8.GetBytes(certificatText);
+
+
+
+        private byte[] GenererCertificat(Certification certification, Cours cours, Etudiant etudiant)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                // Créer un document PDF
+                var writer = new PdfWriter(memoryStream);
+                var pdf = new PdfDocument(writer);
+                var document = new Document(pdf);
+
+                // Définir un fond blanc
+                document.SetBackgroundColor(iText.Kernel.Colors.ColorConstants.WHITE);
+
+                // Charger les polices personnalisées (remplacez par vos polices si nécessaire)
+                var fontPath = Path.Combine(Directory.GetCurrentDirectory(), "Fonts", "Roboto-Regular.ttf");
+                var boldFontPath = Path.Combine(Directory.GetCurrentDirectory(), "Fonts", "Roboto-Bold.ttf");
+                var italicFontPath = Path.Combine(Directory.GetCurrentDirectory(), "Fonts", "Roboto-Italic.ttf");
+
+                var font = PdfFontFactory.CreateFont(fontPath, PdfEncodings.IDENTITY_H);
+                var boldFont = PdfFontFactory.CreateFont(boldFontPath, PdfEncodings.IDENTITY_H);
+                var italicFont = PdfFontFactory.CreateFont(italicFontPath, PdfEncodings.IDENTITY_H);
+
+                // Titre du certificat
+                document.Add(new Paragraph("CERTIFICAT DE RÉUSSITE")
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .SetFontSize(32)
+                    .SetFont(boldFont)
+                    .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK)
+                    .SetMarginTop(40));
+
+                document.Add(new Paragraph("\n"));
+
+                // Ligne de séparation décorative
+                var line = new LineSeparator(new SolidLine(1f))
+                    .SetWidth(300)
+                    .SetHorizontalAlignment(HorizontalAlignment.CENTER)
+                    .SetMarginBottom(20);
+                document.Add(line);
+
+                // Texte principal
+                document.Add(new Paragraph("Ce certificat est décerné à")
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .SetFontSize(20)
+                    .SetFont(italicFont)
+                    .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK));
+
+                document.Add(new Paragraph($"{etudiant.Nom} {etudiant.Prenom}")
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .SetFontSize(28)
+                    .SetFont(boldFont)
+                    .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK)
+                    .SetMarginBottom(20));
+
+                document.Add(new Paragraph("pour avoir démontré une excellence académique")
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .SetFontSize(20)
+                    .SetFont(italicFont)
+                    .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK));
+
+                document.Add(new Paragraph($"dans le cours : {cours.Titre}")
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .SetFontSize(20)
+                    .SetFont(italicFont)
+                    .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK));
+
+                document.Add(new Paragraph($"Date de validation : {certification.UpdatedAt.ToShortDateString()}")
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .SetFontSize(18)
+                    .SetFont(font)
+                    .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK)
+                    .SetMarginBottom(40));
+
+                // Ligne de séparation décorative
+                var line2 = new LineSeparator(new SolidLine(1f))
+                    .SetWidth(300)
+                    .SetHorizontalAlignment(HorizontalAlignment.CENTER)
+                    .SetMarginBottom(20);
+                document.Add(line2);
+
+                // Ajouter un badge ou un sceau en bas du certificat
+                var sealPath = Path.Combine(Directory.GetCurrentDirectory(), "CertifImages", "gold-seal.png");
+                if (System.IO.File.Exists(sealPath))
+                {
+                    var seal = new iText.Layout.Element.Image(iText.IO.Image.ImageDataFactory.Create(sealPath))
+                        .SetWidth(120) // Taille du sceau
+                        .SetHorizontalAlignment(HorizontalAlignment.CENTER)
+                        .SetMarginBottom(20); // Espacement en bas
+                    document.Add(seal);
+                }
+
+                // Section des signatures (Doyen à gauche, Proviseur à droite)
+                var table = new Table(2) // 2 colonnes
+                    .UseAllAvailableWidth()
+                    .SetMarginTop(20)
+                    .SetBorder(Border.NO_BORDER); // Supprimer les bordures du tableau
+
+                // Colonne de gauche : Doyen
+                table.AddCell(new Cell()
+                    .SetBorder(Border.NO_BORDER) // Supprimer les bordures de la cellule
+                    .SetTextAlignment(TextAlignment.LEFT)
+                    .Add(new Paragraph("GABA Kossi Martinien")
+                        .SetFontSize(16)
+                        .SetFont(font)
+                        .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK))
+                    .Add(new Paragraph("Doyen de l'université")
+                        .SetFontSize(14)
+                        .SetFont(italicFont)
+                        .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK)));
+
+                // Colonne de droite : Proviseur
+                table.AddCell(new Cell()
+                    .SetBorder(Border.NO_BORDER) // Supprimer les bordures de la cellule
+                    .SetTextAlignment(TextAlignment.RIGHT)
+                    .Add(new Paragraph("QUIDAH Deserema Espoir")
+                        .SetFontSize(16)
+                        .SetFont(font)
+                        .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK))
+                    .Add(new Paragraph("Proviseure")
+                        .SetFontSize(14)
+                        .SetFont(italicFont)
+                        .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK)));
+
+                document.Add(table);
+
+                // Fermer le document
+                document.Close();
+
+                // Retourner le contenu du PDF sous forme de tableau de bytes
+                return memoryStream.ToArray();
+            }
         }
+
+
 
         public async Task<IActionResult> Evaluations()
         {
