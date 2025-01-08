@@ -49,6 +49,11 @@ namespace Elearning_Test.Areas.Identity.Pages.Account
                     participant.IsConnected = false; // Mettre à jour IsConnected
                     await _dbContext.SaveChangesAsync(); // Sauvegarder dans la base de données
                 }
+                else if (user is Admin admin)
+                {
+                    admin.IsConnected = false; // Mettre à jour IsConnected
+                    await _dbContext.SaveChangesAsync(); // Sauvegarder dans la base de données
+                }
             }
 
             await _signInManager.SignOutAsync(); // Déconnexion de l'utilisateur
