@@ -3,25 +3,37 @@
 *@
 @{
 }
-
-@model Elearning_Test.Models.CategorieDetailsViewModel
-
-@{
-    ViewData["Title"] = "Détails de la catégorie";
-}
 @{
     Layout = "~/Views/Shared/_ELayout.cshtml";
 }
+@model Elearning_Test.Models.SearchResultsViewModel
 
-<h2>@Model.Categorie.Intitule</h2>
 
-<p>@Model.Categorie.Description</p>
+<h2>Résultats de la recherche pour "@Model.Query"</h2>
 
-<h3>Cours associés</h3>
+@if (Model.Categories.Any())
+{
+    <h3>Catégories</h3>
+    <div class="row g-4">
+        @foreach (var categorie in Model.Categories)
+        {
+            <div class="col-lg-5 col-md-6 wow zoomIn" data-wow-delay="0.7s" style="min-height: 350px;">
+                <a class="position-relative d-block h-100 overflow-hidden" asp-action="CategorieDetails" asp-route-id="@categorie.Id">
+                    <img class="img-fluid position-absolute w-100 h-100" src="@categorie.ImageFile" alt="" style="object-fit: cover;">
+                    <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin:  1px;">
+                        <h5 class="m-0">@categorie.Intitule</h5>
+                        <small class="text-primary">49 Courses</small>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+}
 
 @if (Model.Cours.Any())
 {
-       <div class="row g-4 justify-content-center">
+    <h3>Cours</h3>
+    <div class="row g-4 justify-content-center">
         @foreach (var cours in Model.Cours)
         {
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -57,7 +69,8 @@
         }
     </div>
 }
-else
+
+@if (!Model.Categories.Any() && !Model.Cours.Any())
 {
-    <p>Aucun cours disponible dans cette catégorie.</p>
+    <p>Aucun résultat trouvé pour "@Model.Query".</p>
 }

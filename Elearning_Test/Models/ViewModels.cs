@@ -147,4 +147,12 @@ namespace Elearning_Test.Models
         public string? Contenu { get; set; } // Contenu de l'évaluation
         public DateTime DateEvaluation { get; set; } // Date de l'évaluation
     }
+    public class SearchResultsViewModel
+    {
+        public List<Categorie>? Categories { get; set; }
+        public List<Cours>? Cours { get; set; }
+        public string? Query { get; set; }
+    }
+
+
 }

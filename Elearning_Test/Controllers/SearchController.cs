@@ -1,4 +1,5 @@
 ﻿
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Elearning_Test.Data;
@@ -18,33 +19,39 @@ namespace Elearning_Test.Controllers
             _context = context;
         }
 
-        // Action pour la recherche avec autocomplétion
+        // Action pour la recherche
         public async Task<IActionResult> Search(string query)
         {
             if (string.IsNullOrEmpty(query))
             {
-                return Json(new { categories = new List<Categorie>(), cours = new List<Cours>() });
+                // Si la requête est vide, retourner une vue vide
+                return View(new SearchResultsViewModel { Categories = new List<Categorie>(), Cours = new List<Cours>(), Query = query });
             }
 
             // Rechercher les catégories correspondantes
             var categories = await _context.Categories
                 .Where(c => c.Intitule.Contains(query))
-                .Select(c => new { c.Id, c.Intitule })
                 .ToListAsync();
 
             // Rechercher les cours correspondants
             var cours = await _context.Cours
                 .Where(c => c.Titre.Contains(query) || c.Description.Contains(query))
-                .Select(c => new { c.Id, c.Titre, c.Description })
                 .ToListAsync();
 
-            // Retourner les résultats au format JSON
-            return Json(new { categories, cours });
+            // Passer les résultats à la vue
+            var viewModel = new SearchResultsViewModel
+            {
+                Categories = categories,
+                Cours = cours,
+                Query = query
+            };
+
+            return View(viewModel);
         }
 
+        // Action pour afficher les détails d'une catégorie
         public async Task<IActionResult> CategorieDetails(int id)
         {
-            // Récupérer la catégorie
             var categorie = await _context.Categories
                 .FirstOrDefaultAsync(c => c.Id == id);
 
@@ -53,12 +60,10 @@ namespace Elearning_Test.Controllers
                 return NotFound();
             }
 
-            // Récupérer les cours associés à cette catégorie
             var cours = await _context.Cours
                 .Where(c => c.CategorieId == id)
                 .ToListAsync();
 
-            // Passer les données à la vue
             var viewModel = new CategorieDetailsViewModel
             {
                 Categorie = categorie,
@@ -68,30 +73,5 @@ namespace Elearning_Test.Controllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> CoursDetails(int id)
-        {
-            // Récupérer le cours
-            var cours = await _context.Cours
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-            if (cours == null)
-            {
-                return NotFound();
-            }
-
-            // Récupérer les leçons associées à ce cours
-            var lecons = await _context.Lecons
-                .Where(l => l.CoursId == id)
-                .ToListAsync();
-
-            // Passer les données à la vue
-            var viewModel = new CoursDetailsViewModel
-            {
-                Cours = cours,
-                Lecons = lecons
-            };
-
-            return View(viewModel);
-        }
     }
 }

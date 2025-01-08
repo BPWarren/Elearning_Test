@@ -94,9 +94,9 @@
                 <a href="@Url.Action("contactUs", "MyHome")" class="nav-item nav-link">Contact</a>
 
                 <!-- Barre de recherche améliorée -->
-                <form class="d-flex align-items-center ms-3" id="searchForm">
+                <form class="d-flex align-items-center ms-3" id="searchForm" method="get" action="@Url.Action("Search", "Search")">
                     <div class="input-group">
-                        <input class="form-control" type="search" id="searchQuery" placeholder="Rechercher un cours ou une catégorie" aria-label="Search">
+                        <input class="form-control" type="search" id="searchQuery" name="query" placeholder="Rechercher un cours ou une catégorie" aria-label="Search">
                         <button class="btn btn-outline-primary" type="submit">
                             <i class="fa fa-search"></i> <!-- Icône de recherche -->
                         </button>
@@ -210,65 +210,7 @@
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
 
-    <script>
-               document.getElementById('searchQuery').addEventListener('input', function () {
-            const query = this.value;
-
-            if (query.length >= 2) { // Démarrer la recherche après 2 caractères
-                fetch(`/Search/Search?query=${query}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const resultsContainer = document.getElementById('searchResults');
-                        resultsContainer.innerHTML = ''; // Effacer les résultats précédents
-
-                        // Afficher les catégories
-                        if (data.categories.length > 0) {
-                            const categoryHeader = document.createElement('div');
-                            categoryHeader.className = 'dropdown-header';
-                            categoryHeader.textContent = 'Catégories';
-                            resultsContainer.appendChild(categoryHeader);
-
-                            data.categories.forEach(category => {
-                                const categoryItem = document.createElement('a');
-                                categoryItem.className = 'dropdown-item';
-                                categoryItem.href = `/Search/CategorieDetails/${category.Id}`; // Nouvelle route
-                                categoryItem.textContent = category.Intitule;
-                                resultsContainer.appendChild(categoryItem);
-                            });
-                        }
-
-                        // Afficher les cours
-                        if (data.cours.length > 0) {
-                            const courseHeader = document.createElement('div');
-                            courseHeader.className = 'dropdown-header';
-                            courseHeader.textContent = 'Cours';
-                            resultsContainer.appendChild(courseHeader);
-
-                            data.cours.forEach(cours => {
-                                const courseItem = document.createElement('a');
-                                courseItem.className = 'dropdown-item';
-                                courseItem.href = `/Search/CoursDetails/${cours.Id}`; // Nouvelle route
-                                courseItem.textContent = cours.Titre;
-                                resultsContainer.appendChild(courseItem);
-                            });
-                        }
-
-                        // Afficher la liste déroulante
-                        resultsContainer.style.display = 'block';
-                    });
-            } else {
-                document.getElementById('searchResults').style.display = 'none';
-            }
-        });
-
-        // Masquer les résultats lorsqu'on clique en dehors
-        document.addEventListener('click', function (event) {
-            const searchResults = document.getElementById('searchResults');
-            if (event.target !== document.getElementById('searchQuery')) {
-                searchResults.style.display = 'none';
-            }
-        });
-    </script>
+  
     @await RenderSectionAsync("Scripts", required: false)
 
 

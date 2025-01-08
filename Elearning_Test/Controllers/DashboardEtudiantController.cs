@@ -339,6 +339,40 @@ namespace Elearning_Test.Controllers
 
                 document.Add(table);
 
+                // Ajouter les noms du CEO et du Manager
+                var table2 = new Table(2) // 2 colonnes
+                    .UseAllAvailableWidth()
+                    .SetMarginTop(20)
+                    .SetBorder(Border.NO_BORDER); // Supprimer les bordures du tableau
+
+                // Colonne de gauche : CEO
+                table2.AddCell(new Cell()
+                    .SetBorder(Border.NO_BORDER)
+                    .SetTextAlignment(TextAlignment.LEFT)
+                    .Add(new Paragraph("ABODJI Kondi Kalèd")
+                        .SetFontSize(16)
+                        .SetFont(font)
+                        .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK))
+                    .Add(new Paragraph("CEO")
+                        .SetFontSize(14)
+                        .SetFont(italicFont)
+                        .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK)));
+
+                // Colonne de droite : Manager
+                table2.AddCell(new Cell()
+                    .SetBorder(Border.NO_BORDER)
+                    .SetTextAlignment(TextAlignment.RIGHT)
+                    .Add(new Paragraph("BOHM François D'Assise Maxwell")
+                        .SetFontSize(16)
+                        .SetFont(font)
+                        .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK))
+                    .Add(new Paragraph("Manager")
+                        .SetFontSize(14)
+                        .SetFont(italicFont)
+                        .SetFontColor(iText.Kernel.Colors.ColorConstants.BLACK)));
+
+                document.Add(table2);
+
                 // Fermer le document
                 document.Close();
 
