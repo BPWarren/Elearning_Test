@@ -9,84 +9,93 @@
 <!-- Carousel Start -->
 <div class="container-fluid p-0 mb-5">
     <div class="owl-carousel header-carousel position-relative">
+        <!-- Premier Slide -->
         <div class="owl-carousel-item position-relative">
-            <img class="img-fluid" src="~/img/carousel-1.jpg" alt="">
+            <img class="img-fluid" src="~/img/carousel-1.jpg" alt="Learn Anytime, Anywhere">
             <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
                 <div class="container">
                     <div class="row justify-content-start">
                         <div class="col-sm-10 col-lg-8">
-                            <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Best Online Courses</h5>
-                            <h1 class="display-3 text-white animated slideInDown">The Best Online Learning Platform</h1>
-                            <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus eirmod elitr.</p>
-                            <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
+                            <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Empowering Learning</h5>
+                            <h1 class="display-3 text-white animated slideInDown">Unlock Your Potential with Online Education</h1>
+                            <p class="fs-5 text-white mb-4 pb-2">Join our global community and access high-quality courses designed to help you achieve your goals, all from the comfort of your home.</p>
+                            <a href="#aboutus" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Learn More</a>
+                            <a href="@Url.Action("ChoseConnection", "MyHome")" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deuxième Slide -->
+        <div class="owl-carousel-item position-relative">
+            <img class="img-fluid" src="~/img/carousel-2.jpg" alt="Learn with Top Instructors">
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-sm-10 col-lg-8">
+                            <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Quality Education</h5>
+                            <h1 class="display-3 text-white animated slideInDown">Learn Anytime, Anywhere</h1>
+                            <p class="fs-5 text-white mb-4 pb-2">Our platform offers flexible online courses tailored to your needs, with certificates recognized worldwide.</p>
+                            <a href="@Url.Action("CoursesPage", "MyHome")" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Explore Courses</a>
                             <a href="@Url.Action("ChoseConnection", "MyHome")" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="owl-carousel-item position-relative">
-            <img class="img-fluid" src="~/img/carousel-2.jpg" alt="">
-            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
-                <div class="container">
-                    <div class="row justify-content-start">
-                        <div class="col-sm-10 col-lg-8">
-                            <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Best Online Courses</h5>
-                            <h1 class="display-3 text-white animated slideInDown">Get Educated Online From Your Home</h1>
-                            <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus eirmod elitr.</p>
-                            <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                            <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
+
 <!-- Carousel End -->
 <!-- Service Start -->
 <div class="container-xxl py-5">
     <div class="container">
         <div class="row g-4">
+            <!-- Skilled Instructors -->
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="service-item text-center pt-3">
                     <div class="p-4">
                         <i class="fa fa-3x fa-graduation-cap text-primary mb-4"></i>
                         <h5 class="mb-3">Skilled Instructors</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <p>Learn from certified experts who are passionate about teaching and mentoring.</p>
                     </div>
                 </div>
             </div>
+            <!-- Online Classes -->
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
                 <div class="service-item text-center pt-3">
                     <div class="p-4">
                         <i class="fa fa-3x fa-globe text-primary mb-4"></i>
                         <h5 class="mb-3">Online Classes</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <p>Access interactive and engaging online classes from anywhere, designed to fit your schedule.</p>
                     </div>
                 </div>
             </div>
+            <!-- Home Projects -->
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
                 <div class="service-item text-center pt-3">
                     <div class="p-4">
                         <i class="fa fa-3x fa-home text-primary mb-4"></i>
-                        <h5 class="mb-3">Home Projects</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <h5 class="mb-3">Hands-On Projects</h5>
+                        <p>Enhance your learning with real-world projects and assignments you can work on from home.</p>
                     </div>
                 </div>
             </div>
+            <!-- Book Library -->
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
                 <div class="service-item text-center pt-3">
                     <div class="p-4">
                         <i class="fa fa-3x fa-book-open text-primary mb-4"></i>
-                        <h5 class="mb-3">Book Library</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <h5 class="mb-3">Extensive Library</h5>
+                        <p>Gain access to a rich library of resources, including e-books, guides, and reference materials.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <!-- Service End -->
 <!-- About Start -->
 <div class="container-xxl py-5">
@@ -94,39 +103,40 @@
         <div class="row g-5">
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
                 <div class="position-relative h-100">
-                    <img class="img-fluid position-absolute w-100 h-100" src="~/img/about.jpg" alt="" style="object-fit: cover;">
+                    <img class="img-fluid position-absolute w-100 h-100" src="~/img/about.jpg" alt="About Us" style="object-fit: cover;">
                 </div>
             </div>
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
-                <h6 class="section-title bg-white text-start text-primary pe-3 " id="aboutus">About Us</h6>
+                <h6 class="section-title bg-white text-start text-primary pe-3" id="aboutus">About Us</h6>
                 <h1 class="mb-4">Welcome to eLEARNING</h1>
-                <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
+                <p class="mb-4">At eLEARNING, we believe that education should be accessible to everyone, regardless of location or background. Our mission is to empower individuals by providing world-class online courses designed to help you learn, grow, and succeed.</p>
+                <p class="mb-4">Whether you're looking to enhance your professional skills, gain a competitive edge in your career, or explore new passions, we offer a wide range of courses taught by experienced instructors and industry experts. Join our global community of learners and take the first step toward achieving your goals today!</p>
                 <div class="row gy-2 gx-4 mb-4">
                     <div class="col-sm-6">
-                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Skilled Instructors</p>
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Expert Instructors</p>
                     </div>
                     <div class="col-sm-6">
-                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Online Classes</p>
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Interactive Online Classes</p>
                     </div>
                     <div class="col-sm-6">
-                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>International Certificate</p>
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Globally Recognized Certificates</p>
                     </div>
                     <div class="col-sm-6">
-                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Skilled Instructors</p>
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Flexible Learning Schedules</p>
                     </div>
                     <div class="col-sm-6">
-                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Online Classes</p>
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Career-Oriented Programs</p>
                     </div>
                     <div class="col-sm-6">
-                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>International Certificate</p>
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Supportive Learning Community</p>
                     </div>
                 </div>
-                <a class="btn btn-primary py-3 px-5 mt-2" href="">Read More</a>
+                <a class="btn btn-primary py-3 px-5 mt-2" href="/about">Read More</a>
             </div>
         </div>
     </div>
 </div>
+
 <!-- About End -->
 <!-- Categories Start -->
 <div class="container-xxl py-5 category">

@@ -7,19 +7,19 @@
 }
 
 
-<div class="container mt-5">
+<div class="container mt-4">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-8 col-lg-6">
             <!-- Section de connexion -->
-            <div class="card shadow-sm mb-5">
-                <div class="card-body p-5">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
                     <h2 class="card-title text-center mb-4">Connexion</h2>
                     <p class="text-center text-muted mb-4">Choisissez votre rôle pour vous connecter :</p>
                     <div class="d-grid gap-3">
-                        <a asp-controller="Account" asp-action="Login" asp-route-role="Professeur" class="btn btn-primary btn-lg py-3">
+                        <a asp-controller="Account" asp-action="Login" asp-route-role="Professeur" class="btn btn-primary btn-lg">
                             <i class="fas fa-chalkboard-teacher me-2"></i> Je suis un Professeur
                         </a>
-                        <a asp-controller="Account" asp-action="Login" asp-route-role="Etudiant" class="btn btn-secondary btn-lg py-3">
+                        <a asp-controller="Account" asp-action="Login" asp-route-role="Etudiant" class="btn btn-secondary btn-lg">
                             <i class="fas fa-user-graduate me-2"></i> Je suis un Étudiant
                         </a>
                     </div>
@@ -28,14 +28,14 @@
 
             <!-- Section d'inscription -->
             <div class="card shadow-sm">
-                <div class="card-body p-5">
+                <div class="card-body">
                     <h2 class="card-title text-center mb-4">Pas encore inscrit ?</h2>
                     <p class="text-center text-muted mb-4">Qui êtes-vous ?</p>
                     <div class="d-grid gap-3">
-                        <a asp-controller="Account" asp-action="RegisterProfesseur" class="btn btn-outline-primary btn-lg py-3">
+                        <a asp-controller="Account" asp-action="RegisterProfesseur" class="btn btn-outline-primary btn-lg">
                             <i class="fas fa-chalkboard-teacher me-2"></i> Professeur
                         </a>
-                        <a asp-controller="Account" asp-action="RegisterEtudiant" class="btn btn-outline-secondary btn-lg py-3">
+                        <a asp-controller="Account" asp-action="RegisterEtudiant" class="btn btn-outline-secondary btn-lg">
                             <i class="fas fa-user-graduate me-2"></i> Étudiant
                         </a>
                     </div>
